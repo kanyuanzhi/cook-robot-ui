@@ -1,17 +1,42 @@
 <template>
   <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
+    <div class="btn-menu">
+      <div class="column">
+        <div class="row" style="height: 200px">
+          <NavigateButton col-size="col-6" font-size-class="text-h4" font-weight-class="text-weight-medium"
+                          color="primary" to="/running">运行控制
+          </NavigateButton>
+          <NavigateButton col-size="col-6" font-size-class="text-h4" color="primary">菜品选择</NavigateButton>
+        </div>
+        <div class="row" style="height: 200px">
+          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">菜品编辑</NavigateButton>
+          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">推荐视频</NavigateButton>
+          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">系统设置</NavigateButton>
+          <!--          <NavigateButton col-size="col-3" font-size="large" color="primary">运行控制</NavigateButton>-->
+        </div>
+      </div>
+    </div>
+    <!--    <img-->
+    <!--      alt="Quasar logo"-->
+    <!--      src="~assets/quasar-logo-vertical.svg"-->
+    <!--      style="width: 200px; height: 200px"-->
+    <!--    >-->
   </q-page>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import NavigateButton from "src/components/NavigateButton"
+import {UseAppStore} from "stores/appStore";
 
-export default defineComponent({
-  name: 'IndexPage'
-})
+const useAppStore = UseAppStore()
+useAppStore.setSubPageTitle("")
 </script>
+
+<style lang="scss" scoped>
+.btn-menu {
+  height: 400px;
+  width: 80%;
+  //background-color: #21BA45;
+  //border: solid 1px red;
+}
+</style>
