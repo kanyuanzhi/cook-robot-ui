@@ -13,8 +13,8 @@
             <div class="col">
               <ControlPanel/>
             </div>
-            <div class="col">
-            </div>
+<!--            <div class="col">-->
+<!--            </div>-->
           </div>
         </div>
         <div class="col-1">

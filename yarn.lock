@@ -6141,6 +6141,11 @@ signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.npmmirror.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
+simple-keyboard@^3.5.14:
+  version "3.5.14"
+  resolved "https://registry.npmmirror.com/simple-keyboard/-/simple-keyboard-3.5.14.tgz#36e119aeed69e22a4f1577b396ba0f70de429002"
+  integrity sha512-l+b+jaMYb6Ql75SLCq8bQTHFEsoeCXv92eS+CcNWqV2HCvu3K0JSqcObtkAhiDt3x9nDmiFTJI3/3rcR/PDLFw==
+
 sirv@^1.0.7:
   version "1.0.19"
   resolved "https://registry.npmmirror.com/sirv/-/sirv-1.0.19.tgz#1d73979b38c7fe91fcba49c85280daa9c2363b49"

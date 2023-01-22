@@ -3,10 +3,10 @@
     <div class="btn-menu">
       <div class="column">
         <div class="row" style="height: 200px">
-          <NavigateButton col-size="col-6" font-size-class="text-h4" font-weight-class="text-weight-medium"
-                          color="primary" to="/running">运行控制
+          <NavigateButton col-size="col-6" font-size-class="text-h4" color="primary" to="/running">运行控制
           </NavigateButton>
-          <NavigateButton col-size="col-6" font-size-class="text-h4" color="primary">菜品选择</NavigateButton>
+          <NavigateButton col-size="col-6" font-size-class="text-h4" color="primary" to="/fishesSelect">菜品选择
+          </NavigateButton>
         </div>
         <div class="row" style="height: 200px">
           <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">菜品编辑</NavigateButton>
