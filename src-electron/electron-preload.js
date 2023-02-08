@@ -15,3 +15,11 @@
  *     doAThing: () => {}
  *   })
  */
+
+import {contextBridge, ipcRenderer} from "electron";
+
+contextBridge.exposeInMainWorld("ipcRenderer", {
+  send: ipcRenderer.send,
+  invoke: ipcRenderer.invoke,
+  server: (callback) => ipcRenderer.on("server", callback)
+});

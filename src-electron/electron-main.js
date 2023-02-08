@@ -1,6 +1,7 @@
-import { app, BrowserWindow, nativeTheme } from 'electron'
+import {app, BrowserWindow, nativeTheme, ipcMain} from 'electron'
 import path from 'path'
 import os from 'os'
+import TcpClientHandler from "./tcpClient/index"
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
@@ -9,11 +10,12 @@ try {
   if (platform === 'win32' && nativeTheme.shouldUseDarkColors === true) {
     require('fs').unlinkSync(path.join(app.getPath('userData'), 'DevTools Extensions'))
   }
-} catch (_) { }
+} catch (_) {
+}
 
 let mainWindow
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -46,7 +48,14 @@ function createWindow () {
   })
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(() => {
+  createWindow()
+  const tcpClientHandler = new TcpClientHandler(mainWindow)
+  tcpClientHandler.setupClient("127.0.0.1", 8888)
+  ipcMain.on("SEND", (e, data) => {
+    tcpClientHandler.sendData(data)
+  });
+})
 
 app.on('window-all-closed', () => {
   if (platform !== 'darwin') {

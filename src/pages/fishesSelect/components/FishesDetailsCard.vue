@@ -9,7 +9,7 @@
         text-color="white"
         icon="send"
         class="absolute bg-green"
-        style="top: 0; right: 12px; transform: translateY(-50%);"
+        style="top: 0; right: 20px; transform: translateY(-50%);"
       ></q-btn>
       <q-btn
         fab
@@ -25,7 +25,7 @@
         color="primary"
         icon="edit"
         class="absolute"
-        style="top: 0; right: 188px; transform: translateY(-50%);"
+        style="top: 0; right: 180px; transform: translateY(-50%);"
       ></q-btn>
 
       <div class="row no-wrap items-center">
@@ -33,7 +33,7 @@
           name
         </div>
         <div class="col-auto text-caption q-pt-md row no-wrap items-center">
-          <q-icon name="hourglass_top" color=""/>
+<!--          <q-icon name="hourglass_top" color=""/>-->
           需要25分钟
         </div>
       </div>

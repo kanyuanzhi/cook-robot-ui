@@ -56,7 +56,7 @@ const subPage = ref("")
 
 watch(
   useAppStore.$state,
-  (state)=>{
+  (state) => {
     subPage.value = state.subPageTitle
   },
   {

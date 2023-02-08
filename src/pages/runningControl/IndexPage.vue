@@ -1,24 +1,22 @@
 <template>
   <q-page>
-    <div class="q-pa-md">
-      <div class="row">
-        <div class="col-1">
-        </div>
-        <div class="col-10">
-          <div class="column q-gutter-y-none">
-            <div class="col flex flex-center text-h6">{{ dishesName }}</div>
-            <div class="col">
-              <CookStep :is-running="isRunning"/>
-            </div>
-            <div class="col">
-              <ControlPanel/>
-            </div>
-<!--            <div class="col">-->
-<!--            </div>-->
+    <div class="row q-pa-md">
+      <div class="col-1">
+      </div>
+      <div class="col-10">
+        <div class="column q-gutter-y-none">
+          <div class="col flex flex-center text-h6">{{ dishesName }}</div>
+          <div class="col">
+            <CookStep :is-running="isRunning"/>
           </div>
+          <div class="col">
+            <ControlPanel/>
+          </div>
+          <!--            <div class="col">-->
+          <!--            </div>-->
         </div>
-        <div class="col-1">
-        </div>
+      </div>
+      <div class="col-1">
       </div>
     </div>
   </q-page>
@@ -40,7 +38,7 @@ const isRunning = ref(false)
 
 watch(
   useRunningStore.$state,
-  (state)=>{
+  (state) => {
     isRunning.value = state.isRunning
   },
   {

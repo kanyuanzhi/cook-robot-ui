@@ -11,8 +11,7 @@
         <div class="row" style="height: 200px">
           <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">菜品编辑</NavigateButton>
           <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">推荐视频</NavigateButton>
-          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">系统设置</NavigateButton>
-          <!--          <NavigateButton col-size="col-3" font-size="large" color="primary">运行控制</NavigateButton>-->
+          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary" to="/systemSettings">系统设置</NavigateButton>
         </div>
       </div>
     </div>
@@ -30,6 +29,10 @@ import {UseAppStore} from "stores/appStore";
 
 const useAppStore = UseAppStore()
 useAppStore.setSubPageTitle("")
+
+window.ipcRenderer.server((e, m) => {
+  console.log(m)
+})
 </script>
 
 <style lang="scss" scoped>
