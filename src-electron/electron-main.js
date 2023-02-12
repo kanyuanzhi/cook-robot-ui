@@ -1,7 +1,7 @@
 import {app, BrowserWindow, nativeTheme, ipcMain} from 'electron'
 import path from 'path'
 import os from 'os'
-import { initialize, enable} from '@electron/remote/main'
+import {initialize, enable} from '@electron/remote/main'
 // import TcpClientHandler from "./tcpClient/index"
 
 initialize()
@@ -26,10 +26,9 @@ function createWindow() {
     icon: path.resolve(__dirname, 'icons/icon.png'), // tray icon
     width: 1000,
     height: 600,
-    // fullscreen: true,
+    fullscreen: platform === "linux",
     useContentSize: true,
     frame: false,
-    show: false,
     webPreferences: {
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
@@ -58,10 +57,6 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow()
-  if (platform === 'linux'){
-    mainWindow.maximize()
-  }
-  mainWindow.show()
   // const tcpClientHandler = new TcpClientHandler(mainWindow)
   // tcpClientHandler.setupClient("127.0.0.1", 8888)
   // ipcMain.on("SEND", (e, data) => {
