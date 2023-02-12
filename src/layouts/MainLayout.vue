@@ -15,7 +15,7 @@
         </q-toolbar>
         <q-toolbar class="col-4">
           <q-space/>
-          <q-btn flat round dense icon="wifi" class="q-mr-sm"/>
+          <WlanIcon/>
           <q-btn flat round dense icon="more_vert"/>
         </q-toolbar>
       </div>
@@ -44,12 +44,18 @@
     <q-page-container>
       <router-view/>
     </q-page-container>
+
+    <QrScanDialog ref="qrScanDialog" :text="qrScanText"/>
   </q-layout>
 </template>
 
 <script setup>
 import {ref, watch} from 'vue'
 import {UseAppStore} from "stores/appStore";
+import {UseSystemStore} from "stores/systemStore";
+import WlanIcon from "layouts/components/WlanIcon";
+import {getSystemStatus} from "src/api/systemStatus";
+import QrScanDialog from "layouts/components/QrScanDialog";
 
 const useAppStore = UseAppStore()
 const subPage = ref("")
@@ -63,4 +69,23 @@ watch(
     deep: true
   }
 )
+
+const qrScanDialog = ref(null)
+const qrScanText = ref("")
+
+const useSystemStore = UseSystemStore()
+setInterval(function () {
+  getSystemStatus().then(res => {
+    console.log(res.data)
+    useSystemStore.setWlanStatus(res.data.wlan.status)
+    if (res.data.qr_scan_data.is_new) {
+      qrScanText.value = res.data.qr_scan_data.text
+      qrScanDialog.value.open()
+    }
+  }).catch(Error => {
+    console.log(Error)
+  })
+}, 1000)
+
+
 </script>

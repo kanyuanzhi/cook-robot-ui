@@ -53,8 +53,8 @@
 <script setup>
 import {UseAppStore} from "stores/appStore";
 import {ref} from "vue";
-import SettingPanel from "pages/systemSettings/components/SettingPanel";
-import NetworkConnection from "pages/systemSettings/components/NetworkConnection";
+import SettingPanel from "pages/systemSettings/panels/SettingPanel";
+import NetworkConnection from "pages/systemSettings/panels/NetworkConnection";
 
 const useAppStore = UseAppStore()
 useAppStore.setSubPageTitle("系统设置")

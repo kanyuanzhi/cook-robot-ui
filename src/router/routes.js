@@ -1,31 +1,32 @@
-
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/IndexPage.vue') }
+      {path: '', component: () => import('pages/IndexPage.vue')}
     ]
   },
   {
     path: '/running',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/runningControl/IndexPage.vue') }
+      {path: '', component: () => import('pages/runningControl/IndexPage.vue')}
     ]
   },
   {
     path: '/fishesSelect',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/fishesSelect/IndexPage.vue') }
+      {path: '', component: () => import('pages/fishesSelect/IndexPage.vue')}
     ]
   },
   {
     path: '/systemSettings',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/systemSettings/IndexPage.vue') }
+      {
+        path: '', component: () => import('pages/systemSettings/IndexPage.vue')
+      },
     ]
   },
 

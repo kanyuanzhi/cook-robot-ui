@@ -30,9 +30,9 @@ import {UseAppStore} from "stores/appStore";
 const useAppStore = UseAppStore()
 useAppStore.setSubPageTitle("")
 
-window.ipcRenderer.server((e, m) => {
-  console.log(m)
-})
+// window.ipcRenderer.server((e, m) => {
+//   console.log(m)
+// })
 </script>
 
 <style lang="scss" scoped>

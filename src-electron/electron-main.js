@@ -1,7 +1,10 @@
 import {app, BrowserWindow, nativeTheme, ipcMain} from 'electron'
 import path from 'path'
 import os from 'os'
-import TcpClientHandler from "./tcpClient/index"
+import { initialize, enable} from '@electron/remote/main'
+// import TcpClientHandler from "./tcpClient/index"
+
+initialize()
 
 // needed in case process is undefined under Linux
 const platform = process.platform || os.platform()
@@ -24,12 +27,15 @@ function createWindow() {
     width: 1000,
     height: 600,
     useContentSize: true,
+    frame: false,
     webPreferences: {
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD)
     }
   })
+
+  enable(mainWindow.webContents)
 
   mainWindow.loadURL(process.env.APP_URL)
 
@@ -50,11 +56,11 @@ function createWindow() {
 
 app.whenReady().then(() => {
   createWindow()
-  const tcpClientHandler = new TcpClientHandler(mainWindow)
-  tcpClientHandler.setupClient("127.0.0.1", 8888)
-  ipcMain.on("SEND", (e, data) => {
-    tcpClientHandler.sendData(data)
-  });
+  // const tcpClientHandler = new TcpClientHandler(mainWindow)
+  // tcpClientHandler.setupClient("127.0.0.1", 8888)
+  // ipcMain.on("SEND", (e, data) => {
+  //   tcpClientHandler.sendData(data)
+  // });
 })
 
 app.on('window-all-closed', () => {

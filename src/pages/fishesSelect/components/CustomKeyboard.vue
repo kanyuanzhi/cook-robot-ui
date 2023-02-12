@@ -11,7 +11,6 @@ const emit = defineEmits(["keyPress", "change", "clear", "search"])
 
 let keyboard = null
 onMounted(() => {
-  console.log(213321)
   keyboard = new Keyboard({
     onChange: input => onChange(input),
     onKeyPress: button => onKeyPress(button),
