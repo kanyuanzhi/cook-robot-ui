@@ -20,7 +20,7 @@
 
           <q-dialog v-model="keyboardShown" no-focus no-refocus seamless full-width position="bottom">
             <CustomKeyboard ref="customKeyboard" :input-prefix="searchedDishesName" @change="onChange" @clear="onClear"
-                            @search="onSearch"/>
+                            @hide="keyboardShown=false"/>
           </q-dialog>
         </div>
         <div class="col">
@@ -42,10 +42,10 @@
           </q-tabs>
           <q-tab-panels v-model="tab">
             <q-tab-panel name="default" class="q-px-none">
-              <FishesDisplayBoard/>
+              <DishesDisplayBoard :is_starred="false" :initials="searchedDishesName"/>
             </q-tab-panel>
             <q-tab-panel name="stars" class="q-px-none">
-              <FishesDisplayBoard/>
+              <DishesDisplayBoard :is_starred="true" :initials="searchedDishesName"/>
             </q-tab-panel>
           </q-tab-panels>
         </div>
@@ -58,10 +58,11 @@
 <script setup>
 import {UseAppStore} from "stores/appStore";
 import {ref} from "vue";
-import FishesDisplayBoard from "pages/fishesSelect/components/FishesDisplayBoard";
-import CustomKeyboard from "pages/fishesSelect/components/CustomKeyboard"
+import DishesDisplayBoard from "pages/dishesSelect/components/DishesDisplayBoard";
+import CustomKeyboard from "pages/dishesSelect/components/CustomKeyboard"
 import 'simple-keyboard/build/css/index.css';
 import {useQuasar} from 'quasar'
+import {getDishesCount, getStarredDishesCount} from "src/api/dish";
 
 const $q = useQuasar()
 
@@ -75,8 +76,11 @@ const tab = ref("default")
 const keyboardShown = ref(false)
 const customKeyboard = ref(null)
 const input = ref(null)
-const defaultCounts = ref(10)
-const starsCounts = ref(10)
+
+const defaultCounts = ref(0)
+const starsCounts = ref(0)
+
+getCounts()
 
 function onFocus() {
   if (!keyboardShown.value) {
@@ -87,7 +91,7 @@ function onFocus() {
 function onBlur() {
   if (keyboardShown.value) {
     keyboardShown.value = false
-    search()
+    // search()
   }
 }
 
@@ -97,21 +101,33 @@ function onClear() {
 
 function onChange(input) {
   searchedDishesName.value = input
+  getCounts()
 }
 
-function onSearch() {
-  keyboardShown.value = false
-  input.value.blur()
-  search()
-}
+function getCounts() {
+  getDishesCount(searchedDishesName.value).then(res => {
+    defaultCounts.value = res.data
+  })
 
-function search() {
-  $q.notify({
-    message: "搜索",
-    timeout: 1000,
-    position: "top"
+  getStarredDishesCount(searchedDishesName.value).then(res => {
+    starsCounts.value = res.data
   })
 }
+
+
+// function onSearch() {
+//   keyboardShown.value = false
+//   input.value.blur()
+//   search()
+// }
+//
+// function search() {
+//   $q.notify({
+//     message: "搜索",
+//     timeout: 1000,
+//     position: "top"
+//   })
+// }
 
 </script>
 

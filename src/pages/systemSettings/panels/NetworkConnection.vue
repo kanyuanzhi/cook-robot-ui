@@ -56,7 +56,9 @@ import {getWifiList, toggleWlan} from "src/api/systemSettings";
 import {UseSystemStore} from "stores/systemStore";
 import NetworkConnectionInput from "pages/systemSettings/components/NetworkConnectionInput"
 import NetworkDisconnectionInput from "pages/systemSettings/components/NetworkDisconnectionInput"
+import {useQuasar} from 'quasar'
 
+const $q = useQuasar()
 const useSystemStore = UseSystemStore()
 const wlanOn = ref(useSystemStore.getWlanStatus !== "unavailable")
 const no_use_wifi_list = ref([])
@@ -85,29 +87,45 @@ if (wlanOn.value) {
 watch(wlanOn, async (now) => {
   let res
   if (now) {
-    res = await toggleWlan(1)
-    useSystemStore.setWlanStatus("disconnected")
-    t = setInterval(function () {
-      getWifiList().then(res => {
-        const data = res.data
-        no_use_wifi_list.value = data.no_use_wifi_list
-        if (JSON.stringify(data.in_use_wifi) !== "{}") {
-          useSystemStore.setWlanStatus("connected")
-          in_use_wifi.value = data.in_use_wifi
-        } else {
-          useSystemStore.setWlanStatus("disconnected")
-          in_use_wifi.value = {ssid: "", bssid: "", signal: ""}
-        }
-      }).catch(Error => {
-        console.log(Error)
+    try {
+      res = await toggleWlan(1)
+      useSystemStore.setWlanStatus("disconnected")
+      t = setInterval(function () {
+        getWifiList().then(res => {
+          const data = res.data
+          no_use_wifi_list.value = data.no_use_wifi_list
+          if (JSON.stringify(data.in_use_wifi) !== "{}") {
+            useSystemStore.setWlanStatus("connected")
+            in_use_wifi.value = data.in_use_wifi
+          } else {
+            useSystemStore.setWlanStatus("disconnected")
+            in_use_wifi.value = {ssid: "", bssid: "", signal: ""}
+          }
+        }).catch(Error => {
+          console.log(Error)
+        })
+      }, 3000)
+    } catch (e) {
+      $q.notify({
+        message: e.message,
+        timeout: 3000,
+        position: "top"
       })
-    }, 3000)
+    }
   } else {
-    res = await toggleWlan(0)
-    no_use_wifi_list.value = []
-    in_use_wifi.value = {ssid: "", bssid: "", signal: ""}
-    useSystemStore.setWlanStatus("unavailable")
-    clearInterval(t)
+    try {
+      res = await toggleWlan(0)
+      no_use_wifi_list.value = []
+      in_use_wifi.value = {ssid: "", bssid: "", signal: ""}
+      useSystemStore.setWlanStatus("unavailable")
+      clearInterval(t)
+    } catch (e) {
+      $q.notify({
+        message: e.message,
+        timeout: 3000,
+        position: "top"
+      })
+    }
   }
   console.log(res)
 })
@@ -136,7 +154,6 @@ function wifiSignalIcon(signal) {
 
 onUnmounted(() => {
   clearInterval(t)
-  console.log("stop scan wifi")
 })
 
 

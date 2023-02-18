@@ -15,6 +15,7 @@
         </q-toolbar>
         <q-toolbar class="col-4">
           <q-space/>
+          <TimeDisplay/>
           <WlanIcon/>
           <q-btn flat round dense icon="more_vert"/>
         </q-toolbar>
@@ -56,6 +57,7 @@ import {UseSystemStore} from "stores/systemStore";
 import WlanIcon from "layouts/components/WlanIcon";
 import {getSystemStatus} from "src/api/systemStatus";
 import QrScanDialog from "layouts/components/QrScanDialog";
+import TimeDisplay from "layouts/components/TimeDisplay";
 
 const useAppStore = UseAppStore()
 const subPage = ref("")
@@ -74,18 +76,18 @@ const qrScanDialog = ref(null)
 const qrScanText = ref("")
 
 const useSystemStore = UseSystemStore()
-setInterval(function () {
-  getSystemStatus().then(res => {
-    console.log(res.data)
-    useSystemStore.setWlanStatus(res.data.wlan.status)
-    if (res.data.qr_scan_data.is_new) {
-      qrScanText.value = res.data.qr_scan_data.text
-      qrScanDialog.value.open()
-    }
-  }).catch(Error => {
-    console.log(Error)
-  })
-}, 1000)
+// setInterval(function () {
+//   getSystemStatus().then(res => {
+//     console.log(res.data)
+//     useSystemStore.setWlanStatus(res.data.wlan.status)
+//     if (res.data.qr_scan_data.is_new) {
+//       qrScanText.value = res.data.qr_scan_data.text
+//       qrScanDialog.value.open()
+//     }
+//   }).catch(Error => {
+//     console.log(Error)
+//   })
+// }, 1000)
 
 
 </script>

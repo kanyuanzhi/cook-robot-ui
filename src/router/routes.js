@@ -17,7 +17,7 @@ const routes = [
     path: '/fishesSelect',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/fishesSelect/IndexPage.vue')}
+      {path: '', component: () => import('pages/dishesSelect/IndexPage.vue')}
     ]
   },
   {

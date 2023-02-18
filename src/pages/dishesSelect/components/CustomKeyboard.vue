@@ -7,7 +7,7 @@ import Keyboard from "simple-keyboard";
 import {onMounted} from "vue";
 
 const props = defineProps(["inputPrefix"])
-const emit = defineEmits(["keyPress", "change", "clear", "search"])
+const emit = defineEmits(["keyPress", "change", "clear", "hide"])
 
 let keyboard = null
 onMounted(() => {
@@ -17,15 +17,14 @@ onMounted(() => {
     preventMouseDownDefault: true,
     layout: {
       default: [
-        "q w e r t y u i o p",
-        "a s d f g h j k l",
-        "{clear} z x c v b n m {bksp}",
-        "{enter}"
+        "q w e r t y u i o p {bksp}",
+        "a s d f g h j k l {clear}",
+        "z x c v b n m {enter}",
       ],
     },
     display: {
       "{bksp}": "删除",
-      "{enter}": "搜索",
+      "{enter}": "隐藏",
       "{clear}": "清空"
     }
   });
@@ -39,7 +38,7 @@ function onChange(input) {
 function onKeyPress(button) {
   emit("keyPress", button)
   if (button === "{enter}") {
-    emit("search")
+    emit("hide")
   }
   if (button === "{clear}") {
     keyboard.clearInput()
