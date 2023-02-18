@@ -3,11 +3,16 @@
     <q-dialog v-model="shown" @hide="onHide">
       <q-card style="min-width: 350px">
         <q-card-section class="q-py-md">
-          <div class="text-subtitle2 flex flex-center">输入网络安全秘钥</div>
+          <div class="text-subtitle2 text-center">输入隐藏网络信息</div>
         </q-card-section>
 
         <q-card-section class="q-py-none">
-          <q-input label="安全密钥" dense v-model="password" autofocus @keyup.enter="onConnectionBtnClick"/>
+          <q-input ref="sidInput" dense v-model="ssid" label="网络名称" autofocus
+                   @keyup.enter="onConnectionBtnClick" @focus="onInputFocus(e, 'ssid')"
+                   @input="onInputChange(e, 'ssid')"/>
+          <q-input ref="passwordInput" dense v-model="password" label="安全密钥"
+                   @keyup.enter="onConnectionBtnClick" @focus="onInputFocus(e, 'password')"
+                   @input="onInputChange(e, 'password')"/>
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
@@ -30,21 +35,35 @@ import {useQuasar} from 'quasar'
 
 const $q = useQuasar()
 
-const props = defineProps(["bssid"])
-
 defineExpose({
   open,
   close
 })
 
+const ssid = ref("")
 const password = ref("")
 const shown = ref(false)
 
+const customKeyboard = ref(null)
+
+let currentInput = ""
+
+function onInputFocus(e, name) {
+  customKeyboard.value.setOption(name)
+  currentInput = name
+}
+
+function onInputChange(e, name) {
+  customKeyboard.value.setInput(e.target.value, name)
+}
+
 function onChange(input, name) {
-  password.value = input
+  if (name === "ssid") ssid.value = input
+  else password.value = input
 }
 
 function onHide() {
+  ssid.value = ""
   password.value = ""
 }
 
@@ -57,7 +76,7 @@ function close() {
 }
 
 function onConnectionBtnClick() {
-  connectWifi(1, {bssid: props.bssid, password: password.value}).then(res => {
+  connectWifi(1, {bssid: ssid.value, password: password.value}).then(res => {
     if (res.data.indexOf("success") !== -1) {
       $q.notify({
         type: "positive",

@@ -8,6 +8,10 @@ import {onMounted} from "vue";
 
 const props = defineProps([""])
 const emit = defineEmits(["keyPress", "change", "clear", "connect"])
+defineExpose({
+  setOption,
+  setInput
+})
 
 let keyboard = null
 onMounted(() => {
@@ -17,19 +21,17 @@ onMounted(() => {
     preventMouseDownDefault: true,
     layout: {
       default: [
-        '` 1 2 3 4 5 6 7 8 9 0 - =',
-        'q w e r t y u i o p [ ] \\',
-        "a s d f g h j k l ; '",
-        'z x c v b n m , . /',
-        '{clear} {bksp} {lock} {enter}',
+        '` 1 2 3 4 5 6 7 8 9 0 - = {bksp}',
+        'q w e r t y u i o p [ ] \\ {clear}',
+        "a s d f g h j k l ; ' {lock}",
+        'z x c v b n m , . / {enter}',
       ],
       // shift布局
       shift: [
-        '~ ! @ # $ % ^ & * ( ) _ +',
-        'Q W E R T Y U I O P { } |',
-        'A S D F G H J K L : "',
-        'Z X C V B N M &lt; &gt; ?',
-        '{clear} {bksp} {lock} {enter}',
+        '~ ! @ # $ % ^ & * ( ) _ + {bksp}',
+        'Q W E R T Y U I O P { } | {clear}',
+        'A S D F G H J K L : " {lock}',
+        'Z X C V B N M &lt; &gt; ? {enter}',
       ],
     },
     display: {
@@ -43,8 +45,18 @@ onMounted(() => {
   });
 })
 
+function setOption(name) {
+  keyboard.setOptions({
+    inputName: name
+  })
+}
+
+function setInput(value, name) {
+  keyboard.setInput(value, name)
+}
+
 function onChange(input) {
-  emit("change", input)
+  emit("change", input, keyboard.options.inputName)
 }
 
 function onKeyPress(button) {

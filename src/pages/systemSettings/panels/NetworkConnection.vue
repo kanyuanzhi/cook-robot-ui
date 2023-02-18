@@ -21,7 +21,7 @@
         <q-scroll-area
           :thumb-style="thumbStyle"
           :content-style="contentStyle"
-          style="height: 300px; width: 100%;"
+          style="height: 280px; width: 100%;"
         >
           <q-list>
             <q-item v-if="in_use_wifi.bssid!==''" clickable v-ripple class="text-primary text-weight-bold"
@@ -45,8 +45,12 @@
       </div>
       <div class="col-2"></div>
     </div>
-    <NetworkConnectionInput ref="networkConnectionInput" :bssid="bssidSelected"/>
-    <NetworkDisconnectionInput ref="networkDisconnectionInput" :ssid="in_use_wifi.ssid"/>
+    <div class="col flex flex-center" style="">
+      <q-btn color="primary" rounded label="连接隐藏的网络" @click="onHiddenWifiBtnClick"/>
+    </div>
+    <NetworkConnectionInput v-show="false" ref="networkConnectionInput" :bssid="bssidSelected"/>
+    <NetworkDisconnectionInput v-show="false" ref="networkDisconnectionInput" :ssid="in_use_wifi.ssid"/>
+    <HiddenNetworkConnectionInput v-show="false" ref="hiddenNetworkConnectionInput" :ssid="in_use_wifi.ssid"/>
   </div>
 </template>
 
@@ -57,6 +61,7 @@ import {UseSystemStore} from "stores/systemStore";
 import NetworkConnectionInput from "pages/systemSettings/components/NetworkConnectionInput"
 import NetworkDisconnectionInput from "pages/systemSettings/components/NetworkDisconnectionInput"
 import {useQuasar} from 'quasar'
+import HiddenNetworkConnectionInput from "pages/systemSettings/components/HiddenNetworkConnectionInput";
 
 const $q = useQuasar()
 const useSystemStore = UseSystemStore()
@@ -132,16 +137,19 @@ watch(wlanOn, async (now) => {
 
 const networkConnectionInput = ref(null)
 const bssidSelected = ref("")
-
 function onNoUseWifiClick(bssid) {
   networkConnectionInput.value.open()
   bssidSelected.value = bssid
 }
 
 const networkDisconnectionInput = ref(null)
-
 function onInUseWifiClick() {
   networkDisconnectionInput.value.open()
+}
+
+const hiddenNetworkConnectionInput = ref(null)
+function onHiddenWifiBtnClick(){
+  hiddenNetworkConnectionInput.value.open()
 }
 
 function wifiSignalIcon(signal) {
