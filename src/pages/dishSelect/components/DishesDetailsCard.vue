@@ -35,7 +35,7 @@
         </div>
         <div class="col-auto text-body2 row no-wrap items-center">
           <!--          <q-icon name="hourglass_top" color=""/>-->
-          需要{{ parseInt(dish.cook_time / 60) }}分{{ dish.cook_time % 60 }}秒
+          预计需要{{ parseInt(dish.cook_time / 60) }}分{{ dish.cook_time % 60 }}秒
         </div>
       </div>
 
@@ -91,7 +91,7 @@ function onStarBtnClick() {
   dish.value.is_starred = dish.value.is_starred ? 0 : 1
   updateDish(dish.value).then(res => {
     console.log(res.data)
-    if (!res.data){
+    if (!res.data) {
       dish.value.is_starred = dish.value.is_starred ? 0 : 1
     }
   })

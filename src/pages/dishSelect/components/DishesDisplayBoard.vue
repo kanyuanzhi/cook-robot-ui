@@ -4,7 +4,7 @@
     :thumb-style="thumbStyle"
     :bar-style="barStyle"
     style="height: 390px; width: 100%;"
-    @load="onLoad" :offset="10"
+    @load="onLoad" :offset="50"
   >
     <div class="row q-mb-md" v-for="(r) in rows" :key="'r' + r">
       <div class="col q-mr-md" v-for="col in 4" :key="col">
@@ -34,12 +34,13 @@
 
 <script setup>
 import {reactive, ref, watch} from "vue";
-import DishesDetailsCard from "pages/dishesSelect/components/DishesDetailsCard";
+import DishesDetailsCard from "pages/dishSelect/components/DishesDetailsCard";
 import {getDishes, getStarredDishes} from "src/api/dish";
 
 const props = defineProps(["is_starred", "initials"])
 
 const scroll = ref(null)
+
 // const imgUrl = require("/src/assets/chicken-salad.jpg")
 const dishes = ref([])
 const rows = ref(0)
@@ -55,12 +56,17 @@ watch(
     last_row_cols.value = 0
     page_index.value = 1
     listDishes(page_index.value, 16, props.initials).then(res => {
-      if (res.data.length === 0) scroll.value.stop()
-      dishes.value.push(...res.data)
-      const total = dishes.value.length
-      rows.value = Math.ceil(total / 4)
-      last_row_cols.value = total % 4
-      page_index.value += 1
+      scroll.value.resume()
+      // console.log(res.data.length)
+      // if (res.data.length === 0) {
+      //   scroll.value.stop()
+      //   return
+      // } else scroll.value.resume()
+      // dishes.value.push(...res.data)
+      // const total = dishes.value.length
+      // rows.value = Math.ceil(total / 4)
+      // last_row_cols.value = total % 4
+      // page_index.value += 1
     })
   }
 )
@@ -73,7 +79,11 @@ const listDishes = (index, size, initials = "") => {
 
 function onLoad(index, done) {
   listDishes(page_index.value, 16, props.initials).then(res => {
-    if (res.data.length === 0) scroll.value.stop()
+    console.log(res.data.length)
+    if (res.data.length === 0) {
+      scroll.value.stop()
+      return
+    } else scroll.value.resume()
     dishes.value.push(...res.data)
     const total = dishes.value.length
     rows.value = Math.ceil(total / 4)
@@ -102,6 +112,7 @@ const barStyle = reactive({
 const dishesDetailsCardShown = ref(false)
 
 const selectedDishId = ref("")
+
 function onImgClick(id) {
   if (!dishesDetailsCardShown.value) dishesDetailsCardShown.value = true
   selectedDishId.value = id

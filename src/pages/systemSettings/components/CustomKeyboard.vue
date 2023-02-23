@@ -4,12 +4,14 @@
 
 <script setup>
 import Keyboard from "simple-keyboard";
+import 'simple-keyboard/build/css/index.css';
+
 import {onMounted} from "vue";
 
 const props = defineProps([""])
 const emit = defineEmits(["keyPress", "change", "clear", "connect"])
 defineExpose({
-  setOption,
+  setInputName,
   setInput
 })
 
@@ -45,7 +47,7 @@ onMounted(() => {
   });
 })
 
-function setOption(name) {
+function setInputName(name) {
   keyboard.setOptions({
     inputName: name
   })

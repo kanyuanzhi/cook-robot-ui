@@ -46,11 +46,9 @@ const shown = ref(false)
 
 const customKeyboard = ref(null)
 
-let currentInput = ""
 
 function onInputFocus(e, name) {
-  customKeyboard.value.setOption(name)
-  currentInput = name
+  customKeyboard.value.setInputName(name)
 }
 
 function onInputChange(e, name) {

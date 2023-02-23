@@ -4,6 +4,8 @@
 
 <script setup>
 import Keyboard from "simple-keyboard";
+import 'simple-keyboard/build/css/index.css';
+
 import {onMounted} from "vue";
 
 const props = defineProps(["inputPrefix"])

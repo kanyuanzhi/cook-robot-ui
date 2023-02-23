@@ -14,10 +14,17 @@ const routes = [
     ]
   },
   {
-    path: '/fishesSelect',
+    path: '/dishSelect',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      {path: '', component: () => import('pages/dishesSelect/IndexPage.vue')}
+      {path: '', component: () => import('pages/dishSelect/IndexPage.vue')}
+    ]
+  },
+  {
+    path: '/dishEdit',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      {path: '', component: () => import('pages/dishEdit/IndexPage.vue')}
     ]
   },
   {

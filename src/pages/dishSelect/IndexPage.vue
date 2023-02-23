@@ -5,7 +5,7 @@
         <div class="col">
           <q-input
             ref="input"
-            v-model="searchedDishesName"
+            v-model="searchedDishInitials"
             debounce="500"
             filled
             placeholder="输入菜品名称首字母搜索"
@@ -19,8 +19,8 @@
           </q-input>
 
           <q-dialog v-model="keyboardShown" no-focus no-refocus seamless full-width position="bottom">
-            <CustomKeyboard ref="customKeyboard" :input-prefix="searchedDishesName" @change="onChange" @clear="onClear"
-                            @hide="keyboardShown=false"/>
+            <CustomKeyboard ref="customKeyboard" :input-prefix="searchedDishInitials" @change="onChange" @clear="onClear"
+                            @hide="onHide"/>
           </q-dialog>
         </div>
         <div class="col">
@@ -42,10 +42,10 @@
           </q-tabs>
           <q-tab-panels v-model="tab">
             <q-tab-panel name="default" class="q-px-none">
-              <DishesDisplayBoard :is_starred="false" :initials="searchedDishesName"/>
+              <DishesDisplayBoard :is_starred="false" :initials="searchedDishInitials"/>
             </q-tab-panel>
             <q-tab-panel name="stars" class="q-px-none">
-              <DishesDisplayBoard :is_starred="true" :initials="searchedDishesName"/>
+              <DishesDisplayBoard :is_starred="true" :initials="searchedDishInitials"/>
             </q-tab-panel>
           </q-tab-panels>
         </div>
@@ -57,10 +57,9 @@
 
 <script setup>
 import {UseAppStore} from "stores/appStore";
-import {ref} from "vue";
-import DishesDisplayBoard from "pages/dishesSelect/components/DishesDisplayBoard";
-import CustomKeyboard from "pages/dishesSelect/components/CustomKeyboard"
-import 'simple-keyboard/build/css/index.css';
+import {ref, watch} from "vue";
+import DishesDisplayBoard from "pages/dishSelect/components/DishesDisplayBoard";
+import CustomKeyboard from "pages/dishSelect/components/CustomKeyboard"
 import {useQuasar} from 'quasar'
 import {getDishesCount, getStarredDishesCount} from "src/api/dish";
 
@@ -69,7 +68,7 @@ const $q = useQuasar()
 const useAppStore = UseAppStore()
 useAppStore.setSubPageTitle("菜品选择")
 
-const searchedDishesName = ref("")
+const searchedDishInitials = ref("")
 
 const tab = ref("default")
 
@@ -81,6 +80,11 @@ const defaultCounts = ref(0)
 const starsCounts = ref(0)
 
 getCounts()
+
+watch(
+  searchedDishInitials,
+  getCounts
+)
 
 function onFocus() {
   if (!keyboardShown.value) {
@@ -96,20 +100,24 @@ function onBlur() {
 }
 
 function onClear() {
-  searchedDishesName.value = ""
+  searchedDishInitials.value = ""
 }
 
 function onChange(input) {
-  searchedDishesName.value = input
-  getCounts()
+  searchedDishInitials.value = input
+}
+
+function onHide() {
+  keyboardShown.value = false
+  input.value.blur()
 }
 
 function getCounts() {
-  getDishesCount(searchedDishesName.value).then(res => {
+  getDishesCount(searchedDishInitials.value).then(res => {
     defaultCounts.value = res.data
   })
 
-  getStarredDishesCount(searchedDishesName.value).then(res => {
+  getStarredDishesCount(searchedDishInitials.value).then(res => {
     starsCounts.value = res.data
   })
 }

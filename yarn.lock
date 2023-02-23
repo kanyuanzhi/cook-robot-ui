@@ -6829,6 +6829,11 @@ signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.npmmirror.com/signal-exit/-/signal-exit-3.0.7.tgz#a9a1767f8af84155114eaabd73f99273c8f59ad9"
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
+simple-keyboard-layouts@^3.1.277:
+  version "3.1.277"
+  resolved "https://registry.npmmirror.com/simple-keyboard-layouts/-/simple-keyboard-layouts-3.1.277.tgz#0d4259531a27be5a9be2d28df203fe2a8ffb5b8b"
+  integrity sha512-0C5FR2TDm+P8erN1NNnECPk+wu1vOZQ/T6oVC355p96r0U0B/TicA72Dkqsv2VkJ9u8D1vZTlSc3bXXtifKa2A==
+
 simple-keyboard@^3.5.14:
   version "3.5.14"
   resolved "https://registry.npmmirror.com/simple-keyboard/-/simple-keyboard-3.5.14.tgz#36e119aeed69e22a4f1577b396ba0f70de429002"
