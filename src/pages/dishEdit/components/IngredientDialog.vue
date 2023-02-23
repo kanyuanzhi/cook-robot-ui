@@ -6,16 +6,18 @@
           <div class="text-h6">添加食材</div>
         </q-card-section>
         <q-item dense>
-          <q-item-section avatar>
-            种类
-          </q-item-section>
+          <q-item-section avatar> 种类</q-item-section>
           <q-item-section>
-            <q-input v-model="type" filled dense
-                     @blur="onInputBlur(e, 'type')"
-                     @focus="onInputFocus(e, 'type')"
-                     @input="onInputChange(e, 'type')">
+            <q-input
+              v-model="type"
+              filled
+              dense
+              @blur="onInputBlur(e, 'type')"
+              @focus="onInputFocus(e, 'type')"
+              @input="onInputChange(e, 'type')"
+            >
               <template v-slot:after>
-                <q-btn round dense flat icon="toc"/>
+                <q-btn round dense flat icon="toc" />
               </template>
             </q-input>
             <!--            <q-select-->
@@ -46,30 +48,34 @@
         </q-item>
 
         <q-item dense>
-          <q-item-section avatar>
-            形状
-          </q-item-section>
+          <q-item-section avatar> 形状</q-item-section>
           <q-item-section>
-            <q-input v-model="shape" filled dense
-                     @blur="onInputBlur(e, 'shape')"
-                     @focus="onInputFocus(e, 'shape')"
-                     @input="onInputChange(e, 'shape')">
+            <q-input
+              v-model="shape"
+              filled
+              dense
+              @blur="onInputBlur(e, 'shape')"
+              @focus="onInputFocus(e, 'shape')"
+              @input="onInputChange(e, 'shape')"
+            >
               <template v-slot:after>
-                <q-btn round dense flat icon="toc"/>
+                <q-btn round dense flat icon="toc" />
               </template>
             </q-input>
           </q-item-section>
         </q-item>
 
         <q-item dense>
-          <q-item-section avatar>
-            分量
-          </q-item-section>
+          <q-item-section avatar> 分量</q-item-section>
           <q-item-section>
-            <q-input v-model="weight" filled dense
-                     @blur="onInputBlur(e, 'weight')"
-                     @focus="onInputFocus(e, 'weight')"
-                     @input="onInputChange(e, 'weight')">
+            <q-input
+              v-model="weight"
+              filled
+              dense
+              @blur="onInputBlur(e, 'weight')"
+              @focus="onInputFocus(e, 'weight')"
+              @input="onInputChange(e, 'weight')"
+            >
               <template v-slot:append>
                 <span class="text-body2">克</span>
               </template>
@@ -78,46 +84,74 @@
         </q-item>
 
         <q-item dense>
-          <q-item-section avatar>
-            菜盒
-          </q-item-section>
+          <q-item-section avatar> 菜盒</q-item-section>
           <q-item-section>
             <div class="q-pa-md">
               <div class="q-gutter-md">
-                <q-radio v-model="slotNo" dense checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="1"
-                         label="1"/>
-                <q-radio v-model="slotNo" dense checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="2"
-                         label="2"/>
-                <q-radio v-model="slotNo" dense checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="3"
-                         label="3"/>
-                <q-radio v-model="slotNo" dense checked-icon="task_alt" unchecked-icon="panorama_fish_eye" val="4"
-                         label="4"/>
+                <q-radio
+                  v-model="slotNo"
+                  dense
+                  checked-icon="task_alt"
+                  unchecked-icon="panorama_fish_eye"
+                  val="1"
+                  label="1"
+                />
+                <q-radio
+                  v-model="slotNo"
+                  dense
+                  checked-icon="task_alt"
+                  unchecked-icon="panorama_fish_eye"
+                  val="2"
+                  label="2"
+                />
+                <q-radio
+                  v-model="slotNo"
+                  dense
+                  checked-icon="task_alt"
+                  unchecked-icon="panorama_fish_eye"
+                  val="3"
+                  label="3"
+                />
+                <q-radio
+                  v-model="slotNo"
+                  dense
+                  checked-icon="task_alt"
+                  unchecked-icon="panorama_fish_eye"
+                  val="4"
+                  label="4"
+                />
               </div>
             </div>
           </q-item-section>
         </q-item>
 
         <q-item dense>
-          <q-item-section avatar>
-            时刻
-          </q-item-section>
+          <q-item-section avatar> 时刻</q-item-section>
           <q-item-section>
             <div class="row q-col-gutter-md">
               <div class="col">
-                <q-input v-model="min" filled dense
-                         @blur="onInputBlur(e, 'min')"
-                         @focus="onInputFocus(e, 'min')"
-                         @input="onInputChange(e, 'min')">
+                <q-input
+                  v-model="min"
+                  filled
+                  dense
+                  @blur="onInputBlur(e, 'min')"
+                  @focus="onInputFocus(e, 'min')"
+                  @input="onInputChange(e, 'min')"
+                >
                   <template v-slot:append>
                     <span class="text-body2">分</span>
                   </template>
                 </q-input>
               </div>
               <div class="col">
-                <q-input v-model="sec" filled dense
-                         @blur="onInputBlur(e, 'sec')"
-                         @focus="onInputFocus(e, 'sec')"
-                         @input="onInputChange(e, 'sec')">
+                <q-input
+                  v-model="sec"
+                  filled
+                  dense
+                  @blur="onInputBlur(e, 'sec')"
+                  @focus="onInputFocus(e, 'sec')"
+                  @input="onInputChange(e, 'sec')"
+                >
                   <template v-slot:append>
                     <span class="text-body2">秒</span>
                   </template>
@@ -132,92 +166,89 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog v-model="shown" persistent position="bottom" no-focus no-refocus seamless full-width>
-      <CustomKeyboard ref="customKeyboard" @change="onChange"/>
+    <q-dialog
+      v-model="shown"
+      persistent
+      position="bottom"
+      no-focus
+      no-refocus
+      seamless
+      full-width
+    >
+      <CustomKeyboard ref="customKeyboard" @change="onChange" />
     </q-dialog>
   </div>
-
 </template>
 
 <script setup>
-import {computed, ref} from "vue";
+import { computed, ref } from "vue";
 import CustomKeyboard from "pages/dishEdit/components/CustomKeyboard";
 
-
-const shown = ref(false)
+const shown = ref(false);
 // const props = defineProps(["shown"])
 
-const tempTypes = ["牛肉", "猪肉", "羊肉", "鸡肉", "鱼肉", "排骨"]
-const types = ref(tempTypes)
+const tempTypes = ["牛肉", "猪肉", "羊肉", "鸡肉", "鱼肉", "排骨"];
+const types = ref(tempTypes);
 
+const tempShapes = ["块状", "条状", "丝状", "片状"];
+const shapes = ref(tempShapes);
 
-const tempShapes = ["块状", "条状", "丝状", "片状"]
-const shapes = ref(tempShapes)
-
-
-const type = ref("")
-const shape = ref("")
-const weight = ref("")
-const slotNo = ref("")
-const min = ref("")
-const sec = ref("")
-const time = computed(() => {
-  return parseInt(min.value) * 60 + parseInt(sec.value)
-})
+const type = ref("");
+const shape = ref("");
+const weight = ref("");
+const slotNo = ref("");
+const min = ref("");
+const sec = ref("");
+const time = computed(() => parseInt(min.value) * 60 + parseInt(sec.value));
 
 const nameToPara = {
-  type: type,
-  shape: shape,
-  weight: weight,
-  min: min,
-  sec: sec
-}
+  type,
+  shape,
+  weight,
+  min,
+  sec,
+};
 
-
-const customKeyboard = ref(null)
+const customKeyboard = ref(null);
 const onInputFocus = (e, name) => {
-  customKeyboard.value.setInputName(name)
-}
+  customKeyboard.value.setInputName(name);
+};
 
-const onInputBlur = (e, name) => {
-
-}
+const onInputBlur = (e, name) => {};
 const onInputChange = (e, name) => {
-  customKeyboard.value.setInput(e.target.value, name)
-}
+  customKeyboard.value.setInput(e.target.value, name);
+};
 
 function onChange(input, name) {
-  console.log(input)
-  nameToPara[name].value = input
+  console.log(input);
+  nameToPara[name].value = input;
 }
 
 const typeFilterFn = (val, update, abort) => {
   update(() => {
-    const needle = val
-    types.value = tempTypes.filter(v => v.indexOf(needle) > -1)
-  })
-}
+    const needle = val;
+    types.value = tempTypes.filter((v) => v.indexOf(needle) > -1);
+  });
+};
 
 const setTypeModel = (val) => {
-  type.value = val
-}
+  type.value = val;
+};
 
 const shapeFilterFn = (val, update, abort) => {
   update(() => {
-    const needle = val
-    shapes.value = tempShapes.filter(v => v.indexOf(needle) > -1)
-  })
-}
+    const needle = val;
+    shapes.value = tempShapes.filter((v) => v.indexOf(needle) > -1);
+  });
+};
 
 const setShapeModel = (val) => {
-  shape.value = val
-}
+  shape.value = val;
+};
 
 defineExpose({
-  shown
-})
+  shown,
+});
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

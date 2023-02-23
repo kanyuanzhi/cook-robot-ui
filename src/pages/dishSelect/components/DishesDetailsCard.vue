@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :src="dish.image" :ratio="8/5"/>
+    <q-img :src="dish.image" :ratio="8 / 5" />
 
     <q-card-section>
       <!--      <q-btn-->
@@ -35,7 +35,9 @@
         </div>
         <div class="col-auto text-body2 row no-wrap items-center">
           <!--          <q-icon name="hourglass_top" color=""/>-->
-          预计需要{{ parseInt(dish.cook_time / 60) }}分{{ dish.cook_time % 60 }}秒
+          预计需要{{ parseInt(dish.cook_time / 60) }}分{{
+            dish.cook_time % 60
+          }}秒
         </div>
       </div>
 
@@ -43,58 +45,55 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-      <div class="text-subtitle1">
-        食材
-      </div>
-      <div class="text-body2 text-grey-10">
-        青菜 牛肉
-      </div>
-      <div class="text-subtitle1">
-        调料
-      </div>
-      <div class="text-body2 text-grey-10">
-        食盐 糖 酱油
-      </div>
+      <div class="text-subtitle1">食材</div>
+      <div class="text-body2 text-grey-10">青菜 牛肉</div>
+      <div class="text-subtitle1">调料</div>
+      <div class="text-body2 text-grey-10">食盐 糖 酱油</div>
     </q-card-section>
 
-    <q-separator/>
+    <q-separator />
 
     <q-card-actions align="right">
-      <q-btn flat round color="primary" icon="edit"/>
-      <q-btn flat round :color="dish.is_starred?'red':'grey' " icon="favorite" @click="onStarBtnClick"/>
-      <q-btn flat round color="teal" icon="send"/>
+      <q-btn flat round color="primary" icon="edit" />
+      <q-btn
+        flat
+        round
+        :color="dish.is_starred ? 'red' : 'grey'"
+        icon="favorite"
+        @click="onStarBtnClick"
+      />
+      <q-btn flat round color="teal" icon="send" />
       <!--      <q-btn v-close-popup flat color="primary" icon="event"/>-->
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup>
-import {getDish, updateDish} from "src/api/dish";
-import {ref} from "vue";
+import { getDish, updateDish } from "src/api/dish";
+import { ref } from "vue";
 
-const imgUrl = require("src/assets/chicken-salad.jpg")
-const props = defineProps(["id"])
+// const imgUrl = require('src/assets/chicken-salad.jpg');
+
+const props = defineProps(["id"]);
 const dish = ref({
   id: "",
   name: "",
   image: "",
   cook_time: "",
-  is_starred: 0
-})
+  is_starred: 0,
+});
 
-getDish(props.id).then(res => {
-  console.log(res.data)
-  dish.value = res.data
-})
+getDish(props.id).then((res) => {
+  dish.value = res.data;
+});
 
 function onStarBtnClick() {
-  dish.value.is_starred = dish.value.is_starred ? 0 : 1
-  updateDish(dish.value).then(res => {
-    console.log(res.data)
+  dish.value.is_starred = dish.value.is_starred ? 0 : 1;
+  updateDish(dish.value).then((res) => {
     if (!res.data) {
-      dish.value.is_starred = dish.value.is_starred ? 0 : 1
+      dish.value.is_starred = dish.value.is_starred ? 0 : 1;
     }
-  })
+  });
 }
 </script>
 

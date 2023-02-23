@@ -4,18 +4,18 @@
 
 <script setup>
 import Keyboard from "simple-keyboard";
-import 'simple-keyboard/build/css/index.css';
+import "simple-keyboard/build/css/index.css";
 
-import {onMounted} from "vue";
+import { onMounted } from "vue";
 
-const props = defineProps(["inputPrefix"])
-const emit = defineEmits(["keyPress", "change", "clear", "hide"])
+const props = defineProps(["inputPrefix"]);
+const emit = defineEmits(["keyPress", "change", "clear", "hide"]);
 
-let keyboard = null
+let keyboard = null;
 onMounted(() => {
   keyboard = new Keyboard({
-    onChange: input => onChange(input),
-    onKeyPress: button => onKeyPress(button),
+    onChange: (input) => onChange(input),
+    onKeyPress: (button) => onKeyPress(button),
     preventMouseDownDefault: true,
     layout: {
       default: [
@@ -27,28 +27,26 @@ onMounted(() => {
     display: {
       "{bksp}": "删除",
       "{enter}": "隐藏",
-      "{clear}": "清空"
-    }
+      "{clear}": "清空",
+    },
   });
-  keyboard.setInput(props.inputPrefix)
-})
+  keyboard.setInput(props.inputPrefix);
+});
 
 function onChange(input) {
-  emit("change", input)
+  emit("change", input);
 }
 
 function onKeyPress(button) {
-  emit("keyPress", button)
+  emit("keyPress", button);
   if (button === "{enter}") {
-    emit("hide")
+    emit("hide");
   }
   if (button === "{clear}") {
-    keyboard.clearInput()
-    emit("clear")
+    keyboard.clearInput();
+    emit("clear");
   }
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

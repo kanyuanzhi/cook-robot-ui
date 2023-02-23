@@ -3,16 +3,41 @@
     <div class="btn-menu">
       <div class="column">
         <div class="row" style="height: 200px">
-          <NavigateButton col-size="col-6" font-size-class="text-h4" color="primary" to="/running">运行控制
+          <NavigateButton
+            col-size="col-6"
+            font-size-class="text-h4"
+            color="primary"
+            to="/running"
+            >运行控制
           </NavigateButton>
-          <NavigateButton col-size="col-6" font-size-class="text-h4" color="primary" to="/dishSelect">菜品选择
+          <NavigateButton
+            col-size="col-6"
+            font-size-class="text-h4"
+            color="primary"
+            to="/dishSelect"
+            >菜品选择
           </NavigateButton>
         </div>
         <div class="row" style="height: 200px">
-          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary" to="/dishEdit">菜品编辑
+          <NavigateButton
+            col-size="col-4"
+            font-size-class="text-h4"
+            color="primary"
+            to="/dishEdit"
+            >菜品编辑
           </NavigateButton>
-          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary">推荐视频</NavigateButton>
-          <NavigateButton col-size="col-4" font-size-class="text-h4" color="primary" to="/systemSettings">系统设置
+          <NavigateButton
+            col-size="col-4"
+            font-size-class="text-h4"
+            color="primary"
+            >推荐视频</NavigateButton
+          >
+          <NavigateButton
+            col-size="col-4"
+            font-size-class="text-h4"
+            color="primary"
+            to="/systemSettings"
+            >系统设置
           </NavigateButton>
         </div>
       </div>
@@ -26,11 +51,11 @@
 </template>
 
 <script setup>
-import NavigateButton from "src/components/NavigateButton"
-import {UseAppStore} from "stores/appStore";
+import NavigateButton from "src/components/NavigateButton";
+import { UseAppStore } from "stores/appStore";
 
-const useAppStore = UseAppStore()
-useAppStore.setSubPageTitle("")
+const useAppStore = UseAppStore();
+useAppStore.setSubPageTitle("");
 
 // window.ipcRenderer.server((e, m) => {
 //   console.log(m)

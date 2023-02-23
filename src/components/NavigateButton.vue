@@ -1,6 +1,12 @@
 <template>
   <div :class="colSize" class="navigate-button-wrap">
-    <q-btn :to="to" :class="[fontSizeClass, fontWeightClass]" class="fit" square :color="color">
+    <q-btn
+      :to="to"
+      :class="[fontSizeClass, fontWeightClass]"
+      class="fit"
+      square
+      :color="color"
+    >
       <slot></slot>
     </q-btn>
   </div>
@@ -12,7 +18,8 @@ const props = defineProps([
   "color",
   "fontSizeClass",
   "fontWeightClass",
-  "to"])
+  "to",
+]);
 </script>
 
 <style lang="scss" scoped>
@@ -21,7 +28,7 @@ const props = defineProps([
   padding: 10px;
 }
 
-.large{
+.large {
   font-size: 2em;
 }
 </style>

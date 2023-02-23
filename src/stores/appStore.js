@@ -1,6 +1,6 @@
-import {defineStore} from 'pinia';
+import { defineStore } from "pinia";
 
-export const UseAppStore = defineStore('app', {
+export const UseAppStore = defineStore("app", {
   state: () => ({
     subPageTitle: "",
   }),
@@ -9,7 +9,7 @@ export const UseAppStore = defineStore('app', {
   },
   actions: {
     setSubPageTitle(title) {
-      this.subPageTitle = title
+      this.subPageTitle = title;
     },
   },
 });

@@ -1,10 +1,8 @@
-import {api} from "src/boot/axios"
+import { api } from "src/boot/axios";
 
 export function getSystemStatus() {
-  return api(
-    {
-      url: "/system-status",
-      method: "get",
-    }
-  )
+  return api({
+    url: "/system-status",
+    method: "get",
+  });
 }

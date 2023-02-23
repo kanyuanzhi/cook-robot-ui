@@ -1,23 +1,24 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-
     <q-header elevated>
       <div class="row">
         <q-toolbar class="col-4">
-          <q-btn flat round dense icon="home" to="/"/>
+          <q-btn flat round dense icon="home" to="/" />
           <q-toolbar-title>Cook Robot</q-toolbar-title>
-          <q-space/>
+          <q-space />
         </q-toolbar>
         <q-toolbar class="col-4">
-          <q-space/>
-          <q-toolbar-title style="text-align: center">{{ subPage }}</q-toolbar-title>
-          <q-space/>
+          <q-space />
+          <q-toolbar-title style="text-align: center">{{
+            subPage
+          }}</q-toolbar-title>
+          <q-space />
         </q-toolbar>
         <q-toolbar class="col-4">
-          <q-space/>
-          <TimeDisplay/>
-          <WlanIcon/>
-          <q-btn flat round dense icon="more_vert"/>
+          <q-space />
+          <TimeDisplay />
+          <WlanIcon />
+          <q-btn flat round dense icon="more_vert" />
         </q-toolbar>
       </div>
     </q-header>
@@ -43,39 +44,39 @@
     <!--    </q-drawer>-->
 
     <q-page-container>
-      <router-view/>
+      <router-view />
     </q-page-container>
 
-    <QrScanDialog ref="qrScanDialog" :text="qrScanText"/>
+    <QrScanDialog ref="qrScanDialog" :text="qrScanText" />
   </q-layout>
 </template>
 
 <script setup>
-import {ref, watch} from 'vue'
-import {UseAppStore} from "stores/appStore";
-import {UseSystemStore} from "stores/systemStore";
+import { ref, watch } from "vue";
+import { UseAppStore } from "stores/appStore";
+import { UseSystemStore } from "stores/systemStore";
 import WlanIcon from "layouts/components/WlanIcon";
-import {getSystemStatus} from "src/api/systemStatus";
+import { getSystemStatus } from "src/api/systemStatus";
 import QrScanDialog from "layouts/components/QrScanDialog";
 import TimeDisplay from "layouts/components/TimeDisplay";
 
-const useAppStore = UseAppStore()
-const subPage = ref("")
+const useAppStore = UseAppStore();
+const subPage = ref("");
 
 watch(
   useAppStore.$state,
   (state) => {
-    subPage.value = state.subPageTitle
+    subPage.value = state.subPageTitle;
   },
   {
-    deep: true
+    deep: true,
   }
-)
+);
 
-const qrScanDialog = ref(null)
-const qrScanText = ref("")
+const qrScanDialog = ref(null);
+const qrScanText = ref("");
 
-const useSystemStore = UseSystemStore()
+const useSystemStore = UseSystemStore();
 // setInterval(function () {
 //   getSystemStatus().then(res => {
 //     console.log(res.data)
@@ -88,6 +89,4 @@ const useSystemStore = UseSystemStore()
 //     console.log(Error)
 //   })
 // }, 1000)
-
-
 </script>

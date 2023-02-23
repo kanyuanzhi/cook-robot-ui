@@ -1,11 +1,11 @@
-import {defineStore} from 'pinia';
+import { defineStore } from "pinia";
 
-export const UseSystemStore = defineStore('system', {
+export const UseSystemStore = defineStore("system", {
   state: () => ({
     wlanStatus: "",
     wifiSSID: "",
     signal: "",
-    qrScanText: ""
+    qrScanText: "",
   }),
   getters: {
     getWlanStatus: (state) => state.wlanStatus,
@@ -13,7 +13,7 @@ export const UseSystemStore = defineStore('system', {
   },
   actions: {
     setWlanStatus(status) {
-      this.wlanStatus = status
+      this.wlanStatus = status;
     },
   },
 });

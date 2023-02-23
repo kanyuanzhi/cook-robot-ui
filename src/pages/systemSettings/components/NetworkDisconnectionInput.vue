@@ -7,8 +7,13 @@
         </q-card-section>
 
         <q-card-actions align="right" class="text-primary">
-          <q-btn flat label="取消" v-close-popup/>
-          <q-btn flat label="断开" v-close-popup @click="onDisconnectionBtnClick"/>
+          <q-btn flat label="取消" v-close-popup />
+          <q-btn
+            flat
+            label="断开"
+            v-close-popup
+            @click="onDisconnectionBtnClick"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -16,35 +21,30 @@
 </template>
 
 <script setup>
-import {ref} from "vue"
-import {disconnectWifi} from "src/api/systemSettings";
+import { ref } from "vue";
+import { disconnectWifi } from "src/api/systemSettings";
 
-
-const props = defineProps(["ssid"])
+const props = defineProps(["ssid"]);
 
 defineExpose({
   open,
-  close
-})
+  close,
+});
 
-const shown = ref(false)
+const shown = ref(false);
 
 function open() {
-  shown.value = true
+  shown.value = true;
 }
 
 function close() {
-  shown.value = false
+  shown.value = false;
 }
 
 function onDisconnectionBtnClick() {
-  disconnectWifi(0, {ssid: props.ssid}).then(res => {
-
-  })
-  shown.value = false
+  disconnectWifi(0, { ssid: props.ssid }).then((res) => {});
+  shown.value = false;
 }
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

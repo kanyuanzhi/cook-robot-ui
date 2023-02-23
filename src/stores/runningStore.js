@@ -1,9 +1,9 @@
-import {defineStore} from 'pinia';
+import { defineStore } from "pinia";
 
-export const UseRunningStore = defineStore('running', {
+export const UseRunningStore = defineStore("running", {
   state: () => ({
     dishesName: "菜品1",
-    isRunning: false
+    isRunning: false,
   }),
   getters: {
     getDishesName: (state) => state.dishesName,
@@ -11,7 +11,7 @@ export const UseRunningStore = defineStore('running', {
   },
   actions: {
     setRunningStatus(status) {
-      this.isRunning = status
+      this.isRunning = status;
     },
   },
 });

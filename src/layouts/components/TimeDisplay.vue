@@ -6,20 +6,16 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
-import {date} from 'quasar'
+import { ref } from "vue";
+import { date } from "quasar";
 
-const timeStamp = Date.now()
-const current_time = ref(date.formatDate(timeStamp, 'HH:mm:ss'))
+const timeStamp = Date.now();
+const current_time = ref(date.formatDate(timeStamp, "HH:mm:ss"));
 
 setInterval(function () {
-  const timeStamp = Date.now()
-  current_time.value = date.formatDate(timeStamp, 'HH:mm:ss')
-}, 500)
-
-
+  const timeStamp = Date.now();
+  current_time.value = date.formatDate(timeStamp, "HH:mm:ss");
+}, 500);
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

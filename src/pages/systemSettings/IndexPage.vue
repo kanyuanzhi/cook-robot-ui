@@ -13,11 +13,11 @@
             class="text-grey-9"
             indicator-color="primary"
           >
-            <q-tab name="profile" icon="person_outline" label="用户信息"/>
-            <q-tab name="network" icon="cast_connected" label="网络连接"/>
-            <q-tab name="phone" icon="link" label="手机配对"/>
-            <q-tab name="update" icon="update" label="软件更新"/>
-            <q-tab name="power" icon="power_settings_new" label="关机重启"/>
+            <q-tab name="profile" icon="person_outline" label="用户信息" />
+            <q-tab name="network" icon="cast_connected" label="网络连接" />
+            <q-tab name="phone" icon="link" label="手机配对" />
+            <q-tab name="update" icon="update" label="软件更新" />
+            <q-tab name="power" icon="power_settings_new" label="关机重启" />
           </q-tabs>
         </template>
 
@@ -32,16 +32,18 @@
               <SettingPanel title="用户信息"></SettingPanel>
             </q-tab-panel>
             <q-tab-panel name="network">
-              <SettingPanel title="网络连接"><NetworkConnection/></SettingPanel>
+              <SettingPanel title="网络连接"
+                ><NetworkConnection
+              /></SettingPanel>
             </q-tab-panel>
             <q-tab-panel name="phone">
-              <SettingPanel title="手机配对"/>
+              <SettingPanel title="手机配对" />
             </q-tab-panel>
             <q-tab-panel name="update">
-              <SettingPanel title="软件更新"/>
+              <SettingPanel title="软件更新" />
             </q-tab-panel>
             <q-tab-panel name="power">
-              <SettingPanel title="关机重启"/>
+              <SettingPanel title="关机重启" />
             </q-tab-panel>
           </q-tab-panels>
         </template>
@@ -51,18 +53,16 @@
 </template>
 
 <script setup>
-import {UseAppStore} from "stores/appStore";
-import {ref} from "vue";
+import { UseAppStore } from "stores/appStore";
+import { ref } from "vue";
 import SettingPanel from "pages/systemSettings/panels/SettingPanel";
 import NetworkConnection from "pages/systemSettings/panels/NetworkConnection";
 
-const useAppStore = UseAppStore()
-useAppStore.setSubPageTitle("系统设置")
+const useAppStore = UseAppStore();
+useAppStore.setSubPageTitle("系统设置");
 
-const splitterModel = ref(20)
-const tab = ref("profile")
+const splitterModel = ref(20);
+const tab = ref("profile");
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
