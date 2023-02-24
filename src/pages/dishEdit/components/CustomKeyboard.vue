@@ -8,10 +8,13 @@ import "simple-keyboard/build/css/index.css";
 import layout from "simple-keyboard-layouts/build/layouts/chinese";
 import { onMounted, ref } from "vue";
 
-const props = defineProps(["currentInput"]);
-const emit = defineEmits(["keyPress", "change", "clear", "hide"]);
+const emit = defineEmits(["keyPress", "change", "clear", "enter"]);
 
-const number = ["7 8 9", "4 5 6", "1 2 3", "{bksp} 0 {enter}"];
+const number = [
+  "7 8 9",
+  "4 5 6",
+  "1 2 3",
+  "{bksp} 0 {enter}"];
 
 layout.layout.number = number;
 
@@ -62,7 +65,7 @@ function onChange(input) {
 function onKeyPress(button) {
   emit("keyPress", button);
   if (button === "{enter}") {
-    emit("hide");
+    emit("enter");
   }
   if (button === "{clear}") {
     keyboard.clearInput();

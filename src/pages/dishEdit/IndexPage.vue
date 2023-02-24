@@ -46,6 +46,7 @@ steps.value = {
       weight: 500,
       time: 300,
       slot: 1,
+      type: "ingredient"
     },
   ],
   seasoning: [
@@ -53,30 +54,36 @@ steps.value = {
       name: "盐",
       weight: 200,
       time: 360,
+      type: "seasoning"
     },
   ],
   fire: [
     {
       name: "火力一档",
       time: 360,
+      type: "fire"
     },
     {
       name: "火力三档",
       time: 480,
+      type: "fire"
     },
     {
       name: "火力关闭",
       time: 560,
+      type: "fire"
     },
   ],
   stir_fry: [
     {
       name: "翻炒一档",
       time: 360,
+      type: "stir_fry"
     },
     {
       name: "翻炒关闭",
       time: 560,
+      type: "stir_fry"
     },
   ],
 };
