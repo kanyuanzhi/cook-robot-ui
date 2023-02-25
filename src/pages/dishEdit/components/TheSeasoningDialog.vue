@@ -165,7 +165,7 @@ const onSubmit = () => {
   shown.value = false;
   emits("submit", {
     name: name.value,
-    weight: weight.value,
+    weight: weight.value === "" ? 0 : parseInt(weight.value),
     slot: slot.value,
     time: time.value,
     type: "seasoning"

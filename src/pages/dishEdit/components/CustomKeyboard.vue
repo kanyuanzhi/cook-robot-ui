@@ -9,6 +9,7 @@ import layout from "simple-keyboard-layouts/build/layouts/chinese";
 import { onMounted, ref } from "vue";
 
 const emit = defineEmits(["keyPress", "change", "clear", "enter"]);
+const props = defineProps(["default"]);
 
 const number = [
   "7 8 9",
@@ -35,6 +36,18 @@ onMounted(() => {
       "{space}": "空格",
     },
   });
+  if (props.default) {
+    try {
+      keyboard.setOptions({
+        layoutName: props.default
+      });
+    }catch (e) {
+      console.error( "layoutName wrong")
+      keyboard.setOptions({
+        layoutName: "default"
+      });
+    }
+  }
 });
 
 const keyboardWidth = ref("100%");

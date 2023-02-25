@@ -185,7 +185,7 @@ const onSubmit = () => {
   emits("submit", {
     name: name.value,
     shape: shape.value,
-    weight: weight.value,
+    weight: weight.value === "" ? 0 : parseInt(weight.value),
     slot: slot.value,
     time: time.value,
     type: "ingredient"

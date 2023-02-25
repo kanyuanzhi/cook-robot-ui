@@ -42,28 +42,28 @@ const stepsLine = computed(() => {
   return line.sort(sortBy("time", 1));
 });
 
-const autoWidth = ref(`${stepsLine.value.length * 120}px`)
-watch(stepsLine,()=>{
-  autoWidth.value = `${stepsLine.value.length * 112}px`
-})
+const autoWidth = ref(`${stepsLine.value.length * 120}px`);
+watch(stepsLine, () => {
+  autoWidth.value = `${stepsLine.value.length * 120}px`;
+});
 
 const autoColor = (type) => {
   switch (type) {
     case "ingredient":
-      return "teal"
+      return "teal";
     case "seasoning":
-      return "cyan-14"
+      return "cyan-7";
     case "fire":
-      return "red-14"
+      return "red-14";
     case "stir_fry":
-      return "amber-9"
+      return "amber-10";
     default:
-      return "grey"
+      return "grey";
   }
-}
+};
 
 const contentStyle = {
-  backgroundColor: "rgba(0,0,0,0.02)",
+  backgroundColor: "white",
   color: "#555",
 };
 
@@ -86,7 +86,7 @@ const thumbStyle = {
   height: 0;
 }
 
-:deep(.q-scrollarea__thumb--h){
+:deep(.q-scrollarea__thumb--h) {
   height: 5px;
 }
 </style>

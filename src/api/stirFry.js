@@ -1,8 +1,8 @@
 import { api } from "src/boot/axios";
 
-export function getSeasonings() {
+export function getStirFries() {
   return api({
-    url: "/seasonings",
+    url: "/stir-fries",
     method: "get"
   });
 }

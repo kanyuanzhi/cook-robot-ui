@@ -39,6 +39,8 @@
     </q-item-label>
     <TheIngredientDialog ref="theIngredientDialog" @submit="onSubmit"/>
     <TheSeasoningDialog ref="theSeasoningDialog" @submit="onSubmit"/>
+    <TheFireDialog ref="theFireDialog" @submit="onSubmit"/>
+    <TheStirFryDialog ref="theStirFryDialog" @submit="onSubmit"/>
   </q-list>
 </template>
 
@@ -48,6 +50,8 @@ import { secondsToMMSS } from "src/utils/timeFormat";
 import { sortBy } from "src/utils/array";
 import TheIngredientDialog from "pages/dishEdit/components/TheIngredientDialog";
 import TheSeasoningDialog from "pages/dishEdit/components/TheSeasoningDialog";
+import TheFireDialog from "pages/dishEdit/components/TheFireDialog";
+import TheStirFryDialog from "pages/dishEdit/components/TheStirFryDialog";
 
 const props = defineProps(["stepName", "steps"]);
 
@@ -88,6 +92,8 @@ const onRight = () => {
 
 const theIngredientDialog = ref(null);
 const theSeasoningDialog = ref(null);
+const theFireDialog = ref(null);
+const theStirFryDialog = ref(null);
 
 const onDialogShowBtnClick = () => {
   switch (props.stepName) {
@@ -98,8 +104,10 @@ const onDialogShowBtnClick = () => {
       theSeasoningDialog.value.show();
       return;
     case "fire":
+      theFireDialog.value.show();
       return;
     case "stir_fry":
+      theStirFryDialog.value.show();
       return;
     default:
       return;
