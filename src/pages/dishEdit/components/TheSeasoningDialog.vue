@@ -168,6 +168,7 @@ const onSubmit = () => {
     weight: weight.value === "" ? 0 : parseInt(weight.value),
     slot: slot.value,
     time: time.value,
+    key: Date.now(),
     type: "seasoning"
   });
 };

@@ -122,6 +122,7 @@ const onSubmit = () => {
     name: tagToName[tag.value],
     tag: tag.value,
     time: time.value,
+    key: Date.now(),
     type: "stir_fry"
   });
 };

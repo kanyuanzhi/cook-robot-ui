@@ -1,22 +1,25 @@
 <template>
   <div>
     <q-dialog v-model="shown" persistent position="top">
-      <q-card style="width: 500px; margin-top: 100px" class="q-px-sm q-mt-md">
+      <q-card style="width: 400px; margin-top: 100px" class="q-px-sm q-mt-md">
         <q-card-section>
-          <div class="text-h6">添加火力</div>
+          <div class="text-h6">添加水</div>
         </q-card-section>
 
         <q-item dense>
-          <q-item-section avatar>档位</q-item-section>
+          <q-item-section avatar>分量</q-item-section>
           <q-item-section>
-            <q-slider
-              v-model="tag"
-              color="red-14"
-              marker-labels
-              markers
-              :min="tagMin"
-              :max="tagMax"
-            />
+            <q-input
+              v-model="weight"
+              filled
+              dense
+              @blur="onInputBlur($event, 'weight')"
+              @focus="onInputFocus($event, 'weight')"
+            >
+              <template v-slot:append>
+                <span class="text-body2">克(毫升)</span>
+              </template>
+            </q-input>
           </q-item-section>
         </q-item>
 
@@ -29,6 +32,7 @@
                   v-model.number="min"
                   filled
                   dense
+                  @blur="onInputBlur($event, 'min')"
                   @focus="onInputFocus($event, 'min')"
                 >
                   <template v-slot:append>
@@ -41,6 +45,7 @@
                   v-model.number="sec"
                   filled
                   dense
+                  @blur="onInputBlur($event, 'sec')"
                   @focus="onInputFocus($event, 'sec')"
                 >
                   <template v-slot:append>
@@ -66,7 +71,7 @@
       seamless
       full-width
     >
-      <CustomKeyboard ref="customKeyboard" default="number" @change="onChange" @enter="onSubmit"/>
+      <CustomKeyboard ref="customKeyboard" @change="onChange" @enter="onSubmit" default="number"/>
     </q-dialog>
   </div>
 </template>
@@ -74,7 +79,8 @@
 <script setup>
 import { computed, ref } from "vue";
 import CustomKeyboard from "pages/dishEdit/components/CustomKeyboard";
-import { getFires } from "src/api/fire";
+import TheIngredientNameSelectionDialog from "pages/dishEdit/components/TheIngredientNameSelectionDialog";
+import TheIngredientShapeSelectionDialog from "pages/dishEdit/components/TheIngredientShapeSelectionDialog";
 
 const emits = defineEmits(["submit"]);
 
@@ -82,26 +88,18 @@ const shown = ref(false);
 
 const show = () => {
   shown.value = true;
-  getFires()
-    .then(res => {
-      tagMin.value = res.data[0].tag;
-      tagMax.value = res.data[res.data.length - 1].tag;
-      for (let i = 0; i < res.data.length; i++) {
-        tagToName.push(res.data[i].name);
-      }
-    });
 };
 
-const tag = ref(0);
-const tagMin = ref(0);
-const tagMax = ref(0);
-const tagToName = [];
+const name = ref("");
+const weight = ref("");
 const min = ref("");
 const sec = ref("");
 const time = computed(() => parseInt(
   min.value === "" ? "0" : min.value) * 60 + parseInt(sec.value === "" ? "0" : sec.value));
 
 const inputNameToPara = {
+  name,
+  weight,
   min,
   sec,
 };
@@ -112,6 +110,9 @@ const onInputFocus = (e, inputName) => {
   customKeyboard.value.setInput(e.target.value, inputName);
 };
 
+const onInputBlur = (e, inputName) => {
+};
+
 const onChange = (input, inputName) => {
   inputNameToPara[inputName].value = input;
 };
@@ -119,11 +120,11 @@ const onChange = (input, inputName) => {
 const onSubmit = () => {
   shown.value = false;
   emits("submit", {
-    name: tagToName[tag.value],
-    tag: tag.value,
+    name: "水",
+    weight: weight.value === "" ? 0 : parseInt(weight.value),
     time: time.value,
     key: Date.now(),
-    type: "fire"
+    type: "water"
   });
 };
 

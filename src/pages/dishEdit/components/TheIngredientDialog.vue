@@ -77,7 +77,7 @@
         </q-item>
 
         <q-item dense>
-          <q-item-section avatar> 时刻</q-item-section>
+          <q-item-section avatar>时刻</q-item-section>
           <q-item-section>
             <div class="row q-col-gutter-md">
               <div class="col">
@@ -188,6 +188,7 @@ const onSubmit = () => {
     weight: weight.value === "" ? 0 : parseInt(weight.value),
     slot: slot.value,
     time: time.value,
+    key: Date.now(),
     type: "ingredient"
   });
 };

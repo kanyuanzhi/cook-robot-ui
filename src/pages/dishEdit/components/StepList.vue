@@ -9,18 +9,19 @@
       :thumb-style="thumbStyle"
       :content-style="contentStyle"
       :content-active-style="contentActiveStyle"
-      style="height: 280px"
+      style="height: 300px"
     >
       <q-slide-item
-        v-for="step in steps"
-        :key="step.name"
-        @left="onLeft"
-        @right="onRight"
+        v-for="(step,index) in steps"
+        :key="step.key"
+        right-color="red"
+        @left="onLeft(index)"
+        @right="onRight(index)"
       >
-        <template>
+        <template v-slot:right>
           <q-icon name="delete"/>
         </template>
-        <q-item>
+        <q-item clickable>
           <q-item-section>
             {{ listItemDisplayName(step) }}
           </q-item-section>
@@ -36,8 +37,18 @@
         round
         @click="onDialogShowBtnClick"
       />
+      <q-btn
+        v-if="stepName==='ingredient'"
+        dense
+        class="q-ml-md"
+        round
+        @click="theIngredientWaterDialog.show()"
+      >
+        <q-icon name="water_drop" color="primary"></q-icon>
+      </q-btn>
     </q-item-label>
     <TheIngredientDialog ref="theIngredientDialog" @submit="onSubmit"/>
+    <TheIngredientWaterDialog ref="theIngredientWaterDialog" @submit="onSubmit"/>
     <TheSeasoningDialog ref="theSeasoningDialog" @submit="onSubmit"/>
     <TheFireDialog ref="theFireDialog" @submit="onSubmit"/>
     <TheStirFryDialog ref="theStirFryDialog" @submit="onSubmit"/>
@@ -52,6 +63,7 @@ import TheIngredientDialog from "pages/dishEdit/components/TheIngredientDialog";
 import TheSeasoningDialog from "pages/dishEdit/components/TheSeasoningDialog";
 import TheFireDialog from "pages/dishEdit/components/TheFireDialog";
 import TheStirFryDialog from "pages/dishEdit/components/TheStirFryDialog";
+import TheIngredientWaterDialog from "pages/dishEdit/components/TheIngredientWaterDialog";
 
 const props = defineProps(["stepName", "steps"]);
 
@@ -73,7 +85,11 @@ const stepDisplayName = computed(() => {
 const listItemDisplayName = (step) => {
   switch (props.stepName) {
     case "ingredient":
-      return `${secondsToMMSS(step.time)}，${step.name}(${step.shape})，${step.weight}克，菜盒${step.slot}`;
+      if (step.type === "water") {
+        return `${secondsToMMSS(step.time)}，${step.name}，${step.weight}克(毫升)`;
+      } else {
+        return `${secondsToMMSS(step.time)}，${step.name}(${step.shape})，${step.weight}克，菜盒${step.slot}`;
+      }
     case "seasoning":
       return `${secondsToMMSS(step.time)}，${step.name}，${step.weight}克，调料盒${step.slot}`;
     case "fire":
@@ -85,12 +101,15 @@ const listItemDisplayName = (step) => {
   }
 };
 
-const onLeft = () => {
+const onLeft = (index) => {
 };
-const onRight = () => {
+const onRight = (index) => {
+  // eslint-disable-next-line vue/no-mutating-props
+  props.steps.splice(index, 1);
 };
 
 const theIngredientDialog = ref(null);
+const theIngredientWaterDialog = ref(null);
 const theSeasoningDialog = ref(null);
 const theFireDialog = ref(null);
 const theStirFryDialog = ref(null);
@@ -122,7 +141,8 @@ const onSubmit = (val) => {
 };
 
 const contentStyle = {
-  backgroundColor: "rgba(0,0,0,0.02)",
+  // backgroundColor: "rgba(0,0,0,0.02)",
+  backgroundColor: "white",
   color: "#555",
 };
 

@@ -24,7 +24,7 @@
             font-size-class="text-h4"
             color="primary"
             to="/dishEdit"
-            >菜品编辑
+            >菜品制作
           </NavigateButton>
           <NavigateButton
             col-size="col-4"

@@ -1,26 +1,23 @@
 <template>
-  <div class="row q-gutter-md">
-    <div class="col-10">
-      <q-scroll-area
-        :horizontal-thumb-style="thumbStyle"
-        :content-style="contentStyle"
-        :content-active-style="contentActiveStyle"
-        style="height: 115px; max-width: 100%;">
-        <q-stepper v-model="stepName" :style="{width: autoWidth}" ref="stepper" flat alternative-labels animated>
-          <q-step
-            v-for="step in stepsLine"
-            :key="step.name + step.time"
-            :name="step.name + step.time"
-            class="inline-block"
-            :color="autoColor(step.type)"
-            icon="add"
-            :title="step.name"
-            :caption="secondsToMMSS(step.time)"
-          />
-        </q-stepper>
-      </q-scroll-area>
-    </div>
-    <div class="col-2"></div>
+  <div class="">
+    <q-scroll-area
+      visible
+      :horizontal-thumb-style="thumbStyle"
+      :content-style="contentStyle"
+      :content-active-style="contentActiveStyle"
+      style="height: 104px; max-width: 100%; border: 1px solid rgba(0, 0, 0, 0.12)">
+      <q-stepper v-model="stepName" ref="stepper" flat alternative-labels>
+        <q-step
+          v-for="step in stepsLine"
+          :key="step.key"
+          :name="step.name + step.time"
+          :color="autoColor(step.type)"
+          icon="add"
+          :title="step.name"
+          :caption="secondsToMMSS(step.time)"
+        />
+      </q-stepper>
+    </q-scroll-area>
   </div>
 
 
@@ -42,15 +39,17 @@ const stepsLine = computed(() => {
   return line.sort(sortBy("time", 1));
 });
 
-const autoWidth = ref(`${stepsLine.value.length * 120}px`);
-watch(stepsLine, () => {
-  autoWidth.value = `${stepsLine.value.length * 120}px`;
-});
+// const autoWidth = ref(`${stepsLine.value.length * 120}px`);
+// watch(stepsLine, () => {
+//   autoWidth.value = `${stepsLine.value.length * 120}px`;
+// });
 
 const autoColor = (type) => {
   switch (type) {
     case "ingredient":
       return "teal";
+    case "water":
+      return "primary";
     case "seasoning":
       return "cyan-7";
     case "fire":
@@ -88,5 +87,17 @@ const thumbStyle = {
 
 :deep(.q-scrollarea__thumb--h) {
   height: 5px;
+}
+
+:deep(.q-stepper__title) {
+  letter-spacing: 0;
+}
+
+:deep(.q-stepper__header) {
+  flex-wrap: nowrap !important;
+}
+
+:deep(.q-stepper__header--alternative-labels .q-stepper__tab) {
+  padding: 20px 32px;
 }
 </style>
