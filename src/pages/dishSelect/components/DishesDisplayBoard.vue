@@ -88,7 +88,6 @@ const listDishes = (index, size, initials = "") => {
 
 function onLoad(index, done) {
   listDishes(page_index.value, 16, props.initials).then((res) => {
-    console.log(res.data.length);
     if (res.data.length === 0) {
       scroll.value.stop();
       return;

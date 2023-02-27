@@ -29,7 +29,7 @@ function createWindow() {
     height: 600,
     fullscreen: platform === "linux",
     useContentSize: true,
-    frame: false,
+    frame: platform !== "linux",
     webPreferences: {
       contextIsolation: true,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script

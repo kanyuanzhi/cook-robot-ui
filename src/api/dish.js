@@ -50,3 +50,11 @@ export function updateDish(dish) {
     data: { dish: dish },
   });
 }
+
+export function createDish(dish) {
+  return api({
+    url: "/dish/",
+    method: "post",
+    data: { dish: dish },
+  });
+}

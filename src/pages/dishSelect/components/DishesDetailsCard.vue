@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :src="dish.image" :ratio="8 / 5" />
+    <q-img :src="dish.image" :ratio="8 / 5"/>
 
     <q-card-section>
       <!--      <q-btn-->
@@ -46,15 +46,15 @@
 
     <q-card-section class="q-pt-none">
       <div class="text-subtitle1">食材</div>
-      <div class="text-body2 text-grey-10">青菜 牛肉</div>
+      <div class="text-body2 text-grey-10">{{ showRequirementNames(dish.steps.ingredients) }}</div>
       <div class="text-subtitle1">调料</div>
-      <div class="text-body2 text-grey-10">食盐 糖 酱油</div>
+      <div class="text-body2 text-grey-10">{{ showRequirementNames(dish.steps.seasonings) }}</div>
     </q-card-section>
 
-    <q-separator />
+    <q-separator/>
 
     <q-card-actions align="right">
-      <q-btn flat round color="primary" icon="edit" />
+      <q-btn flat round color="primary" icon="edit" @click="onEditBtnClick"/>
       <q-btn
         flat
         round
@@ -62,7 +62,7 @@
         icon="favorite"
         @click="onStarBtnClick"
       />
-      <q-btn flat round color="teal" icon="send" />
+      <q-btn flat round color="teal" icon="send"/>
       <!--      <q-btn v-close-popup flat color="primary" icon="event"/>-->
     </q-card-actions>
   </q-card>
@@ -71,6 +71,10 @@
 <script setup>
 import { getDish, updateDish } from "src/api/dish";
 import { ref } from "vue";
+import { UseAppStore } from "stores/appStore";
+import { cloneDeep } from "lodash/lang";
+
+import { useRouter } from "vue-router";
 
 // const imgUrl = require('src/assets/chicken-salad.jpg');
 
@@ -81,20 +85,45 @@ const dish = ref({
   image: "",
   cook_time: "",
   is_starred: 0,
+  steps: {
+    ingredients: [],
+    seasonings: [],
+    fires: [],
+    stir_fries: [],
+  }
 });
 
-getDish(props.id).then((res) => {
-  dish.value = res.data;
-});
-
-function onStarBtnClick() {
-  dish.value.is_starred = dish.value.is_starred ? 0 : 1;
-  updateDish(dish.value).then((res) => {
-    if (!res.data) {
-      dish.value.is_starred = dish.value.is_starred ? 0 : 1;
-    }
+getDish(props.id)
+  .then((res) => {
+    dish.value = res.data;
+    console.log(res.data);
   });
-}
+
+const useAppStore = UseAppStore();
+const router = useRouter();
+const onEditBtnClick = () => {
+  useAppStore.setEditedDish(cloneDeep(dish.value));
+  router.push("/dishEdit");
+};
+
+const onStarBtnClick = () => {
+  dish.value.is_starred = dish.value.is_starred ? 0 : 1;
+  updateDish(dish.value)
+    .then((res) => {
+      if (!res.data) {
+        dish.value.is_starred = dish.value.is_starred ? 0 : 1;
+      }
+    });
+};
+
+const showRequirementNames = (requirements) => {
+  const names = [];
+  for (let requirement of requirements) {
+    if (names.indexOf(requirement.name) > -1) continue;
+    names.push(requirement.name);
+  }
+  return names.length === 0 ? "无" : names.join(" ");
+};
 </script>
 
 <style lang="scss" scoped>
