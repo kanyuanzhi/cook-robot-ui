@@ -8,7 +8,9 @@
           </div>
           <div class="col-2 column flex-center">
             <div class="text-caption text-grey-7" style="height: 1.5rem">菜品名称</div>
-            <div class="text-body2 q-mb-sm ellipsis text-center text-weight-bold" style="height: 1.5rem;width: 120px">{{ dishName }}</div>
+            <div class="text-body2 q-mb-sm ellipsis text-center text-weight-bold" style="height: 1.5rem;width: 120px">
+              {{ dishName }}
+            </div>
             <q-btn-group outline>
               <q-btn color="primary" text-color="white" label="保存" @click="onSaveStepsBtnClick"/>
               <q-separator inset/>
@@ -57,7 +59,6 @@ import { cloneDeep } from "lodash/lang";
 import { createDish, updateDish } from "src/api/dish";
 import { sortBy } from "src/utils/array";
 import TheDishNameDialog from "pages/dishEdit/components/TheDishNameDialog";
-import { assign, set } from "lodash";
 
 const $q = useQuasar();
 
@@ -81,9 +82,13 @@ if (!useAppStore.getEditedDishStatus) {
   steps.value = editedDish.steps;
   dishName.value = editedDish.name;
   isPresetedDish.value = editedDish.is_preseted;
+} else {
+  useAppStore.setEditedDish({
+    steps: steps.value,
+    name: dishName.value,
+    is_preseted: 0
+  });
 }
-
-// http://169.254.216.10:8888/static/dish_img/test.png
 
 const stepsList = [];
 
@@ -136,6 +141,7 @@ const onSubmit = async (val, method) => {
           color: "teal",
           timeout: 500,
         });
+        dishName.value = val;
       }
     } else {
       set(dish, "id", editedDish.id);
@@ -149,9 +155,9 @@ const onSubmit = async (val, method) => {
           color: "teal",
           timeout: 500,
         });
+        dishName.value = val;
       }
     }
-    dishName.value = val;
   } catch (e) {
     $q.notify({
       message: e.message,

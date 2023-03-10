@@ -59,8 +59,8 @@ module.exports = configure(function (ctx) {
         env_API:
           ctx.platform === "linux"
             ? "http://127.0.0.1:8888"
-            : "http://169.254.216.10:8888",
-        test_API: "http://127.0.0.1:8888"
+            : "http://169.254.70.55:8888",
+        test_API: "http://169.254.70.55:8888"
       },
 
       // transpile: false,

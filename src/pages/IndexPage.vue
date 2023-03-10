@@ -8,14 +8,14 @@
             font-size-class="text-h4"
             color="primary"
             to="/running"
-            >运行控制
+          >运行控制
           </NavigateButton>
           <NavigateButton
             col-size="col-6"
             font-size-class="text-h4"
             color="primary"
             to="/dishSelect"
-            >菜品选择
+          >菜品选择
           </NavigateButton>
         </div>
         <div class="row" style="height: 200px">
@@ -24,20 +24,21 @@
             font-size-class="text-h4"
             color="primary"
             to="/dishEdit"
-            >菜品制作
+          >菜品制作
           </NavigateButton>
           <NavigateButton
             col-size="col-4"
             font-size-class="text-h4"
             color="primary"
-            >推荐视频</NavigateButton
-          >
+            to="/overallControl"
+          >全量控制
+          </NavigateButton>
           <NavigateButton
             col-size="col-4"
             font-size-class="text-h4"
             color="primary"
             to="/systemSettings"
-            >系统设置
+          >系统设置
           </NavigateButton>
         </div>
       </div>

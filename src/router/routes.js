@@ -2,7 +2,10 @@ const routes = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/IndexPage.vue") }],
+    children: [{
+      path: "",
+      component: () => import("pages/IndexPage.vue")
+    }],
   },
   {
     path: "/running",
@@ -18,14 +21,20 @@ const routes = [
     path: "/dishSelect",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/dishSelect/IndexPage.vue") },
+      {
+        path: "",
+        component: () => import("pages/dishSelect/IndexPage.vue")
+      },
     ],
   },
   {
     path: "/dishEdit",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("pages/dishEdit/IndexPage.vue") },
+      {
+        path: "",
+        component: () => import("pages/dishEdit/IndexPage.vue")
+      },
     ],
   },
   {
@@ -38,7 +47,16 @@ const routes = [
       },
     ],
   },
-
+  {
+    path: "/overallControl",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("pages/overallControl/IndexPage.vue"),
+      },
+    ],
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

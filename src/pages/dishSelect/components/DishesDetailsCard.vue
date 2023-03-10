@@ -110,7 +110,7 @@ const onStarBtnClick = () => {
   dish.value.is_starred = dish.value.is_starred ? 0 : 1;
   updateDish(dish.value)
     .then((res) => {
-      if (!res.data) {
+      if (!res.data.success) {
         dish.value.is_starred = dish.value.is_starred ? 0 : 1;
       }
     });
