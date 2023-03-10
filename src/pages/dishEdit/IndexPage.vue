@@ -144,9 +144,12 @@ const onSubmit = async (val, method) => {
         dishName.value = val;
       }
     } else {
-      set(dish, "id", editedDish.id);
-      set(dish, "image", editedDish.image);
-      set(dish, "is_starred", editedDish.is_starred);
+      dish["id"] = editedDish.id
+      dish["image"] = editedDish.image
+      dish["is_starred"] = editedDish.is_starred
+      // set(dish, "id", editedDish.id);
+      // set(dish, "image", editedDish.image);
+      // set(dish, "is_starred", editedDish.is_starred);
       res = await updateDish(dish);
       if (res.data.success) {
         $q.notify({

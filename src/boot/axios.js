@@ -1,6 +1,7 @@
 import { boot } from "quasar/wrappers";
 import axios from "axios";
 import { Notify } from "quasar";
+import { Platform } from "quasar";
 
 // Be careful when using SSR for cross-request state pollution
 // due to creating a Singleton instance here;
@@ -8,8 +9,10 @@ import { Notify } from "quasar";
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
+console.log(Platform.is);
 const api = axios.create({
-  baseURL: process.env.env_API,
+  baseURL: (Platform.is.cros || Platform.is.electron) ? "http://127.0.0.1:8888" : "http://169.254.70.55:8888",
+  // baseURL: process.env.env_API,
   // baseURL: process.env.test_API,
   // withCredentials: true,
   timeout: 5000,

@@ -37,11 +37,15 @@
 <script setup>
 import { secondsToMMSS } from "src/utils/timeFormat";
 import { postCommand } from "src/api/command";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
 
 const props = defineProps(["multipleCommand"]);
 
 const onRight = (index) => {
-  props.multipleCommand.getInstructions().splice(index, 1);
+  props.multipleCommand.getInstructions()
+    .splice(index, 1);
 };
 
 const instructionInfoDisplay = (ins, index) => {
@@ -49,16 +53,30 @@ const instructionInfoDisplay = (ins, index) => {
 };
 
 const onSendBtnClick = async () => {
+  if (props.multipleCommand.getData().instructions.length === 0) {
+    $q.notify({
+      message: "请添加指令",
+      position: "top",
+      color: "orange",
+      timeout: 3000,
+    });
+    return;
+  }
   try {
     const res = await postCommand(props.multipleCommand.getData());
-    console.log(res.data);
+    $q.notify({
+      message: res.data.success ? "运行成功" : "运行失败",
+      position: "top",
+      color: res.data.success ? "green" : "orange",
+      timeout: 3000,
+    });
   } catch (e) {
     console.log(e.message);
   }
 };
 
 const onClearBtnClick = () => {
-  props.multipleCommand.clear()
+  props.multipleCommand.clear();
 };
 
 const contentStyle = {

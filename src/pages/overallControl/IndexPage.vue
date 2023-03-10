@@ -16,7 +16,8 @@
         <div class="column" :class="{'col-10':!isSingleCommand}">
           <TheIngredientControl title="菜盒" :slots="['1','2','3','4']" :style="{height: height}" @run="onRun"/>
           <TheWaterControl title="水" :style="{height: height}" @run="onRun"/>
-          <TheSeasoningControl title="调料盒" :slots="['1','2','3','4','5','6','7','8','9']" :style="{height: '120px'}" @run="onRun"/>
+          <TheSeasoningControl title="调料盒" :slots="['1','2','3','4','5','6','7','8','9']" :style="{height: '120px'}"
+                               @run="onRun"/>
           <CookControl title="火力档位" type="fire" :min="0" :max="10" color="red-14" :style="{height: height}"
                        @run="onRun"/>
           <CookControl title="翻炒档位" type="stir_fry" :min="0" :max="5" color="amber-10" :style="{height: height}"
@@ -68,7 +69,13 @@ const onRun = async (instruction) => {
       singleCommand.clear();
       singleCommand.add(instruction);
       const res = await postCommand(singleCommand.getData());
-      console.log(res.data);
+
+      $q.notify({
+        message: res.data.success ? "运行成功" : "运行失败",
+        position: "top",
+        color: res.data.success ? "green" : "orange",
+        timeout: 3000,
+      });
     } catch (e) {
       console.log(e.message);
     }
