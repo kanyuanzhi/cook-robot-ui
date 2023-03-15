@@ -62,7 +62,7 @@
         icon="favorite"
         @click="onStarBtnClick"
       />
-      <q-btn flat round color="teal" icon="send"/>
+      <q-btn flat round color="teal" icon="send" @click="onRunningBtnClick"/>
       <!--      <q-btn v-close-popup flat color="primary" icon="event"/>-->
     </q-card-actions>
   </q-card>
@@ -72,6 +72,7 @@
 import { getDish, updateDish } from "src/api/dish";
 import { ref } from "vue";
 import { UseAppStore } from "stores/appStore";
+import { UseRunningStore } from "stores/runningStore";
 import { cloneDeep } from "lodash/lang";
 
 import { useRouter } from "vue-router";
@@ -115,6 +116,13 @@ const onStarBtnClick = () => {
       }
     });
 };
+
+const useRunningStore = UseRunningStore();
+const onRunningBtnClick = () => {
+  useRunningStore.setDish(cloneDeep(dish.value));
+  router.push("/running");
+};
+
 
 const showRequirementNames = (requirements) => {
   const names = [];

@@ -10,7 +10,7 @@
             <q-radio dense keep-color v-for="s in slots" :key="s" v-model="slot" :val="s" :label="s"
                      :color="displayColor(s)"/>
           </div>
-          <q-item-label class="q-mt-sm" caption>1、2为固体调料盒，3-9为液体调料盒</q-item-label>
+          <q-item-label class="q-mt-sm" caption>1-7为固体调料盒，8、9为液体调料盒</q-item-label>
         </q-item-section>
         <q-item-section side>
           <q-input ref="weightInput" dense bottom-slots filled v-model="weight" label="分量" @focus="onInputFocus"
@@ -57,7 +57,7 @@ const weight = ref("");
 const weightInput = ref(null);
 
 const displayColor = (slot) => {
-  return ["1", "2"].indexOf(slot) > -1 ? "brown" : "blue";
+  return ["8", "9"].indexOf(slot) > -1 ? "brown" : "blue";
 };
 
 const keyboardShown = ref(false);
@@ -85,7 +85,7 @@ const weightMeasure = computed(() => {
 const onBtnClick = (action) => {
   if (slot.value === 0) {
     $q.notify({
-      message: "请选择菜盒",
+      message: "请选择调料盒",
       position: "top",
       color: "orange",
       timeout: 500,

@@ -39,3 +39,14 @@ export class Command {
   }
 }
 
+export function createPLCInstruction(type, target = 0, action, measures = []) {
+  return {
+    type: type,
+    target: target,
+    action: action,
+    measures: measures,
+    time: 0,
+    key: Date.now()
+  };
+}
+

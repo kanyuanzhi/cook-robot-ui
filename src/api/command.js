@@ -7,3 +7,11 @@ export function postCommand(command) {
     data: { command: command }
   });
 }
+
+export function postPLCCommand(command) {
+  return api({
+    url: "/plc-command",
+    method: "post",
+    data: { command: command }
+  });
+}

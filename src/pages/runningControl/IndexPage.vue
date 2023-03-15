@@ -6,10 +6,10 @@
         <div class="column q-gutter-y-none">
           <div class="col flex flex-center text-h6">{{ dishesName }}</div>
           <div class="col">
-            <CookStep :is-running="isRunning" />
+            <CookStep :is-running="isRunning"/>
           </div>
           <div class="col">
-            <ControlPanel />
+            <ControlPanel/>
           </div>
           <!--            <div class="col">-->
           <!--            </div>-->
@@ -26,11 +26,13 @@ import { UseRunningStore } from "stores/runningStore";
 import ControlPanel from "pages/runningControl/components/ControlPanel";
 import CookStep from "pages/runningControl/components/CookStep";
 import { ref, watch } from "vue";
+import { getRunningStatus } from "src/api/runningStatus";
 
 const useAppStore = UseAppStore();
 useAppStore.setSubPageTitle("运行控制");
 
 const useRunningStore = UseRunningStore();
+const dish = useRunningStore.getDish;
 const dishesName = useRunningStore.getDishesName;
 const isRunning = ref(false);
 
@@ -43,6 +45,27 @@ watch(
     deep: true,
   }
 );
+
+const emptyRunningStatus = {
+  status: "", // free running pause cleaning
+  ingredients:[{
+    no:1,
+    status: "off" // off open
+  }],
+
+}
+
+const runningStatus = ref();
+
+// setInterval(async () => {
+//   try {
+//     const res =  await getRunningStatus()
+//     runningStatus.value = res.data;
+//     console.log(res.data)
+//   } catch (e) {
+//     console.log(e);
+//   }
+// }, 100);
 </script>
 
 <style lang="scss" scoped></style>

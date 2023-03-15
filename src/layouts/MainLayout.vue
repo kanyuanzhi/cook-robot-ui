@@ -1,24 +1,25 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" :class="{'cursor-none': cursorNone}">
     <q-header elevated>
       <div class="row">
         <q-toolbar class="col-4">
-          <q-btn flat round dense icon="home" to="/" />
+          <q-btn flat round dense icon="home" to="/"/>
           <q-toolbar-title>Cook Robot</q-toolbar-title>
-          <q-space />
+          <q-space/>
         </q-toolbar>
         <q-toolbar class="col-4">
-          <q-space />
+          <q-space/>
           <q-toolbar-title style="text-align: center">{{
-            subPage
-          }}</q-toolbar-title>
-          <q-space />
+              subPage
+            }}
+          </q-toolbar-title>
+          <q-space/>
         </q-toolbar>
         <q-toolbar class="col-4">
-          <q-space />
-          <TimeDisplay />
-          <WlanIcon />
-          <q-btn flat round dense icon="more_vert" />
+          <q-space/>
+          <TimeDisplay/>
+          <WlanIcon/>
+          <q-btn flat round dense icon="more_vert"/>
         </q-toolbar>
       </div>
     </q-header>
@@ -44,10 +45,10 @@
     <!--    </q-drawer>-->
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
 
-    <QrScanDialog ref="qrScanDialog" :text="qrScanText" />
+    <QrScanDialog ref="qrScanDialog" :text="qrScanText"/>
   </q-layout>
 </template>
 
@@ -59,6 +60,11 @@ import WlanIcon from "layouts/components/WlanIcon";
 import { getSystemStatus } from "src/api/systemStatus";
 import QrScanDialog from "layouts/components/QrScanDialog";
 import TimeDisplay from "layouts/components/TimeDisplay";
+import { useQuasar } from "quasar";
+
+const $q = useQuasar();
+
+const cursorNone = $q.platform.is.cros || $q.platform.is.electron;
 
 const useAppStore = UseAppStore();
 const subPage = ref("");
