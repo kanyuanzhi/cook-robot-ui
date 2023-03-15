@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row no-wrap">
     <div class="col-9 flex">
       <q-item-section avatar>
         <span class="text-weight-bold">{{ title }}</span>

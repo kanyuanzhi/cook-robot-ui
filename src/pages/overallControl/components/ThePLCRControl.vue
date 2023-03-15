@@ -1,7 +1,7 @@
 <template>
-  <div class="row">
-    <div class="col-9 flex">
-      <q-item-section avatar>
+  <div class="row no-wrap">
+    <div class="col-9 flex no-wrap">
+      <q-item-section avatar >
         <span class="text-weight-bold">{{ title }}</span>
       </q-item-section>
       <q-item-section>

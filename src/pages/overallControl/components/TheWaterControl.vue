@@ -1,26 +1,36 @@
 <template>
-  <div class="row">
+  <div class="row no-wrap">
     <div class="col-8 flex">
-      <q-item dense>
-        <q-item-section avatar>
-          <span class="text-weight-bold">{{ title }}</span>
-        </q-item-section>
-        <q-item-section side>
-          <q-input ref="weightInput" dense filled v-model="weight" label="分量" @focus="onInputFocus"
-                   @blur="onInputBlur">
-            <template v-slot:append>
-              <span class="text-body2">克(毫升)</span>
-            </template>
-          </q-input>
-        </q-item-section>
-      </q-item>
+      <q-item-section avatar>
+        <span class="text-weight-bold">{{ title }}</span>
+      </q-item-section>
+      <q-item-section>
+        <div class="row items-center">
+          <div class="col-6">
+            <q-select
+              dense
+              options-dense
+              filled
+              v-model="weight"
+              :options="weightOptions"
+              options-cover
+              stack-label
+              label="分量"
+            >
+              <template v-slot:append>
+                <span class="text-body2">克（毫升）</span>
+              </template>
+            </q-select>
+          </div>
+        </div>
+      </q-item-section>
     </div>
     <div class="col-4 flex flex-center">
-      <q-btn push color="primary" label="按量打开" @click="onBtnClick('on')"/>
-      <q-btn-group class="q-ml-xs" push>
-        <q-btn push color="positive" label="全量打开" @click="onBtnClick('open')"/>
-        <q-btn push color="accent" label="关闭" @click="onBtnClick('off')"/>
-      </q-btn-group>
+      <q-btn push color="positive" label="添加" @click="onBtnClick('on')"/>
+<!--      <q-btn-group class="q-ml-xs" push>-->
+<!--        <q-btn push color="positive" label="全量打开" @click="onBtnClick('open')"/>-->
+<!--        <q-btn push color="accent" label="关闭" @click="onBtnClick('off')"/>-->
+<!--      </q-btn-group>-->
     </div>
     <q-dialog
       v-model="keyboardShown"
@@ -45,7 +55,11 @@ const $q = useQuasar();
 const props = defineProps(["title"]);
 const emits = defineEmits(["run"]);
 
-const weight = ref("");
+const weight = ref(1);
+const weightOptions = [];
+for (let i = 1; i < 101; i++) {
+  weightOptions.push(i);
+}
 const weightInput = ref(null);
 
 const keyboardShown = ref(false);

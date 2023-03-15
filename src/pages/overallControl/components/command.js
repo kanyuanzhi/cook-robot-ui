@@ -1,13 +1,13 @@
 import { ref } from "vue";
 import { sortBy } from "src/utils/array";
 
-export function createSingleInstruction(type, target, action, measure, time) {
+export function createSingleInstruction(type, target = 0, action, measure = 0, time = 0) {
   return {
     type: type,
-    target: target | 0,
+    target: target,
     action: action,
-    measure: measure | 0,
-    time: time | 0,
+    measure: measure,
+    time: time,
     key: Date.now()
   };
 }

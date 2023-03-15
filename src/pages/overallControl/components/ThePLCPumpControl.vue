@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row no-wrap">
     <div class="col-9 flex">
       <q-item-section avatar>
         <span class="text-weight-bold">{{ title }}</span>
@@ -22,7 +22,7 @@
               label="供料时长"
             >
               <template v-slot:append>
-                <span class="text-subtitle1">×100ms</span>
+                <span class="text-body2">×100ms</span>
               </template>
             </q-select>
           </div>

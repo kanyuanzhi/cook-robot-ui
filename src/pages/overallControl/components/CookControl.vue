@@ -1,25 +1,27 @@
 <template>
-  <div class="row items-center text-center">
-    <div class="col-8">
-      <q-item dense>
-        <q-item-section avatar>
-          <span class="text-weight-bold">{{ title }}</span>
-        </q-item-section>
-        <q-item-section>
-          <q-slider
-            v-model="level"
-            :color="color"
-            marker-labels
-            markers
-            :min="min"
-            :max="max"
-          />
-        </q-item-section>
-      </q-item>
+  <div class="row no-wrap">
+    <div class="col-8 flex">
+      <q-item-section avatar>
+        <span class="text-weight-bold">{{ title }}</span>
+      </q-item-section>
+      <q-item-section>
+        <div class="row items-center">
+          <div class="col-12">
+            <q-slider
+              v-model="level"
+              :color="color"
+              marker-labels
+              markers
+              :min="min"
+              :max="max"
+            />
+          </div>
+        </div>
+      </q-item-section>
     </div>
-    <div class="col-4 ">
+    <div class="col-4 flex flex-center">
       <q-btn-group push>
-        <q-btn push color="positive" label="按档运行" @click="onBtnClick('on')"/>
+        <q-btn push color="positive" label="运行" @click="onBtnClick('on')"/>
         <q-btn push color="accent" label="关闭（0档）" @click="onBtnClick('off')"/>
       </q-btn-group>
     </div>

@@ -1,21 +1,21 @@
 <template>
-  <div class="row">
-    <div class="col-8 flex">
-      <q-item dense>
-        <q-item-section avatar>
-          <span class="text-weight-bold">{{ title }}</span>
-        </q-item-section>
-        <q-item-section>
-          <div class="q-gutter-sm">
+  <div class="row no-wrap">
+    <div class="col-8 flex no-wrap">
+      <q-item-section avatar>
+        <span class="text-weight-bold">{{ title }}</span>
+      </q-item-section>
+      <q-item-section>
+        <div class="row items-center">
+          <div class="col-10">
             <q-radio v-for="s in slots" :key="s" v-model="slot" :val="s" :label="s"/>
           </div>
-        </q-item-section>
-      </q-item>
+        </div>
+      </q-item-section>
     </div>
     <div class="col-4 flex flex-center">
       <q-btn-group push>
         <q-btn push color="positive" label="倾倒" @click="onBtnClick('on')"/>
-        <q-btn push color="accent" label="复位" @click="onBtnClick('off')"/>
+        <!--        <q-btn push color="accent" label="复位" @click="onBtnClick('off')"/>-->
       </q-btn-group>
     </div>
   </div>
@@ -30,7 +30,7 @@ const $q = useQuasar();
 
 const props = defineProps(["slots", "title"]);
 const emits = defineEmits(["run"]);
-const slot = ref(0);
+const slot = ref("1");
 
 const onBtnClick = (action) => {
   if (slot.value === 0) {

@@ -13,8 +13,8 @@
       ]"
         />
       </div>
-      <div v-show="commandModel!==3" class="row" style="width: 900px">
-        <div class="column" :class="{'col-10':commandModel===2}">
+      <div v-show="commandModel!==3" class="row" :class="{'single-mode':commandModel===2}">
+        <div class="column" :class="{'col-10':commandModel===2,'single-mode':commandModel!==2}">
           <TheIngredientControl title="菜盒" :slots="['1','2','3','4']" :style="{height: height}" @run="onRun"/>
           <TheWaterControl title="水" :style="{height: height}" @run="onRun"/>
           <TheSeasoningControl title="调料盒" :slots="['1','2','3','4','5','6','7','8','9']" :style="{height: '120px'}"
@@ -23,6 +23,7 @@
                        @run="onRun"/>
           <CookControl title="翻炒档位" type="stir_fry" :min="0" :max="5" color="amber-10" :style="{height: height}"
                        @run="onRun"/>
+          <TheQuickControl :style="{height: height}" @run="onRun"/>
         </div>
         <TheMultipleCommandsList v-if="commandModel === 2" :multiple-command="multipleCommand"/>
       </div>
@@ -56,6 +57,7 @@ import ThePLCXYControl from "pages/overallControl/components/ThePLCXYControl";
 import ThePLCRControl from "pages/overallControl/components/ThePLCRControl";
 import ThePLCPumpControl from "pages/overallControl/components/ThePLCPumpControl";
 import ThePLCShakeControl from "pages/overallControl/components/ThePLCShakeControl";
+import TheQuickControl from "pages/overallControl/components/TheQuickControl";
 
 const $q = useQuasar();
 
@@ -64,7 +66,7 @@ useAppStore.setSubPageTitle("全量控制");
 
 const commandModel = ref(1);
 
-const height = ref("85px");
+const height = ref("65px");
 
 const singleCommand = new Command("single");
 const multipleCommand = new Command("multiple");
@@ -116,5 +118,7 @@ const onRun = async (instruction) => {
 </script>
 
 <style lang="scss" scoped>
-
+.single-mode {
+  width: 900px;
+}
 </style>
