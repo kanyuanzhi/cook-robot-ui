@@ -34,9 +34,15 @@ const stepName = ref(1);
 const stepsLine = computed(() => {
   const line = [];
   for (const key in props.steps) {
-    line.push(...props.steps[key]);
+    if(key !== "dish_out"){
+      line.push(...props.steps[key]);
+    }
   }
-  return line.sort(sortBy("time", 1));
+  line.sort(sortBy("time", 1));
+  const dishOut = props.steps["dish_out"][0]
+  dishOut.time = line[line.length - 1].time + 10
+  line.push(dishOut)
+  return line
 });
 
 // const autoWidth = ref(`${stepsLine.value.length * 120}px`);
@@ -47,17 +53,17 @@ const stepsLine = computed(() => {
 const autoColor = (type) => {
   switch (type) {
     case "ingredient":
-      return "teal";
+      return "green";
     case "water":
       return "primary";
     case "seasoning":
-      return "cyan-7";
+      return "teal-7";
     case "fire":
       return "red-14";
     case "stir_fry":
       return "amber-10";
     default:
-      return "grey";
+      return "deep-purple-9";
   }
 };
 

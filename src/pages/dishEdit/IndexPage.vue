@@ -74,6 +74,16 @@ const emptySteps = {
   seasonings: [],
   fires: [],
   stir_fries: [],
+  prepare: [{
+    name: "准备",
+    time: 0,
+    type: "prepare"
+  }],
+  dish_out: [{
+    name: "出菜",
+    time: 10,
+    type: "dish_out"
+  }],
 };
 
 const editedDish = useAppStore.getEditedDish;

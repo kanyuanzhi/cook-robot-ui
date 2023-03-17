@@ -39,22 +39,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item dense>
-          <q-item-section avatar>分量</q-item-section>
-          <q-item-section>
-            <q-input
-              v-model="weight"
-              filled
-              dense
-              @blur="onInputBlur($event, 'weight')"
-              @focus="onInputFocus($event, 'weight')"
-            >
-              <template v-slot:append>
-                <span class="text-body2">克</span>
-              </template>
-            </q-input>
-          </q-item-section>
-        </q-item>
+        <WeightSelect ref="weightSelect" :min="10" :max="1000" :step="10"/>
 
         <q-item dense>
           <q-item-section avatar>菜盒</q-item-section>
@@ -76,42 +61,11 @@
           </q-item-section>
         </q-item>
 
-        <q-item dense>
-          <q-item-section avatar>时刻</q-item-section>
-          <q-item-section>
-            <div class="row q-col-gutter-md">
-              <div class="col">
-                <q-input
-                  v-model.number="min"
-                  filled
-                  dense
-                  @blur="onInputBlur($event, 'min')"
-                  @focus="onInputFocus($event, 'min')"
-                >
-                  <template v-slot:append>
-                    <span class="text-body2">分</span>
-                  </template>
-                </q-input>
-              </div>
-              <div class="col">
-                <q-input
-                  v-model.number="sec"
-                  filled
-                  dense
-                  @blur="onInputBlur($event, 'sec')"
-                  @focus="onInputFocus($event, 'sec')"
-                >
-                  <template v-slot:append>
-                    <span class="text-body2">秒</span>
-                  </template>
-                </q-input>
-              </div>
-            </div>
-          </q-item-section>
-        </q-item>
+        <TimeSelect ref="timeSelect"/>
+
         <q-card-actions align="right">
           <q-btn v-close-popup flat color="">取消</q-btn>
-          <q-btn v-close-popup flat color="primary" @click="onSubmit">提交</q-btn>
+          <q-btn flat color="primary" @click="onSubmit">提交</q-btn>
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -132,10 +86,12 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import CustomKeyboard from "pages/dishEdit/components/CustomKeyboard";
 import TheIngredientNameSelectionDialog from "pages/dishEdit/components/TheIngredientNameSelectionDialog";
 import TheIngredientShapeSelectionDialog from "pages/dishEdit/components/TheIngredientShapeSelectionDialog";
+import TimeSelect from "pages/dishEdit/components/TimeSelect";
+import WeightSelect from "pages/dishEdit/components/WeightSelect";
 
 const emits = defineEmits(["submit"]);
 
@@ -149,19 +105,14 @@ const slots = ["1", "2", "3", "4"];
 
 const name = ref("");
 const shape = ref("");
-const weight = ref("");
 const slot = ref("");
-const min = ref("");
-const sec = ref("");
-const time = computed(() => parseInt(
-  min.value === "" ? "0" : min.value) * 60 + parseInt(sec.value === "" ? "0" : sec.value));
+
+const weightSelect = ref(null);
+const timeSelect = ref(null);
 
 const inputNameToPara = {
   name,
   shape,
-  weight,
-  min,
-  sec,
 };
 
 const customKeyboard = ref(null);
@@ -181,16 +132,20 @@ const theIngredientNameSelectionDialog = ref(null);
 const theIngredientShapeSelectionDialog = ref(null);
 
 const onSubmit = () => {
+  try{
+    emits("submit", {
+      name: name.value,
+      shape: shape.value,
+      weight: weightSelect.value.getWeight(),
+      slot: slot.value,
+      time: timeSelect.value.getTime(),
+      key: Date.now(),
+      type: "ingredient"
+    });
+  }catch (e) {
+    return
+  }
   shown.value = false;
-  emits("submit", {
-    name: name.value,
-    shape: shape.value,
-    weight: weight.value === "" ? 0 : parseInt(weight.value),
-    slot: slot.value,
-    time: time.value,
-    key: Date.now(),
-    type: "ingredient"
-  });
 };
 
 defineExpose({
