@@ -6,7 +6,7 @@ export function createSingleInstruction(type, target = 0, action, measure = 0, t
     type: type,
     target: target,
     action: action,
-    measure: measure,
+    measures: measure,
     time: time,
     key: Date.now()
   };

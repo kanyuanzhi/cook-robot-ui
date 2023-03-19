@@ -30,7 +30,7 @@ const $q = useQuasar();
 
 const props = defineProps(["slots", "title"]);
 const emits = defineEmits(["run"]);
-const slot = ref("1");
+const slot = ref(1);
 
 const onBtnClick = (action) => {
   if (slot.value === 0) {

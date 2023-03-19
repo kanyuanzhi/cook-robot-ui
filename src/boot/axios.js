@@ -12,7 +12,8 @@ import { Platform } from "quasar";
 console.log(Platform.is);
 const api = axios.create({
   // baseURL: (Platform.is.cros || Platform.is.electron) ? "http://localhost:8888" : "http://169.254.70.55:8888",
-  baseURL: (Platform.is.cros || Platform.is.electron) ? "http://localhost:8888" : "http://169.254.216.164:8888",
+  // baseURL: (Platform.is.cros || Platform.is.electron) ? "http://localhost:8888" : "http://169.254.216.164:8888",
+  baseURL: "http://127.0.0.1:8888",
   // baseURL: process.env.env_API,
   // baseURL: process.env.test_API,
   // withCredentials: true,

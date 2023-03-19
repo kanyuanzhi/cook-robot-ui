@@ -1,5 +1,6 @@
 <template>
-  <q-layout view="lHh Lpr lFf" :class="{'cursor-none': cursorNone}">
+<!--  <q-layout view="lHh Lpr lFf" :class="{'cursor-none': cursorNone}">-->
+  <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <div class="row">
         <q-toolbar class="col-4">

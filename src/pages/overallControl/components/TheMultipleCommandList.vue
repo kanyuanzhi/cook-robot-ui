@@ -49,7 +49,7 @@ const onRight = (index) => {
 };
 
 const instructionInfoDisplay = (ins, index) => {
-  return `${index + 1}. ${secondsToMMSS(ins.time)}, ${ins.type}, ${ins.target}, ${ins.action}, ${ins.measure}`;
+  return `${index + 1}. ${secondsToMMSS(ins.time)}, ${ins.type}, ${ins.target}, ${ins.action}, ${ins.measures}`;
 };
 
 const onSendBtnClick = async () => {

@@ -6,19 +6,7 @@
           <div class="text-h6">添加火力</div>
         </q-card-section>
 
-        <q-item dense>
-          <q-item-section avatar>档位</q-item-section>
-          <q-item-section>
-            <q-slider
-              v-model="tag"
-              color="red-14"
-              marker-labels
-              markers
-              :min="tagMin"
-              :max="tagMax"
-            />
-          </q-item-section>
-        </q-item>
+        <GearSlider ref="gearSlider" label="档位" color="red-14" :gear-min="0" :gear-max="5"/>
 
         <TimeSelect ref="timeSelect"/>
 
@@ -33,8 +21,8 @@
 
 <script setup>
 import { ref } from "vue";
-import { getFires } from "src/api/fire";
 import TimeSelect from "pages/dishEdit/components/TimeSelect";
+import GearSlider from "pages/dishEdit/components/GearSlider";
 
 const emits = defineEmits(["submit"]);
 
@@ -42,28 +30,16 @@ const shown = ref(false);
 
 const show = () => {
   shown.value = true;
-  getFires()
-    .then(res => {
-      tagMin.value = res.data[0].tag;
-      tagMax.value = res.data[res.data.length - 1].tag;
-      for (let i = 0; i < res.data.length; i++) {
-        tagToName.push(res.data[i].name);
-      }
-    });
 };
 
-const tag = ref(0);
-const tagMin = ref(0);
-const tagMax = ref(0);
-const tagToName = [];
-
+const gearSlider = ref(null);
 const timeSelect = ref(null);
 
 const onSubmit = () => {
   try{
     emits("submit", {
-      name: tagToName[tag.value],
-      tag: tag.value,
+      name: "火力" + gearSlider.value.getGear() + "档",
+      gear: gearSlider.value.getGear(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "fire"

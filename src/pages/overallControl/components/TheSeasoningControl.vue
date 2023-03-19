@@ -60,7 +60,7 @@ const $q = useQuasar();
 const props = defineProps(["slots", "title"]);
 const emits = defineEmits(["run"]);
 
-const slot = ref("1");
+const slot = ref(1);
 const weight = ref(1);
 const weightOptions = [];
 for (let i = 1; i < 101; i++) {

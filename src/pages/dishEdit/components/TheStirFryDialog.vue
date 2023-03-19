@@ -6,19 +6,7 @@
           <div class="text-h6">添加翻炒</div>
         </q-card-section>
 
-        <q-item dense>
-          <q-item-section avatar>档位</q-item-section>
-          <q-item-section>
-            <q-slider
-              v-model="tag"
-              color="amber-10"
-              marker-labels
-              markers
-              :min="tagMin"
-              :max="tagMax"
-            />
-          </q-item-section>
-        </q-item>
+        <GearSlider ref="gearSlider" label="档位" color="amber-10" :gear-min="0" :gear-max="10"/>
 
         <TimeSelect ref="timeSelect"/>
 
@@ -32,9 +20,9 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
-import { getStirFries } from "src/api/stirFry";
+import { ref } from "vue";
 import TimeSelect from "pages/dishEdit/components/TimeSelect";
+import GearSlider from "pages/dishEdit/components/GearSlider";
 
 const emits = defineEmits(["submit"]);
 
@@ -42,34 +30,22 @@ const shown = ref(false);
 
 const show = () => {
   shown.value = true;
-  getStirFries()
-    .then(res => {
-      tagMin.value = res.data[0].tag;
-      tagMax.value = res.data[res.data.length - 1].tag;
-      for (let i = 0; i < res.data.length; i++) {
-        tagToName.push(res.data[i].name);
-      }
-    });
 };
 
-const tag = ref(0);
-const tagMin = ref(0);
-const tagMax = ref(0);
-const tagToName = [];
-
+const gearSlider = ref(null);
 const timeSelect = ref(null);
 
 const onSubmit = () => {
-  try{
+  try {
     emits("submit", {
-      name: tagToName[tag.value],
-      tag: tag.value,
+      name: "翻炒" + gearSlider.value.getGear() + "档",
+      gear: gearSlider.value.getGear(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "stir_fry"
     });
-  }catch (e) {
-    return
+  } catch (e) {
+    return;
   }
   shown.value = false;
 };

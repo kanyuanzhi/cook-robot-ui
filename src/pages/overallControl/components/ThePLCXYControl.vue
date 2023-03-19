@@ -30,11 +30,11 @@ const $q = useQuasar();
 
 const props = defineProps(["title", "type"]);
 const emits = defineEmits(["run"]);
-const position = ref("0");
+const position = ref(0);
 
 const positions_value = [];
 for (let i = 0; i < 10; i++) {
-  positions_value.push(String(i));
+  positions_value.push(i);
 }
 const positions = ref(positions_value);
 

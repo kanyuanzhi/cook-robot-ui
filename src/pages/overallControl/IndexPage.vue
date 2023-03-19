@@ -15,9 +15,9 @@
       </div>
       <div v-show="commandModel!==3" class="row" :class="{'single-mode':commandModel===2}">
         <div class="column" :class="{'col-10':commandModel===2,'single-mode':commandModel!==2}">
-          <TheIngredientControl title="菜盒" :slots="['1','2','3','4']" :style="{height: height}" @run="onRun"/>
+          <TheIngredientControl title="菜盒" :slots="[1,2,3,4]" :style="{height: height}" @run="onRun"/>
           <TheWaterControl title="水" :style="{height: height}" @run="onRun"/>
-          <TheSeasoningControl title="调料盒" :slots="['1','2','3','4','5','6','7','8','9']" :style="{height: '120px'}"
+          <TheSeasoningControl title="调料盒" :slots="[1,2,3,4,5,6,7,8,9]" :style="{height: '120px'}"
                                @run="onRun"/>
           <CookControl title="火力档位" type="fire" :min="0" :max="10" color="red-14" :style="{height: height}"
                        @run="onRun"/>
@@ -34,6 +34,7 @@
           <ThePLCRControl title="R轴" type="r" :style="{height: height}" @run="onRun"/>
           <ThePLCPumpControl title="供料泵" type="pump" :style="{height: height}" @run="onRun"/>
           <ThePLCShakeControl title="出菜" type="shake" :style="{height: height}" @run="onRun"/>
+          <ThePLCTemperatureControl title="温控" type="temperature" :style="{height: height}" @run="onRun"/>
         </div>
       </div>
       <TimeDialog ref="timeDialog" :multiple-command="multipleCommand"/>
@@ -58,6 +59,7 @@ import ThePLCRControl from "pages/overallControl/components/ThePLCRControl";
 import ThePLCPumpControl from "pages/overallControl/components/ThePLCPumpControl";
 import ThePLCShakeControl from "pages/overallControl/components/ThePLCShakeControl";
 import TheQuickControl from "pages/overallControl/components/TheQuickControl";
+import ThePLCTemperatureControl from "pages/overallControl/components/ThePLCTemperatureControl";
 
 const $q = useQuasar();
 

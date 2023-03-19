@@ -24,25 +24,7 @@
 
         <WeightSelect ref="weightSelect" :min="1" :max="200" :step="1"/>
 
-        <q-item dense>
-          <q-item-section avatar>调料盒</q-item-section>
-          <q-item-section>
-            <div class="q-pa-md">
-              <div class="q-gutter-md">
-                <q-radio
-                  v-for="s in slots"
-                  :key="s"
-                  v-model="slot"
-                  dense
-                  checked-icon="task_alt"
-                  unchecked-icon="panorama_fish_eye"
-                  :val="s"
-                  :label="s"
-                />
-              </div>
-            </div>
-          </q-item-section>
-        </q-item>
+        <SlotRadio ref="slotRadio" label="调料盒" :slot-count="9"/>
 
         <TimeSelect ref="timeSelect"/>
 
@@ -73,6 +55,7 @@ import CustomKeyboard from "pages/dishEdit/components/CustomKeyboard";
 import TheSeasoningNameSelectionDialog from "pages/dishEdit/components/TheSeasoningNameSelectionDialog";
 import TimeSelect from "pages/dishEdit/components/TimeSelect";
 import WeightSelect from "pages/dishEdit/components/WeightSelect";
+import SlotRadio from "pages/dishEdit/components/SlotRadio";
 
 const emits = defineEmits(["submit"]);
 
@@ -82,17 +65,14 @@ const show = () => {
   shown.value = true;
 };
 
-const slots = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
-
 const name = ref("");
-const slot = ref("");
 
 const weightSelect = ref(null);
+const slotRadio = ref(null);
 const timeSelect = ref(null);
 
 const inputNameToPara = {
   name,
-  slot,
 };
 
 const customKeyboard = ref(null);
@@ -115,7 +95,7 @@ const onSubmit = () => {
     emits("submit", {
       name: name.value,
       weight: weightSelect.value.getWeight(),
-      slot: slot.value,
+      slot: slotRadio.value.getSlot(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "seasoning"

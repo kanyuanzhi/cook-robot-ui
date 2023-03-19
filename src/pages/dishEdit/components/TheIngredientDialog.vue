@@ -41,25 +41,7 @@
 
         <WeightSelect ref="weightSelect" :min="10" :max="1000" :step="10"/>
 
-        <q-item dense>
-          <q-item-section avatar>菜盒</q-item-section>
-          <q-item-section>
-            <div class="q-pa-md">
-              <div class="q-gutter-md">
-                <q-radio
-                  v-for="s in slots"
-                  :key="s"
-                  v-model="slot"
-                  dense
-                  checked-icon="task_alt"
-                  unchecked-icon="panorama_fish_eye"
-                  :val="s"
-                  :label="s"
-                />
-              </div>
-            </div>
-          </q-item-section>
-        </q-item>
+        <SlotRadio ref="slotRadio" label="菜盒" :slot-count="4"/>
 
         <TimeSelect ref="timeSelect"/>
 
@@ -92,6 +74,7 @@ import TheIngredientNameSelectionDialog from "pages/dishEdit/components/TheIngre
 import TheIngredientShapeSelectionDialog from "pages/dishEdit/components/TheIngredientShapeSelectionDialog";
 import TimeSelect from "pages/dishEdit/components/TimeSelect";
 import WeightSelect from "pages/dishEdit/components/WeightSelect";
+import SlotRadio from "pages/dishEdit/components/SlotRadio";
 
 const emits = defineEmits(["submit"]);
 
@@ -101,13 +84,11 @@ const show = () => {
   shown.value = true;
 };
 
-const slots = ["1", "2", "3", "4"];
-
 const name = ref("");
 const shape = ref("");
-const slot = ref("");
 
 const weightSelect = ref(null);
+const slotRadio = ref(null);
 const timeSelect = ref(null);
 
 const inputNameToPara = {
@@ -137,7 +118,7 @@ const onSubmit = () => {
       name: name.value,
       shape: shape.value,
       weight: weightSelect.value.getWeight(),
-      slot: slot.value,
+      slot: slotRadio.value.getSlot(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "ingredient"
