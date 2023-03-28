@@ -6,7 +6,7 @@
           <div class="text-h6">添加翻炒</div>
         </q-card-section>
 
-        <GearSlider ref="gearSlider" label="档位" color="amber-10" :gear-min="0" :gear-max="10"/>
+        <GearSlider ref="gearSlider" label="档位" color="amber-10" :gear-min="0" :gear-max="5"/>
 
         <TimeSelect ref="timeSelect"/>
 

@@ -15,7 +15,7 @@
               :options="temperatureOptions"
               options-cover
               stack-label
-              label="温度"
+              label="温度(℃)"
             />
           </div>
           <q-item-label class="q-mt-sm" caption>温度0表示关闭</q-item-label>

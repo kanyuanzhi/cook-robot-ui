@@ -24,7 +24,7 @@
               :options="speedOptions"
               options-cover
               stack-label
-              label="转速"
+              label="转速(0~200)"
             />
           </div>
           <div class="col">
@@ -36,10 +36,10 @@
               :options="circleOptions"
               options-cover
               stack-label
-              label="圈数"
+              label="正反转圈数(0~10)"
             />
           </div>
-          <q-item-label class="q-mt-sm" caption>圈数0表示一直旋转</q-item-label>
+<!--          <q-item-label class="q-mt-sm" caption>圈数0表示一直旋转</q-item-label>-->
 
         </div>
       </q-item-section>
@@ -64,7 +64,7 @@ const props = defineProps(["title", "type"]);
 const emits = defineEmits(["run"]);
 
 const direction = ref("forward");
-const speed = ref(1);
+const speed = ref(0);
 const circle = ref(0)
 
 const directionOptions = [
@@ -82,11 +82,11 @@ const directionOptions = [
   }
 ];
 const speedOptions = [];
-for (let i = 1; i < 11; i++) {
+for (let i = 1; i < 201; i++) {
   speedOptions.push(i);
 }
 const circleOptions = [];
-for (let i = 1; i < 51; i++) {
+for (let i = 1; i < 11; i++) {
   circleOptions.push(i);
 }
 

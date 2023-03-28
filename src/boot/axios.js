@@ -9,7 +9,6 @@ import { Platform } from "quasar";
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
-console.log(Platform.is);
 const api = axios.create({
   // baseURL: (Platform.is.cros || Platform.is.electron) ? "http://localhost:8888" : "http://169.254.70.55:8888",
   // baseURL: (Platform.is.cros || Platform.is.electron) ? "http://localhost:8888" : "http://169.254.216.164:8888",

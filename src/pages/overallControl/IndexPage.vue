@@ -9,11 +9,12 @@
           :options="[
         {label: '单指令模式', value: 1},
         {label: '多指令模式', value: 2},
-        {label:'PLC直控', value:3}
+        {label:'PLC直控', value:3},
+        {label:'参数设置', value:4}
       ]"
         />
       </div>
-      <div v-show="commandModel!==3" class="row" :class="{'single-mode':commandModel===2}">
+      <div v-show="commandModel===1 || commandModel===2" class="row" :class="{'single-mode':commandModel===2}">
         <div class="column" :class="{'col-10':commandModel===2,'single-mode':commandModel!==2}">
           <TheIngredientControl title="菜盒" :slots="[1,2,3,4]" :style="{height: height}" @run="onRun"/>
           <TheWaterControl title="水" :style="{height: height}" @run="onRun"/>
@@ -29,12 +30,35 @@
       </div>
       <div v-show="commandModel===3" class="row">
         <div class="column" style="width: 900px">
-          <ThePLCXYControl title="X轴" type="x" :style="{height: height}" @run="onRun"/>
-          <ThePLCXYControl title="Y轴" type="y" :style="{height: height}" @run="onRun"/>
-          <ThePLCRControl title="R轴" type="r" :style="{height: height}" @run="onRun"/>
-          <ThePLCPumpControl title="供料泵" type="pump" :style="{height: height}" @run="onRun"/>
-          <ThePLCShakeControl title="出菜" type="shake" :style="{height: height}" @run="onRun"/>
-          <ThePLCTemperatureControl title="温控" type="temperature" :style="{height: height}" @run="onRun"/>
+          <ControlItem title="X轴" type="x" :label="['目标位置']" :unit="['']" :min="[0]"
+                       :max="[9]" :step="[1]" :btn-label="['定位','复位']" height="60px" @run="onRun"/>
+          <ControlItem title="Y轴" type="y" :label="['目标位置']" :unit="['']" :min="[0]"
+                       :max="[9]" :step="[1]" :btn-label="['定位','复位']" height="60px" @run="onRun"/>
+          <ControlItem title="R轴" type="r" :label="['旋转方式(1正转/2反转/3正反转)','旋转速度']" :unit="['','']"
+                       :min="[1,0]" :max="[3,200]" :step="[1,1]" :btn-label="['旋转','停止']"
+                       height="60px" @run="onRun"/>
+          <ControlItem title="液体泵" type="liquid_pump" :label="['泵号','时长']" :unit="['','×0.001s']" :min="[1,0]"
+                       :max="[6,9999]" :step="[1,1]" :btn-label="['打开']" height="60px" @run="onRun"/>
+          <ControlItem title="固体泵" type="solid_pump" :label="['泵号','时长']" :unit="['','×0.1s']" :min="[1,0]"
+                       :max="[2,9999]" :step="[1,1]" :btn-label="['打开']" height="60px" @run="onRun"/>
+          <ControlItem title="水泵" type="water_pump" :label="['泵号','时长']" :unit="['','×0.1s']" :min="[1,0]"
+                       :max="[1,9999]" :step="[1,1]" :btn-label="['打开']" height="60px" @run="onRun"/>
+          <ControlItem title="出菜" type="shake" :label="['抖动次数']" :unit="['']" :min="[1]"
+                       :max="[10]" :step="[1]" :btn-label="['出菜']" height="60px" @run="onRun"/>
+          <ControlItem title="温控" type="temperature" :label="['目标温度']" :unit="['×0.1℃']" :min="[0]"
+                       :max="[3000]" :step="[1]" :btn-label="['设置','关闭']" height="60px" @run="onRun"/>
+        </div>
+      </div>
+      <div v-show="commandModel===4" class="row">
+        <div class="column" style="width: 900px">
+          <ControlItem title="X轴" type="setting_x" :label="['移动速度']" :unit="['']" :min="[0]"
+                       :max="[2000]" :step="[1]" :btn-label="['设置']" @run="onRun"/>
+          <ControlItem title="Y轴" type="setting_y" :label="['转动速度']" :unit="['']" :min="[0]"
+                       :max="[400]" :step="[1]" :btn-label="['设置']" @run="onRun"/>
+          <ControlItem title="R轴" type="setting_r" :label="['旋转速度','正反转圈数']" :unit="['','']" :min="[0,0]"
+                       :max="[200,10]" :step="[1,1]" :btn-label="['设置']" @run="onRun"/>
+          <ControlItem title="出菜" type="setting_shake" :label="['上行速度','下行速度']" :unit="['','']" :min="[0,0]"
+                       :max="[10,10]" :step="[1,1]" :btn-label="['设置']" @run="onRun"/>
         </div>
       </div>
       <TimeDialog ref="timeDialog" :multiple-command="multipleCommand"/>
@@ -54,19 +78,15 @@ import { useQuasar } from "quasar";
 import { postCommand, postPLCCommand } from "src/api/command";
 import { Command } from "pages/overallControl/components/command";
 import TimeDialog from "pages/overallControl/components/TimeDialog";
-import ThePLCXYControl from "pages/overallControl/components/ThePLCXYControl";
-import ThePLCRControl from "pages/overallControl/components/ThePLCRControl";
-import ThePLCPumpControl from "pages/overallControl/components/ThePLCPumpControl";
-import ThePLCShakeControl from "pages/overallControl/components/ThePLCShakeControl";
 import TheQuickControl from "pages/overallControl/components/TheQuickControl";
-import ThePLCTemperatureControl from "pages/overallControl/components/ThePLCTemperatureControl";
+import ControlItem from "components/ControlItem";
 
 const $q = useQuasar();
 
 const useAppStore = UseAppStore();
 useAppStore.setSubPageTitle("全量控制");
 
-const commandModel = ref(1);
+const commandModel = ref(3);
 
 const height = ref("65px");
 

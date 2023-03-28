@@ -6,7 +6,7 @@
           <div class="text-h6">添加火力</div>
         </q-card-section>
 
-        <GearSlider ref="gearSlider" label="档位" color="red-14" :gear-min="0" :gear-max="5"/>
+        <GearSlider ref="gearSlider" label="档位" color="red-14" :gear-min="0" :gear-max="10"/>
 
         <TimeSelect ref="timeSelect"/>
 

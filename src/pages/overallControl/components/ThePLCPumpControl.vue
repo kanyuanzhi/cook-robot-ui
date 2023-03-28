@@ -22,7 +22,7 @@
               label="供料时长"
             >
               <template v-slot:append>
-                <span class="text-body2">×100ms</span>
+                <span class="text-body2">×0.001s</span>
               </template>
             </q-select>
           </div>
@@ -47,20 +47,21 @@ const $q = useQuasar();
 const props = defineProps(["title", "type"]);
 const emits = defineEmits(["run"]);
 
-const slot = ref("1");
+const slot = ref(1);
 const slots = [];
 for (let i = 1; i < 10; i++) {
-  slots.push(String(i));
+  slots.push(i);
 }
 
 const period = ref(1);
 const periodOptions = [];
-for (let i = 1; i < 51; i++) {
+for (let i = 1; i < 10000; i++) {
   periodOptions.push(i);
 }
 
 const displayColor = (slot) => {
-  return ["8", "9"].indexOf(slot) > -1 ? "brown" : "blue";
+  if (slot === 9) return "blue"
+  return [7, 8].indexOf(slot) > -1 ? "brown" : "green";
 };
 
 const onBtnClick = (action) => {
