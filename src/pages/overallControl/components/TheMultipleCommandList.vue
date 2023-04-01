@@ -1,11 +1,11 @@
 <template>
-  <div class="column col-2">
+  <div class="column col-3">
     <q-list bordered separator>
       <q-scroll-area
         :thumb-style="thumbStyle"
         :content-style="contentStyle"
         :content-active-style="contentActiveStyle"
-        style="height: 385px"
+        style="height: 370px"
       >
         <q-slide-item
           v-for="(ins,index) in multipleCommand.getInstructions()"
@@ -25,10 +25,10 @@
         </q-slide-item>
       </q-scroll-area>
     </q-list>
-    <div class="flex flex-center q-mt-sm">
-      <q-btn-group class="full-width" push>
-        <q-btn style="width: 50%" push color="positive" @click="onSendBtnClick">发送</q-btn>
-        <q-btn style="width: 50%" push color="grey" @click="onClearBtnClick">清空</q-btn>
+    <div class="flex flex-center q-mt-md">
+      <q-btn-group class="full-width" rounded>
+        <q-btn style="width: 50%" push color="primary" @click="onSendBtnClick">发送</q-btn>
+        <q-btn style="width: 50%" push color="white" text-color="primary" @click="onClearBtnClick">清空</q-btn>
       </q-btn-group>
     </div>
   </div>

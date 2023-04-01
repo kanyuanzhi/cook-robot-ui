@@ -32,9 +32,10 @@
       </q-item-section>
     </div>
     <div class="col-3 flex flex-center">
-      <q-btn-group push>
-        <q-btn push color="positive" :label="btnLabel[0]" @click="onBtnClick('on')"/>
-        <q-btn v-if="btnLabel.length===2" push color="accent" :label="btnLabel[1]" @click="onBtnClick('off')"/>
+      <q-btn-group rounded>
+        <q-btn push color="primary" :label="btnLabel[0]" :disabled="disable" @click="onBtnClick('on')"/>
+        <q-btn v-if="btnLabel.length===2" push color="white" text-color="primary" :label="btnLabel[1]"
+               :disabled="disable" @click="onBtnClick('off')"/>
       </q-btn-group>
     </div>
   </div>
@@ -42,7 +43,7 @@
 
 <script setup>
 import OptionalInput from "components/OptionalInput";
-import { createPLCInstruction } from "pages/overallControl/components/command";
+import { createPLCInstruction, createSingleInstruction } from "pages/overallControl/components/command";
 import { ref } from "vue";
 
 // const props = defineProps(["type", "title", "label", "unit", "min", "max", "step", "btnLabel", "height"]);
@@ -57,7 +58,7 @@ const props = defineProps({
   },
   height: {
     type: String,
-    default: "65px"
+    default: "75px"
   },
   label: {
     type: Array,
@@ -95,6 +96,10 @@ const props = defineProps({
       return [];
     }
   },
+  disable: {
+    type: Boolean,
+    default: false
+  }
 });
 const emits = defineEmits(["run"]);
 
@@ -103,16 +108,23 @@ const value2 = ref(props.min[1]);
 const value3 = ref(props.min[2]);
 
 const onBtnClick = (action) => {
-  let plcInstruction;
+  let instruction;
   if (["x", "y"].indexOf(props.type) > -1) {
-    plcInstruction = createPLCInstruction(props.type, value1.value, action, []);
+    instruction = createPLCInstruction(props.type, value1.value, action, []);
   } else if (["r", "liquid_pump", "solid_pump", "water_pump"].indexOf(props.type) > -1) {
-    plcInstruction = createPLCInstruction(props.type, value1.value, action, [value2.value]);
-  } else {
-    plcInstruction = createPLCInstruction(props.type, 0, action, [value1.value, value2.value, value3.value]);
+    instruction = createPLCInstruction(props.type, value1.value, action, [value2.value]);
+  } else if (["shake", "temperature", "setting_x", "setting_y",
+    "setting_r", "setting_shake", "setting_temperature"].indexOf(props.type) > -1) {
+    instruction = createPLCInstruction(props.type, 0, action, [value1.value, value2.value, value3.value]);
+  } else if (["ingredient"].indexOf(props.type) > -1) {
+    instruction = createSingleInstruction(props.type, value1.value, action, 0, 0);
+  } else if (["water", "fire", "stir_fry"].indexOf(props.type) > -1) {
+    instruction = createSingleInstruction(props.type, 0, action, value1.value, 0);
+  } else if (["seasoning"].indexOf(props.type) > -1) {
+    instruction = createSingleInstruction(props.type, value1.value, action, value2.value, 0);
   }
 
-  emits("run", plcInstruction);
+  emits("run", instruction);
 };
 </script>
 

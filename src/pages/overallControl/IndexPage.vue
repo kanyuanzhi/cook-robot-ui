@@ -10,21 +10,32 @@
         {label: '单指令模式', value: 1},
         {label: '多指令模式', value: 2},
         {label:'PLC直控', value:3},
-        {label:'参数设置', value:4}
+        {label:'PLC参数设置', value:4}
       ]"
         />
       </div>
       <div v-show="commandModel===1 || commandModel===2" class="row" :class="{'single-mode':commandModel===2}">
-        <div class="column" :class="{'col-10':commandModel===2,'single-mode':commandModel!==2}">
-          <TheIngredientControl title="菜盒" :slots="[1,2,3,4]" :style="{height: height}" @run="onRun"/>
-          <TheWaterControl title="水" :style="{height: height}" @run="onRun"/>
-          <TheSeasoningControl title="调料盒" :slots="[1,2,3,4,5,6,7,8,9]" :style="{height: '120px'}"
-                               @run="onRun"/>
-          <CookControl title="火力档位" type="fire" :min="0" :max="10" color="red-14" :style="{height: height}"
-                       @run="onRun"/>
-          <CookControl title="翻炒档位" type="stir_fry" :min="0" :max="5" color="amber-10" :style="{height: height}"
-                       @run="onRun"/>
-          <TheQuickControl :style="{height: height}" @run="onRun"/>
+        <div class="column" :class="{'col-9':commandModel===2,'single-mode':commandModel!==2}">
+          <ControlItem title="菜盒" type="ingredient" :label="['编号']" :unit="['']" :min="[1]"
+                       :max="[4]" :step="[1]" :btn-label="['添加']" @run="onRun"/>
+          <!--          <TheIngredientControl title="菜盒" :slots="[1,2,3,4]" :style="{height: height}" @run="onRun"/>-->
+          <!--          <TheWaterControl title="水" :style="{height: height}" @run="onRun"/>-->
+          <ControlItem title="水" type="water" :label="['分量']" :unit="['毫升']" :min="[1]"
+                       :max="[9999]" :step="[1]" :btn-label="['添加']" @run="onRun"/>
+          <ControlItem title="调料盒" type="seasoning" :label="['编号(1~6液体,7~8固体)','分量']"
+                       :unit="['','毫升/毫克']" :min="[1,1]"
+                       :max="[8,9999]" :step="[1,1]" :btn-label="['添加']" @run="onRun"/>
+          <!--          <TheSeasoningControl title="调料盒" :slots="[1,2,3,4,5,6,7,8,9]" :style="{height: '120px'}"-->
+          <!--                               @run="onRun"/>-->
+          <ControlItem title="火力" type="fire" :label="['档位(30℃/档)']" :unit="['']" :min="[0]"
+                       :max="[10]" :step="[1]" :btn-label="['设置','关闭']" @run="onRun"/>
+          <ControlItem title="翻炒" type="stir_fry" :label="['档位(40转速/档)']" :unit="['']" :min="[0]"
+                       :max="[5]" :step="[1]" :btn-label="['设置','关闭']" @run="onRun"/>
+          <!--          <CookControl title="火力档位" type="fire" :min="0" :max="10" color="red-14" :style="{height: height}"-->
+          <!--                       @run="onRun"/>-->
+          <!--          <CookControl title="翻炒档位" type="stir_fry" :min="0" :max="5" color="amber-10" :style="{height: height}"-->
+          <!--                       @run="onRun"/>-->
+          <TheQuickControl @run="onRun"/>
         </div>
         <TheMultipleCommandsList v-if="commandModel === 2" :multiple-command="multipleCommand"/>
       </div>
@@ -59,6 +70,9 @@
                        :max="[200,10]" :step="[1,1]" :btn-label="['设置']" @run="onRun"/>
           <ControlItem title="出菜" type="setting_shake" :label="['上行速度','下行速度']" :unit="['','']" :min="[0,0]"
                        :max="[10,10]" :step="[1,1]" :btn-label="['设置']" @run="onRun"/>
+          <ControlItem title="温控" type="setting_temperature" :label="['温度上限','温度下限']"
+                       :unit="['×0.1℃','×0.1℃']" :min="[0,0]"
+                       :max="[3000,3000]" :step="[1,1]" :btn-label="['设置']" @run="onRun" :disable="true"/>
         </div>
       </div>
       <TimeDialog ref="timeDialog" :multiple-command="multipleCommand"/>
@@ -69,11 +83,7 @@
 <script setup>
 import { UseAppStore } from "stores/appStore";
 import { ref, watch } from "vue";
-import CookControl from "pages/overallControl/components/CookControl";
 import TheMultipleCommandsList from "pages/overallControl/components/TheMultipleCommandList";
-import TheSeasoningControl from "pages/overallControl/components/TheSeasoningControl";
-import TheIngredientControl from "pages/overallControl/components/TheIngredientControl";
-import TheWaterControl from "pages/overallControl/components/TheWaterControl";
 import { useQuasar } from "quasar";
 import { postCommand, postPLCCommand } from "src/api/command";
 import { Command } from "pages/overallControl/components/command";
@@ -86,7 +96,7 @@ const $q = useQuasar();
 const useAppStore = UseAppStore();
 useAppStore.setSubPageTitle("全量控制");
 
-const commandModel = ref(3);
+const commandModel = ref(1);
 
 const height = ref("65px");
 
