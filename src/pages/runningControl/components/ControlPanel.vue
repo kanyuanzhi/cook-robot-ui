@@ -22,17 +22,20 @@
               />
               <q-spinner-dots v-else color="blue-11" size="50px"></q-spinner-dots>
             </q-btn>
-            <span v-else>
+            <span v-else class="text-primary text-weight-bold">
               完成
             </span>
           </q-circular-progress>
         </div>
         <div class="col flex flex-center">
-          <span style="font-size: 17px"
+          <span class="text-primary" style="font-size: 17px"
           >{{ secondsToMMSS(runningTime) }}/{{
-              secondsToMMSS(cookTime)
+              secondsToMMSS(cookTime === undefined ? 0 : cookTime)
             }}</span
           >
+        </div>
+        <div v-if="!isRunning" class="col flex flex-center q-mt-md">
+          <q-btn color="primary" to="/dishSelect">重新选择</q-btn>
         </div>
       </div>
     </div>
@@ -43,7 +46,7 @@
 import { computed, ref } from "vue";
 import { secondsToMMSS } from "src/utils/timeFormat";
 
-const props = defineProps(["cookTime", "runningTime", "isRunning","isFinished"]);
+const props = defineProps(["cookTime", "runningTime", "isRunning", "isFinished"]);
 
 const emits = defineEmits(["update:isRunning"]);
 
@@ -76,6 +79,7 @@ const progressColor = computed(() => {
 });
 
 function onStartBtnClick() {
+  if (props.isRunning) return; //运行过程中不允许暂停
   shiftRunningStatus();
 }
 

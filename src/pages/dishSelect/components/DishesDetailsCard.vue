@@ -120,6 +120,10 @@ const onStarBtnClick = () => {
 const useRunningStore = UseRunningStore();
 const onRunningBtnClick = () => {
   useRunningStore.setDish(cloneDeep(dish.value));
+  useRunningStore.setSelectedStatus(true);
+  useRunningStore.setRunningTime(0)
+  useRunningStore.setRunningStatus(false)
+  useRunningStore.setStepValue(0)
   router.push("/running");
 };
 

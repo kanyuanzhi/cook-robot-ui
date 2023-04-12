@@ -41,6 +41,7 @@ const props = defineProps(["isRunning", "steps", "runningTime"]);
 
 const useRunningStore = UseRunningStore();
 const stepValue = ref(useRunningStore.getStepValue);
+console.log(stepValue);
 
 const activeColor = computed(() => {
   return props.isRunning ? "green-6" : "green-6";
@@ -68,7 +69,6 @@ watch(
     if (n > 2) {
       scrollArea.value.setScrollPosition("horizontal", (n - 3) * 120);
     }
-    console.log(n);
     // for (let i = 0; i < stepsLine.value.length - 1; i++) {
     //   if (newValue >= stepsLine.value[i].time && newValue < stepsLine.value[i + 1].time) {
     //     if (stepValue.value > 2) {
