@@ -28,24 +28,40 @@ const emits = defineEmits(["submit"]);
 
 const shown = ref(false);
 
-const show = () => {
-  shown.value = true;
-};
-
 const gearSlider = ref(null);
 const timeSelect = ref(null);
 
+let isUpdate = false;
+let stepIndex = 0;
+
+const show = (step, index) => {
+  shown.value = true;
+  setTimeout(() => {
+    if (step !== undefined) {
+      isUpdate = true;
+      stepIndex = index;
+      gearSlider.value.setGear(step.gear);
+      timeSelect.value.setTime(step.time);
+    }
+  }, 100);
+};
+
 const onSubmit = () => {
-  try{
-    emits("submit", {
+  try {
+    const newStep = {
       name: "火力" + gearSlider.value.getGear() + "档",
       gear: gearSlider.value.getGear(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "fire"
-    });
-  }catch (e) {
-    return
+    };
+    if (isUpdate) {
+      emits("update", newStep, stepIndex);
+    } else {
+      emits("submit", newStep);
+    }
+  } catch (e) {
+    return;
   }
   shown.value = false;
 };

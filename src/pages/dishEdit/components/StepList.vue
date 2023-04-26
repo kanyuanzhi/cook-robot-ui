@@ -21,7 +21,7 @@
         <template v-slot:right>
           <q-icon name="delete"/>
         </template>
-        <q-item clickable>
+        <q-item clickable @click="onClick(step, index)">
           <q-item-section>
             {{ listItemDisplayName(step) }}
           </q-item-section>
@@ -47,11 +47,11 @@
         <q-icon name="water_drop" color="primary"></q-icon>
       </q-btn>
     </q-item-label>
-    <TheIngredientDialog ref="theIngredientDialog" @submit="onSubmit"/>
-    <TheIngredientWaterDialog ref="theIngredientWaterDialog" @submit="onSubmit"/>
-    <TheSeasoningDialog ref="theSeasoningDialog" @submit="onSubmit"/>
-    <TheFireDialog ref="theFireDialog" @submit="onSubmit"/>
-    <TheStirFryDialog ref="theStirFryDialog" @submit="onSubmit"/>
+    <TheIngredientDialog ref="theIngredientDialog" @submit="onSubmit" @update="onUpdate"/>
+    <TheIngredientWaterDialog ref="theIngredientWaterDialog" @submit="onSubmit" @update="onUpdate"/>
+    <TheSeasoningDialog ref="theSeasoningDialog" @submit="onSubmit" @update="onUpdate"/>
+    <TheFireDialog ref="theFireDialog" @submit="onSubmit" @update="onUpdate"/>
+    <TheStirFryDialog ref="theStirFryDialog" @submit="onSubmit" @update="onUpdate"/>
   </q-list>
 </template>
 
@@ -114,6 +114,29 @@ const theSeasoningDialog = ref(null);
 const theFireDialog = ref(null);
 const theStirFryDialog = ref(null);
 
+const onClick = (step, index) => {
+  console.log(step);
+  switch (step.type) {
+    case "ingredient":
+      theIngredientDialog.value.show(step, index);
+      return;
+    case "water":
+      theIngredientWaterDialog.value.show(step, index);
+      return;
+    case "seasoning":
+      theSeasoningDialog.value.show(step, index);
+      return;
+    case "fire":
+      theFireDialog.value.show(step, index);
+      return;
+    case "stir_fry":
+      theStirFryDialog.value.show(step, index);
+      return;
+    default:
+      return;
+  }
+};
+
 const onDialogShowBtnClick = () => {
   switch (props.stepName) {
     case "ingredient":
@@ -136,6 +159,15 @@ const onDialogShowBtnClick = () => {
 const onSubmit = (val) => {
   // eslint-disable-next-line vue/no-mutating-props
   props.steps.push(val);
+  // eslint-disable-next-line vue/no-mutating-props
+  props.steps.sort(sortBy("time", 1));
+};
+
+const onUpdate = (val, index) => {
+  for (let key in val) {
+    // eslint-disable-next-line vue/no-mutating-props
+    props.steps[index][key] = val[key];
+  }
   // eslint-disable-next-line vue/no-mutating-props
   props.steps.sort(sortBy("time", 1));
 };

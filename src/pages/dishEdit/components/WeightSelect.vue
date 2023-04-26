@@ -37,8 +37,13 @@ const getWeight = () => {
   return weight.value;
 };
 
+const setWeight = (v) => {
+  weight.value = v;
+};
+
 defineExpose({
-  getWeight
+  getWeight,
+  setWeight
 });
 </script>
 

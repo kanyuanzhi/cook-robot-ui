@@ -57,19 +57,31 @@ import TimeSelect from "pages/dishEdit/components/TimeSelect";
 import WeightSelect from "pages/dishEdit/components/WeightSelect";
 import SlotRadio from "pages/dishEdit/components/SlotRadio";
 
-const emits = defineEmits(["submit"]);
+const emits = defineEmits(["update", "submit"]);
 
 const shown = ref(false);
 
-const show = () => {
-  shown.value = true;
-};
-
 const name = ref("");
-
 const weightSelect = ref(null);
 const slotRadio = ref(null);
 const timeSelect = ref(null);
+
+let isUpdate = false;
+let stepIndex = 0;
+
+const show = (step, index) => {
+  shown.value = true;
+  setTimeout(() => {
+    if (step !== undefined) {
+      isUpdate = true;
+      stepIndex = index;
+      name.value = step.name;
+      weightSelect.value.setWeight(step.weight);
+      slotRadio.value.setSlot(step.slot);
+      timeSelect.value.setTime(step.time);
+    }
+  }, 100);
+};
 
 const inputNameToPara = {
   name,
@@ -92,14 +104,19 @@ const theSeasonNameSelectionDialog = ref(null);
 
 const onSubmit = () => {
   try {
-    emits("submit", {
+    const newStep = {
       name: name.value,
       weight: weightSelect.value.getWeight(),
       slot: slotRadio.value.getSlot(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "seasoning"
-    });
+    };
+    if (isUpdate) {
+      emits("update", newStep, stepIndex);
+    } else {
+      emits("submit", newStep);
+    }
   } catch (e) {
     return;
   }

@@ -21,13 +21,18 @@ const props = defineProps(["label", "gearMin", "gearMax", "color"]);
 
 const gear = ref(0);
 
-const getGear = ()=>{
-  return gear.value
-}
+const getGear = () => {
+  return gear.value;
+};
+
+const setGear = (v) => {
+  gear.value = v;
+};
 
 defineExpose({
-  getGear
-})
+  getGear,
+  setGear
+});
 </script>
 
 <style lang="scss" scoped>

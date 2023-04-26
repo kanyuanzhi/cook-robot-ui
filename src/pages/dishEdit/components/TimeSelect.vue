@@ -35,6 +35,8 @@
 <script setup>
 import { ref } from "vue";
 import { useQuasar } from "quasar";
+import { floor } from "lodash";
+
 const $q = useQuasar();
 
 const min = ref({
@@ -61,22 +63,34 @@ for (let i = 0; i < 61; i++) {
 }
 
 const getTime = () => {
-  const time =  min.value.value * 60 + sec.value.value;
-  if (time === 0){
+  const time = min.value.value * 60 + sec.value.value;
+  if (time === 0) {
     $q.notify({
       message: "时刻不能为0",
       position: "top",
       color: "orange",
       timeout: 500,
     });
-    throw Error("time is 0")
+    throw Error("time is 0");
   }
   return min.value.value * 60 + sec.value.value;
 };
 
+const setTime = (v) => {
+  min.value = {
+    label: floor(v / 60) < 10 ? "0" + floor(v / 60) : String(floor(v / 60)),
+    value: floor(v / 60)
+  };
+  sec.value = {
+    label: v % 60 < 10 ? "0" + v % 60 : String(v % 60),
+    value: v % 60
+  };
+};
+
 defineExpose({
-  getTime
-})
+  getTime,
+  setTime
+});
 </script>
 
 <style lang="scss" scoped>

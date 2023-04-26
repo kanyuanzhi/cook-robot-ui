@@ -28,24 +28,38 @@ const emits = defineEmits(["submit"]);
 
 const shown = ref(false);
 
-const show = () => {
-  shown.value = true;
-};
-
-const name = ref("");
-
 const weightSelect = ref(null);
 const timeSelect = ref(null);
 
+let isUpdate = false;
+let stepIndex = 0;
+
+const show = (step, index) => {
+  shown.value = true;
+  setTimeout(() => {
+    if (step !== undefined) {
+      isUpdate = true;
+      stepIndex = index;
+      weightSelect.value.setWeight(step.weight);
+      timeSelect.value.setTime(step.time);
+    }
+  }, 100);
+};
+
 const onSubmit = () => {
   try {
-    emits("submit", {
+    const newStep = {
       name: "水",
       weight: weightSelect.value.getWeight(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "water"
-    });
+    };
+    if (isUpdate) {
+      emits("update", newStep, stepIndex);
+    } else {
+      emits("submit", newStep);
+    }
   } catch (e) {
     return;
   }

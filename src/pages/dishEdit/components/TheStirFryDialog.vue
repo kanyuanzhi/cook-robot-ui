@@ -28,22 +28,38 @@ const emits = defineEmits(["submit"]);
 
 const shown = ref(false);
 
-const show = () => {
-  shown.value = true;
-};
-
 const gearSlider = ref(null);
 const timeSelect = ref(null);
 
+let isUpdate = false;
+let stepIndex = 0;
+
+const show = (step, index) => {
+  shown.value = true;
+  setTimeout(() => {
+    if (step !== undefined) {
+      isUpdate = true;
+      stepIndex = index;
+      gearSlider.value.setGear(step.gear);
+      timeSelect.value.setTime(step.time);
+    }
+  }, 100);
+};
+
 const onSubmit = () => {
   try {
-    emits("submit", {
+    const newStep = {
       name: "翻炒" + gearSlider.value.getGear() + "档",
       gear: gearSlider.value.getGear(),
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "stir_fry"
-    });
+    };
+    if (isUpdate) {
+      emits("update", newStep, stepIndex);
+    } else {
+      emits("submit", newStep);
+    }
   } catch (e) {
     return;
   }

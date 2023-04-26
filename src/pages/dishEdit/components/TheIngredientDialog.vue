@@ -80,16 +80,29 @@ const emits = defineEmits(["submit"]);
 
 const shown = ref(false);
 
-const show = () => {
-  shown.value = true;
-};
-
 const name = ref("");
 const shape = ref("");
-
 const weightSelect = ref(null);
 const slotRadio = ref(null);
 const timeSelect = ref(null);
+
+let isUpdate = false;
+let stepIndex = 0;
+
+const show = (step, index) => {
+  shown.value = true;
+  setTimeout(() => {
+    if (step !== undefined) {
+      isUpdate = true;
+      stepIndex = index;
+      name.value = step.name;
+      shape.value = step.shape;
+      weightSelect.value.setWeight(step.weight);
+      slotRadio.value.setSlot(step.slot);
+      timeSelect.value.setTime(step.time);
+    }
+  }, 100);
+};
 
 const inputNameToPara = {
   name,
@@ -113,8 +126,8 @@ const theIngredientNameSelectionDialog = ref(null);
 const theIngredientShapeSelectionDialog = ref(null);
 
 const onSubmit = () => {
-  try{
-    emits("submit", {
+  try {
+    const newStep = {
       name: name.value,
       shape: shape.value,
       weight: weightSelect.value.getWeight(),
@@ -122,9 +135,14 @@ const onSubmit = () => {
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "ingredient"
-    });
-  }catch (e) {
-    return
+    };
+    if (isUpdate) {
+      emits("update", newStep, stepIndex);
+    } else {
+      emits("submit", newStep);
+    }
+  } catch (e) {
+    return;
   }
   shown.value = false;
 };

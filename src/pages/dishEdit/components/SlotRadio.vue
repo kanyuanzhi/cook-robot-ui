@@ -32,13 +32,18 @@ for (let i = 1; i < props.slotCount + 1; i++) {
   slotOptions.push(i);
 }
 
-const getSlot = ()=>{
-  return slot.value
-}
+const getSlot = () => {
+  return slot.value;
+};
+
+const setSlot = (v) => {
+  slot.value = v;
+};
 
 defineExpose({
-  getSlot
-})
+  getSlot,
+  setSlot
+});
 </script>
 
 <style lang="scss" scoped>
