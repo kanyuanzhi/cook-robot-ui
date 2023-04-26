@@ -6,6 +6,7 @@ export const UseRunningStore = defineStore("running", {
     runningTime: 0,
     dish: {},
     isSelected: false,
+    isFinished: false,
     stepValue: 0,
   }),
   getters: {
@@ -13,6 +14,7 @@ export const UseRunningStore = defineStore("running", {
     getRunningTime: (state) => state.runningTime,
     getDish: (state) => state.dish,
     getIsSelected: (state) => state.isSelected,
+    getIsFinished: (state) => state.isFinished,
     getStepValue: (state) => state.stepValue,
   },
   actions: {
@@ -27,6 +29,9 @@ export const UseRunningStore = defineStore("running", {
     },
     setSelectedStatus(status) {
       this.isSelected = status;
+    },
+    setFinishedStatus(status) {
+      this.isFinished = status;
     },
     setStepValue(status) {
       this.stepValue = status;

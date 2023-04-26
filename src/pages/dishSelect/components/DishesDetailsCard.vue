@@ -76,6 +76,9 @@ import { UseRunningStore } from "stores/runningStore";
 import { cloneDeep } from "lodash/lang";
 
 import { useRouter } from "vue-router";
+import { getRunningStatus } from "src/api/runningStatus";
+import { useQuasar } from "quasar";
+const $q = useQuasar();
 
 // const imgUrl = require('src/assets/chicken-salad.jpg');
 
@@ -118,12 +121,19 @@ const onStarBtnClick = () => {
 };
 
 const useRunningStore = UseRunningStore();
-const onRunningBtnClick = () => {
+const onRunningBtnClick = async () => {
+  const { data } = await getRunningStatus();
+  const machineState = data.data["machine_state"];
+  if (machineState !== 0){
+    $q.notify("当前已有菜品正在炒制！")
+    return
+  }
   useRunningStore.setDish(cloneDeep(dish.value));
   useRunningStore.setSelectedStatus(true);
   useRunningStore.setRunningTime(0)
   useRunningStore.setRunningStatus(false)
   useRunningStore.setStepValue(0)
+  useRunningStore.setFinishedStatus(false)
   router.push("/running");
 };
 

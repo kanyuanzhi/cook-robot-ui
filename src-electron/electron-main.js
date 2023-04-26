@@ -50,6 +50,8 @@ function createWindow() {
     mainWindow.webContents.on("devtools-opened", () => {
       mainWindow.webContents.closeDevTools();
     });
+    // mainWindow.setIgnoreMouseEvents(true, {forward: true})
+    // mainWindow.setAutoHideCursor(true)
   }
 
   mainWindow.on("closed", () => {

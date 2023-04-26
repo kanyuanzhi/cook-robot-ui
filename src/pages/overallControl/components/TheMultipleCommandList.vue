@@ -63,6 +63,7 @@ const onSendBtnClick = async () => {
     return;
   }
   try {
+    console.log(props.multipleCommand.getData())
     const res = await postCommand(props.multipleCommand.getData());
     $q.notify({
       message: res.data.success ? "运行成功" : "运行失败",

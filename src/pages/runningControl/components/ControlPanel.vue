@@ -45,6 +45,10 @@
 <script setup>
 import { computed, ref } from "vue";
 import { secondsToMMSS } from "src/utils/timeFormat";
+import { postCommand } from "src/api/command";
+import { sortBy } from "src/utils/array";
+import { UseRunningStore } from "stores/runningStore";
+import { Command, createSingleInstruction } from "pages/overallControl/components/command";
 
 const props = defineProps(["cookTime", "runningTime", "isRunning", "isFinished"]);
 
@@ -78,10 +82,54 @@ const progressColor = computed(() => {
   return props.isRunning ? "blue-8" : "blue-11";
 });
 
-function onStartBtnClick() {
+const onStartBtnClick = async () => {
   if (props.isRunning) return; //运行过程中不允许暂停
-  shiftRunningStatus();
-}
+  const steps = UseRunningStore().getDish.steps;
+  const multipleCommand = new Command("multiple");
+  for (const key in steps) {
+    for (const step of steps[key]) {
+      let instruction;
+      switch (key) {
+        case "prepare":
+          instruction = createSingleInstruction("prepare", 0, "on", 0, step.time);
+          break;
+        case "dish_out":
+          instruction = createSingleInstruction("dish_out", 0, "on", 0, step.time);
+          break;
+        case "ingredients":
+          if (step.type === "ingredient") {
+            instruction = createSingleInstruction("ingredient", step.slot, "on", 0, step.time);
+          } else {// water
+            instruction = createSingleInstruction("water", 0, "on", step.weight, step.time);
+          }
+          break;
+        case "seasonings":
+          instruction = createSingleInstruction("seasoning", step.slot, "on", step.weight, step.time);
+          break;
+        case "fires":
+          instruction = createSingleInstruction("fire", 0, "on", step.gear, step.time);
+          break;
+        case "stir_fries":
+          instruction = createSingleInstruction("stir_fry", 0, "on", step.gear, step.time);
+          break;
+        default:
+          break;
+      }
+      multipleCommand.add(instruction);
+    }
+  }
+  try {
+    const res = await postCommand(multipleCommand.getData());
+    console.log(res);
+    shiftRunningStatus();
+  } catch (e) {
+    console.log(e);
+  }
+  // const instructions =
+  // const res = await postCommand(singleCommand.getData());
+
+  // shiftRunningStatus();
+};
 
 function onPauseBtnConfirm() {
   shiftRunningStatus();

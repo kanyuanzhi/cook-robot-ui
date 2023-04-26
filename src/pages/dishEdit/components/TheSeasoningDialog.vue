@@ -24,7 +24,7 @@
 
         <WeightSelect ref="weightSelect" :min="1" :max="200" :step="1"/>
 
-        <SlotRadio ref="slotRadio" label="调料盒" :slot-count="9"/>
+        <SlotRadio ref="slotRadio" label="调料盒" :slot-count="8"/>
 
         <TimeSelect ref="timeSelect"/>
 

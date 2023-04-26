@@ -41,7 +41,6 @@ const props = defineProps(["isRunning", "steps", "runningTime"]);
 
 const useRunningStore = UseRunningStore();
 const stepValue = ref(useRunningStore.getStepValue);
-console.log(stepValue);
 
 const activeColor = computed(() => {
   return props.isRunning ? "green-6" : "green-6";
