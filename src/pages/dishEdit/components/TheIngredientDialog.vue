@@ -68,7 +68,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import CustomKeyboard from "pages/dishEdit/components/CustomKeyboard";
 import TheIngredientNameSelectionDialog from "pages/dishEdit/components/TheIngredientNameSelectionDialog";
 import TheIngredientShapeSelectionDialog from "pages/dishEdit/components/TheIngredientShapeSelectionDialog";
@@ -76,7 +76,7 @@ import TimeSelect from "pages/dishEdit/components/TimeSelect";
 import WeightSelect from "pages/dishEdit/components/WeightSelect";
 import SlotRadio from "pages/dishEdit/components/SlotRadio";
 
-const emits = defineEmits(["submit"]);
+const emits = defineEmits(["update", "submit"]);
 
 const shown = ref(false);
 
@@ -144,6 +144,8 @@ const onSubmit = () => {
   } catch (e) {
     return;
   }
+  isUpdate = false;
+  stepIndex = 0;
   shown.value = false;
 };
 

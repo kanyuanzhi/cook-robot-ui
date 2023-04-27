@@ -21,17 +21,26 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps(["min", "max", "step"]);
 
 const weight = ref(props.min);
 
-const weightOptions = [];
+const weightOptions = ref([]);
 // eslint-disable-next-line vue/no-setup-props-destructure
 for (let i = props.min; i < props.max + 1; i += props.step) {
-  weightOptions.push(i);
+  weightOptions.value.push(i);
 }
+
+watch(
+  () => props.max,
+  () => {
+    weightOptions.value = [];
+    for (let i = props.min; i < props.max + 1; i += props.step) {
+      weightOptions.value.push(i);
+    }
+  });
 
 const getWeight = () => {
   return weight.value;

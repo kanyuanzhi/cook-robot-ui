@@ -20,11 +20,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import TimeSelect from "pages/dishEdit/components/TimeSelect";
 import WeightSelect from "pages/dishEdit/components/WeightSelect";
 
-const emits = defineEmits(["submit"]);
+const emits = defineEmits(["update", "submit"]);
 
 const shown = ref(false);
 
@@ -63,6 +63,8 @@ const onSubmit = () => {
   } catch (e) {
     return;
   }
+  isUpdate = false;
+  stepIndex = 0;
   shown.value = false;
 };
 

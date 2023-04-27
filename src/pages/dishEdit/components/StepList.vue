@@ -115,7 +115,7 @@ const theFireDialog = ref(null);
 const theStirFryDialog = ref(null);
 
 const onClick = (step, index) => {
-  console.log(step);
+  // console.log(step);
   switch (step.type) {
     case "ingredient":
       theIngredientDialog.value.show(step, index);

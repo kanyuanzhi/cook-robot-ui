@@ -8,7 +8,7 @@
       <q-card-section>
         <q-list separator padding>
           <q-scroll-area style="height: 400px; max-width: 300px;">
-            <q-item v-for="opt in options" :key="opt.id" clickable v-ripple @click="onSelect($event, opt.name)">
+            <q-item v-for="opt in options" :key="opt.id" clickable v-ripple @click="onSelect($event, opt)">
               <q-item-section>{{ opt.name }}</q-item-section>
             </q-item>
           </q-scroll-area>

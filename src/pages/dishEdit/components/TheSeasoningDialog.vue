@@ -1,7 +1,8 @@
 <template>
   <div>
-    <q-dialog v-model="shown" persistent position="top">
-      <q-card style="width: 400px" class="q-px-sm q-mt-md">
+    <q-dialog v-model="shown" persistent>
+      <!--      <q-card style="width: 400px" class="q-px-sm q-mt-md">-->
+      <q-card style="width: 400px" class="q-px-sm">
         <q-card-section>
           <div class="text-h6">添加调料</div>
         </q-card-section>
@@ -12,9 +13,10 @@
               v-model="name"
               filled
               dense
-              @blur="onInputBlur($event, 'name')"
-              @focus="onInputFocus($event, 'name')"
             >
+              <!--              @blur="onInputBlur($event, 'name')"-->
+              <!--              @focus="onInputFocus($event, 'name')"-->
+              <!--            >-->
               <template v-slot:after>
                 <q-btn round dense flat icon="toc" @click="theSeasonNameSelectionDialog.show()"/>
               </template>
@@ -22,9 +24,9 @@
           </q-item-section>
         </q-item>
 
-        <WeightSelect ref="weightSelect" :min="1" :max="200" :step="1"/>
+        <WeightSelect ref="weightSelect" :min="minWeight" :max="maxWeight" :step="weightStep"/>
 
-        <SlotRadio ref="slotRadio" label="调料盒" :slot-count="8"/>
+        <!--        <SlotRadio ref="slotRadio" label="调料盒" :slot-count="8"/>-->
 
         <TimeSelect ref="timeSelect"/>
 
@@ -34,23 +36,23 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog
-      v-model="shown"
-      persistent
-      position="bottom"
-      no-focus
-      no-refocus
-      seamless
-      full-width
-    >
-      <CustomKeyboard ref="customKeyboard" @change="onChange" @enter="onSubmit"/>
-    </q-dialog>
-    <TheSeasoningNameSelectionDialog ref="theSeasonNameSelectionDialog" @select="(val)=>name=val"/>
+    <!--    <q-dialog-->
+    <!--      v-model="shown"-->
+    <!--      persistent-->
+    <!--      position="bottom"-->
+    <!--      no-focus-->
+    <!--      no-refocus-->
+    <!--      seamless-->
+    <!--      full-width-->
+    <!--    >-->
+    <!--      <CustomKeyboard ref="customKeyboard" @change="onChange" @enter="onSubmit"/>-->
+    <!--    </q-dialog>-->
+    <TheSeasoningNameSelectionDialog ref="theSeasonNameSelectionDialog" @select="onSeasoningNameSelect"/>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import CustomKeyboard from "pages/dishEdit/components/CustomKeyboard";
 import TheSeasoningNameSelectionDialog from "pages/dishEdit/components/TheSeasoningNameSelectionDialog";
 import TimeSelect from "pages/dishEdit/components/TimeSelect";
@@ -62,8 +64,12 @@ const emits = defineEmits(["update", "submit"]);
 const shown = ref(false);
 
 const name = ref("");
+const slot = ref(0);
 const weightSelect = ref(null);
-const slotRadio = ref(null);
+const minWeight = ref(1);
+const maxWeight = ref(10);
+const weightStep = ref(1);
+// const slotRadio = ref(null);
 const timeSelect = ref(null);
 
 let isUpdate = false;
@@ -76,29 +82,54 @@ const show = (step, index) => {
       isUpdate = true;
       stepIndex = index;
       name.value = step.name;
+      slot.value = step.slot;
       weightSelect.value.setWeight(step.weight);
-      slotRadio.value.setSlot(step.slot);
+      // slotRadio.value.setSlot(step.slot);
       timeSelect.value.setTime(step.time);
+
+      generateWeightSelectInfo(step.slot);
     }
   }, 100);
 };
 
-const inputNameToPara = {
-  name,
+const onSeasoningNameSelect = (val) => {
+  name.value = val.name;
+  slot.value = val.slot;
+  generateWeightSelectInfo(val.slot);
 };
 
-const customKeyboard = ref(null);
-const onInputFocus = (e, inputName) => {
-  customKeyboard.value.setInputName(inputName);
-  customKeyboard.value.setInput(e.target.value, inputName);
+const generateWeightSelectInfo = (slot) => {
+  if (slot === 1) {
+    minWeight.value = 10;
+    maxWeight.value = 150;
+    weightStep.value = 10;
+  } else if ([2, 3, 4, 5, 6].indexOf(slot) > -1) {
+    minWeight.value = 1;
+    maxWeight.value = 20;
+    weightStep.value = 1;
+  } else {
+    minWeight.value = 1;
+    maxWeight.value = 10;
+    weightStep.value = 1;
+  }
 };
 
-const onInputBlur = (e, inputName) => {
-};
-
-const onChange = (input, inputName) => {
-  inputNameToPara[inputName].value = input;
-};
+// const inputNameToPara = {
+//   name,
+// };
+//
+// const customKeyboard = ref(null);
+// const onInputFocus = (e, inputName) => {
+//   customKeyboard.value.setInputName(inputName);
+//   customKeyboard.value.setInput(e.target.value, inputName);
+// };
+//
+// const onInputBlur = (e, inputName) => {
+// };
+//
+// const onChange = (input, inputName) => {
+//   inputNameToPara[inputName].value = input;
+// };
 
 const theSeasonNameSelectionDialog = ref(null);
 
@@ -107,7 +138,8 @@ const onSubmit = () => {
     const newStep = {
       name: name.value,
       weight: weightSelect.value.getWeight(),
-      slot: slotRadio.value.getSlot(),
+      // slot: slotRadio.value.getSlot(),
+      slot: slot.value,
       time: timeSelect.value.getTime(),
       key: Date.now(),
       type: "seasoning"
@@ -120,6 +152,8 @@ const onSubmit = () => {
   } catch (e) {
     return;
   }
+  isUpdate = false;
+  stepIndex = 0;
   shown.value = false;
 };
 
