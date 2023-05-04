@@ -56,7 +56,7 @@ import { useQuasar } from "quasar";
 import StepList from "pages/dishEdit/components/StepList";
 import StepBar from "pages/dishEdit/components/StepBar";
 import { cloneDeep } from "lodash/lang";
-import { createDish, updateDish } from "src/api/dish";
+import { createDish, getDish, updateDish } from "src/api/dish";
 import { sortBy } from "src/utils/array";
 import TheDishNameDialog from "pages/dishEdit/components/TheDishNameDialog";
 
@@ -156,15 +156,16 @@ const onSubmit = async (val, method) => {
           color: "teal",
           timeout: 500,
         });
+        res = await getDish(res.data.id)
+        useAppStore.setEditedDish(res.data)
         dishName.value = val;
+        isPresetedDish.value = res.data.is_preseted
       }
     } else {
       dish["id"] = editedDish.id
       dish["image"] = editedDish.image
       dish["is_starred"] = editedDish.is_starred
-      // set(dish, "id", editedDish.id);
-      // set(dish, "image", editedDish.image);
-      // set(dish, "is_starred", editedDish.is_starred);
+      dish["is_preseted"] = editedDish.is_preseted
       res = await updateDish(dish);
       if (res.data.success) {
         $q.notify({
@@ -173,6 +174,7 @@ const onSubmit = async (val, method) => {
           color: "teal",
           timeout: 500,
         });
+        useAppStore.setEditedDish(dish)
         dishName.value = val;
       }
     }
