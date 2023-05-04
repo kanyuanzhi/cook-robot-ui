@@ -79,11 +79,16 @@ const emptySteps = {
     time: 0,
     type: "prepare"
   }],
-  dish_out: [{
-    name: "出菜",
+  finish: [{
+    name: "结束",
     time: 10,
-    type: "dish_out"
+    type: "finish"
   }],
+  // dish_out: [{
+  //   name: "出菜",
+  //   time: 10,
+  //   type: "dish_out"
+  // }],
 };
 
 const editedDish = useAppStore.getEditedDish;

@@ -1,8 +1,8 @@
 <template>
   <div class="row justify-center">
     <div class="col-6 flex flex-center">
-      <div class="column">
-        <div class="col">
+      <div class="column" style="width: 600px">
+        <div class="col flex flex-center">
           <q-circular-progress
             show-value
             font-size="0.12em"
@@ -34,8 +34,37 @@
             }}</span
           >
         </div>
+        <div v-if="isRunning" class="col flex flex-center q-mt-md">
+          <span class="text-primary text-subtitle1">当前温度：{{ temperature }}</span>
+        </div>
+        <div v-if="isRunning" class="col-6 flex flex-center q-mt-md">
+          <q-item dense style="width: 100%">
+            <q-item-section avatar>火力</q-item-section>
+            <q-item-section>
+              <q-slider
+                v-model="fireLevel"
+                color="red"
+                marker-labels
+                markers
+                :min="0"
+                :max="10"
+                @change="onFireLevelChange"
+              />
+            </q-item-section>
+          </q-item>
+        </div>
+        <div v-if="isRunning" class="col flex flex-center q-mt-md">
+          <q-btn push color="primary" label="紧急停机" @click="onStopBtnClick"/>
+        </div>
         <div v-if="!isRunning" class="col flex flex-center q-mt-md">
-          <q-btn color="primary" to="/dishSelect">重新选择</q-btn>
+          <q-btn push rounded color="primary" to="/dishSelect">重新选择</q-btn>
+        </div>
+        <div v-if="!isRunning" class="col flex flex-center q-mt-md justify-evenly">
+          <q-btn push color="primary" label="出菜" @click="onQuickControlBtnClick('dish_out')"/>
+          <q-btn push color="primary" label="清洗" @click="onQuickControlBtnClick('wash')"/>
+          <q-btn push color="primary" label="复位0" @click="onQuickControlBtnClick('reset0')"/>
+          <q-btn push color="primary" label="复位1" @click="onQuickControlBtnClick('reset1')"/>
+
         </div>
       </div>
     </div>
@@ -43,16 +72,52 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { secondsToMMSS } from "src/utils/timeFormat";
 import { postCommand } from "src/api/command";
 import { sortBy } from "src/utils/array";
 import { UseRunningStore } from "stores/runningStore";
 import { Command, createSingleInstruction } from "pages/overallControl/components/command";
+import { getRunningStatus } from "src/api/runningStatus";
+import { useQuasar } from "quasar";
 
-const props = defineProps(["cookTime", "runningTime", "isRunning", "isFinished"]);
+const useRunningStore = UseRunningStore();
+const $q = useQuasar();
+
+const props = defineProps(["cookTime", "runningTime", "isRunning", "isFinished", "temperature", "temperatureTargetNumber"]);
 
 const emits = defineEmits(["update:isRunning"]);
+
+const fireLevel = ref(props.temperatureTargetNumber === 0 ? 0 : (props.temperatureTargetNumber / 200));
+watch(
+  () => props.temperatureTargetNumber,
+  (val) => {
+    fireLevel.value = val === 0 ? 0 : (val / 200);
+  });
+
+const onFireLevelChange = async (val) => {
+  const immediateCommand = new Command("immediate");
+  const instruction = createSingleInstruction("fire", 0, "on", val, 0);
+  immediateCommand.add(instruction);
+  try {
+    const res = await postCommand(immediateCommand.getData());
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const onStopBtnClick = async (val) => {
+  const immediateCommand = new Command("immediate");
+  const instruction = createSingleInstruction("stop", 0, "on", 0, 0);
+  immediateCommand.add(instruction);
+  try {
+    const res = await postCommand(immediateCommand.getData());
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 function shiftRunningStatus() {
   emits("update:isRunning", !props.isRunning);
@@ -83,8 +148,12 @@ const progressColor = computed(() => {
 });
 
 const onStartBtnClick = async () => {
+  if (useRunningStore.getWashStatus) {
+    $q.notify("正在清洗，请稍后");
+    return;
+  }
   if (props.isRunning) return; //运行过程中不允许暂停
-  const steps = UseRunningStore().getDish.steps;
+  const steps = useRunningStore.getDish.steps;
   const multipleCommand = new Command("multiple");
   for (const key in steps) {
     for (const step of steps[key]) {
@@ -93,9 +162,18 @@ const onStartBtnClick = async () => {
         case "prepare":
           instruction = createSingleInstruction("prepare", 0, "on", 0, step.time);
           break;
-        case "dish_out":
-          instruction = createSingleInstruction("dish_out", 0, "on", 0, step.time);
+        // case "dish_out":
+        //   instruction = createSingleInstruction("dish_out", 0, "on", 0, step.time);
+        //   break;
+        case "finish":
+          instruction = createSingleInstruction("finish", 0, "on", 0, step.time);
           break;
+        // case "reset0":
+        //   instruction = createSingleInstruction("reset0", 0, "on", 0, step.time);
+        //   break;
+        // case "reset1":
+        //   instruction = createSingleInstruction("reset1", 0, "on", 0, step.time);
+        //   break;
         case "ingredients":
           if (step.type === "ingredient") {
             instruction = createSingleInstruction("ingredient", step.slot, "on", 0, step.time);
@@ -129,6 +207,25 @@ const onStartBtnClick = async () => {
   // const res = await postCommand(singleCommand.getData());
 
   // shiftRunningStatus();
+};
+
+const onQuickControlBtnClick = async (type) => {
+  if (useRunningStore.getWashStatus) {
+    $q.notify("正在清洗，请稍后");
+    return;
+  }
+  if (type === "wash") {
+    useRunningStore.setWashStatus(true);
+  }
+  const singleCommand = new Command("single");
+  const instruction = createSingleInstruction(type, 0, "on", 0, 0);
+  singleCommand.add(instruction);
+  try {
+    const res = await postCommand(singleCommand.getData());
+    console.log(res);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 function onPauseBtnConfirm() {

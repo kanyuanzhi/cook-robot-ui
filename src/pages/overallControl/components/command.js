@@ -1,17 +1,6 @@
 import { ref } from "vue";
 import { sortBy } from "src/utils/array";
 
-export function createSingleInstruction(type, target = 0, action, measure = 0, time = 0) {
-  return {
-    type: type,
-    target: target,
-    action: action,
-    measures: measure,
-    time: time,
-    key: Date.now()
-  };
-}
-
 export class Command {
   constructor(model) {
     this.model = model;
@@ -37,6 +26,17 @@ export class Command {
       instructions: this.instructions.value
     };
   }
+}
+
+export function createSingleInstruction(type, target = 0, action, measure = 0, time = 0) {
+  return {
+    type: type,
+    target: target,
+    action: action,
+    measures: measure,
+    time: time,
+    key: Date.now()
+  };
 }
 
 export function createPLCInstruction(type, target = 0, action, measures = []) {

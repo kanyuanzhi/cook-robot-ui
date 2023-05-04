@@ -1,7 +1,7 @@
 <template>
   <div>
-    <q-dialog v-model="shown" persistent position="top">
-      <q-card style="width: 400px" class="q-px-sm q-mt-md">
+    <q-dialog v-model="shown" persistent>
+      <q-card style="width: 400px" class="q-px-sm">
         <q-card-section>
           <div class="text-h6">添加食材</div>
         </q-card-section>
@@ -12,9 +12,10 @@
               v-model="name"
               filled
               dense
-              @blur="onInputBlur($event, 'name')"
-              @focus="onInputFocus($event, 'name')"
             >
+              <!--              @blur="onInputBlur($event, 'name')"-->
+              <!--              @focus="onInputFocus($event, 'name')"-->
+              <!--            >-->
               <template v-slot:after>
                 <q-btn round dense flat icon="toc" @click="theIngredientNameSelectionDialog.show()"/>
               </template>
@@ -29,9 +30,10 @@
               v-model="shape"
               filled
               dense
-              @blur="onInputBlur($event, 'shape')"
-              @focus="onInputFocus($event, 'shape')"
             >
+              <!--              @blur="onInputBlur($event, 'shape')"-->
+              <!--              @focus="onInputFocus($event, 'shape')"-->
+              <!--            >-->
               <template v-slot:after>
                 <q-btn round dense flat icon="toc" @click="theIngredientShapeSelectionDialog.show()"/>
               </template>
@@ -51,17 +53,17 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog
-      v-model="shown"
-      persistent
-      position="bottom"
-      no-focus
-      no-refocus
-      seamless
-      full-width
-    >
-      <CustomKeyboard ref="customKeyboard" @change="onChange" @enter="onSubmit"/>
-    </q-dialog>
+    <!--    <q-dialog-->
+    <!--      v-model="shown"-->
+    <!--      persistent-->
+    <!--      position="bottom"-->
+    <!--      no-focus-->
+    <!--      no-refocus-->
+    <!--      seamless-->
+    <!--      full-width-->
+    <!--    >-->
+    <!--      <CustomKeyboard ref="customKeyboard" @change="onChange" @enter="onSubmit"/>-->
+    <!--    </q-dialog>-->
     <TheIngredientNameSelectionDialog ref="theIngredientNameSelectionDialog" @select="(val)=>name=val"/>
     <TheIngredientShapeSelectionDialog ref="theIngredientShapeSelectionDialog" @select="(val)=>shape=val"/>
   </div>
@@ -109,18 +111,18 @@ const inputNameToPara = {
   shape,
 };
 
-const customKeyboard = ref(null);
-const onInputFocus = (e, inputName) => {
-  customKeyboard.value.setInputName(inputName);
-  customKeyboard.value.setInput(e.target.value, inputName);
-};
+// const customKeyboard = ref(null);
+// const onInputFocus = (e, inputName) => {
+//   customKeyboard.value.setInputName(inputName);
+//   customKeyboard.value.setInput(e.target.value, inputName);
+// };
 
 const onInputBlur = (e, inputName) => {
 };
 
-const onChange = (input, inputName) => {
-  inputNameToPara[inputName].value = input;
-};
+// const onChange = (input, inputName) => {
+//   inputNameToPara[inputName].value = input;
+// };
 
 const theIngredientNameSelectionDialog = ref(null);
 const theIngredientShapeSelectionDialog = ref(null);

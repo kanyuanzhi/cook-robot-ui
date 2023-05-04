@@ -34,14 +34,14 @@ const stepName = ref(1);
 const stepsLine = computed(() => {
   const line = [];
   for (const key in props.steps) {
-    if(key !== "dish_out"){
+    if(key !== "finish"){
       line.push(...props.steps[key]);
     }
   }
   line.sort(sortBy("time", 1));
-  const dishOut = props.steps["dish_out"][0]
-  dishOut.time = line[line.length - 1].time + 10
-  line.push(dishOut)
+  const finish = props.steps["finish"][0]
+  finish.time = line[line.length - 1].time + 10
+  line.push(finish)
   return line
 });
 
