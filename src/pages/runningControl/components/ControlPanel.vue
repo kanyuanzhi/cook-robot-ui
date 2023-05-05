@@ -64,10 +64,10 @@
           <q-btn push color="primary" label="清洗" @click="onQuickControlBtnClick('wash')"/>
           <q-btn push color="primary" label="复位0" @click="onQuickControlBtnClick('reset0')"/>
           <q-btn push color="primary" label="复位1" @click="onQuickControlBtnClick('reset1')"/>
-
         </div>
       </div>
     </div>
+    <WashingDialog ref="washingDialog"></WashingDialog>
   </div>
 </template>
 
@@ -80,6 +80,7 @@ import { UseRunningStore } from "stores/runningStore";
 import { Command, createSingleInstruction } from "pages/overallControl/components/command";
 import { getRunningStatus } from "src/api/runningStatus";
 import { useQuasar } from "quasar";
+import WashingDialog from "pages/runningControl/components/WashingDialog";
 
 const useRunningStore = UseRunningStore();
 const $q = useQuasar();
@@ -209,12 +210,15 @@ const onStartBtnClick = async () => {
   // shiftRunningStatus();
 };
 
+const washingDialog = ref(null)
 const onQuickControlBtnClick = async (type) => {
   if (useRunningStore.getWashStatus) {
     $q.notify("正在清洗，请稍后");
     return;
   }
   if (type === "wash") {
+    console.log(washingDialog.value)
+    washingDialog.value.show()
     useRunningStore.setWashStatus(true);
   }
   const singleCommand = new Command("single");
