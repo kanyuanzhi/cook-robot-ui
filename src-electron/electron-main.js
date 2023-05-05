@@ -30,8 +30,8 @@ function createWindow() {
     // fullscreen: platform === "linux",
     fullscreen: false,
     useContentSize: true,
-    frame: platform !== "linux",
-    // frame: true,
+    // frame: platform !== "linux",
+    frame: true,
     disableAutoHideCursor: true,
     webPreferences: {
       contextIsolation: true,

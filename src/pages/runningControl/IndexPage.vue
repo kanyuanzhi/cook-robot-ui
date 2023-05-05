@@ -62,6 +62,7 @@ const timerFunc = async () => {
   const { data } = await getRunningStatus();
   // console.log(data.data["time"]);
   console.log(data.data["machine_state"]);
+  // console.log(data.data["temperature_target_number"]);
   temperature.value = data.data["temperature_infrared_number"] / 10;
   temperatureTargetNumber.value = data.data["temperature_target_number"];
   if (data.data["machine_state"] === 2 && !useRunningStore.getWashStatus) {
