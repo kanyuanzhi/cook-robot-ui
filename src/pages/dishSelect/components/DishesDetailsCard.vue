@@ -72,12 +72,13 @@
 import { getDish, updateDish } from "src/api/dish";
 import { ref } from "vue";
 import { UseAppStore } from "stores/appStore";
-import { UseRunningStore } from "stores/runningStore";
 import { cloneDeep } from "lodash/lang";
 
 import { useRouter } from "vue-router";
 import { getRunningStatus } from "src/api/runningStatus";
 import { useQuasar } from "quasar";
+import { UseStateMachineStore } from "stores/stateMachineStore";
+
 const $q = useQuasar();
 
 // const imgUrl = require('src/assets/chicken-salad.jpg');
@@ -120,23 +121,15 @@ const onStarBtnClick = () => {
     });
 };
 
-const useRunningStore = UseRunningStore();
-const onRunningBtnClick = async () => {
-  const { data } = await getRunningStatus();
-  const machineState = data.data["machine_state"];
-  if (machineState !== 0){
-    $q.notify("当前已有菜品正在炒制！")
-    return
+const useStateMachineStore = UseStateMachineStore();
+const onRunningBtnClick = () => {
+  if (useStateMachineStore.getMachineRunningState) {
+    $q.notify("当前已有菜品正在炒制，请稍后");
+  } else {
+    useStateMachineStore.setDish(cloneDeep(dish.value));
   }
-  useRunningStore.setDish(cloneDeep(dish.value));
-  useRunningStore.setSelectedStatus(true);
-  useRunningStore.setRunningTime(0)
-  useRunningStore.setRunningStatus(false)
-  useRunningStore.setStepValue(0)
-  useRunningStore.setFinishedStatus(false)
   router.push("/running");
 };
-
 
 const showRequirementNames = (requirements) => {
   const names = [];

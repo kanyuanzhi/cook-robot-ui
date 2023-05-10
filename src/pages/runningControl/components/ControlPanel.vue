@@ -30,7 +30,7 @@
         <div class="col flex flex-center">
           <span class="text-primary" style="font-size: 17px"
           >{{ secondsToMMSS(runningTime) }}/{{
-              secondsToMMSS(cookTime === undefined ? 0 : cookTime)
+              secondsToMMSS(useStateMachineStore.getDish.cook_time === undefined ? 0 : useStateMachineStore.getDish.cook_time)
             }}</span
           >
         </div>
@@ -67,7 +67,6 @@
         </div>
       </div>
     </div>
-    <WashingDialog ref="washingDialog"></WashingDialog>
   </div>
 </template>
 
@@ -75,17 +74,14 @@
 import { computed, ref, watch } from "vue";
 import { secondsToMMSS } from "src/utils/timeFormat";
 import { postCommand } from "src/api/command";
-import { sortBy } from "src/utils/array";
-import { UseRunningStore } from "stores/runningStore";
 import { Command, createSingleInstruction } from "pages/overallControl/components/command";
-import { getRunningStatus } from "src/api/runningStatus";
 import { useQuasar } from "quasar";
-import WashingDialog from "pages/runningControl/components/WashingDialog";
+import { UseStateMachineStore } from "stores/stateMachineStore";
 
-const useRunningStore = UseRunningStore();
 const $q = useQuasar();
+const useStateMachineStore = UseStateMachineStore();
 
-const props = defineProps(["cookTime", "runningTime", "isRunning", "isFinished", "temperature", "temperatureTargetNumber"]);
+const props = defineProps(["runningTime", "isRunning", "isFinished", "temperature", "temperatureTargetNumber"]);
 
 const emits = defineEmits(["update:isRunning"]);
 
@@ -125,23 +121,11 @@ function shiftRunningStatus() {
 }
 
 const progressValue = computed(() => {
-  return props.runningTime * 100 / props.cookTime;
+  return props.runningTime * 100 / useStateMachineStore.getDish.cook_time;
 });
 
 const centerBtnColor = computed(() => {
   return props.isRunning ? "blue-11" : "blue-8";
-});
-
-const centerBtnIcon = computed(() => {
-  return props.isRunning ? "pause" : "play_arrow";
-});
-
-const progressCountdown = computed(() => {
-  return secondsToMMSS(props.cookTime - props.runningTime);
-});
-
-const progressLabel = computed(() => {
-  return props.isRunning ? "运行中" : "暂停";
 });
 
 const progressColor = computed(() => {
@@ -149,12 +133,15 @@ const progressColor = computed(() => {
 });
 
 const onStartBtnClick = async () => {
-  if (useRunningStore.getWashStatus) {
+  if (useStateMachineStore.getMachineWashingState) {
     $q.notify("正在清洗，请稍后");
     return;
   }
-  if (props.isRunning) return; //运行过程中不允许暂停
-  const steps = useRunningStore.getDish.steps;
+  if (useStateMachineStore.getMachineRunningState) {
+    $q.notify("当前已有菜品正在炒制，请稍后");
+    return;
+  }
+  const steps = useStateMachineStore.getDish.steps;
   const multipleCommand = new Command("multiple");
   for (const key in steps) {
     for (const step of steps[key]) {
@@ -163,18 +150,9 @@ const onStartBtnClick = async () => {
         case "prepare":
           instruction = createSingleInstruction("prepare", 0, "on", 0, step.time);
           break;
-        // case "dish_out":
-        //   instruction = createSingleInstruction("dish_out", 0, "on", 0, step.time);
-        //   break;
         case "finish":
           instruction = createSingleInstruction("finish", 0, "on", 0, step.time);
           break;
-        // case "reset0":
-        //   instruction = createSingleInstruction("reset0", 0, "on", 0, step.time);
-        //   break;
-        // case "reset1":
-        //   instruction = createSingleInstruction("reset1", 0, "on", 0, step.time);
-        //   break;
         case "ingredients":
           if (step.type === "ingredient") {
             instruction = createSingleInstruction("ingredient", step.slot, "on", 0, step.time);
@@ -198,28 +176,26 @@ const onStartBtnClick = async () => {
     }
   }
   try {
+    multipleCommand.setId(useStateMachineStore.getDish.id);
     const res = await postCommand(multipleCommand.getData());
+    useStateMachineStore.setMachineRunningState(true)
+    await useStateMachineStore.update()
     console.log(res);
-    shiftRunningStatus();
+    // shiftRunningStatus();
   } catch (e) {
     console.log(e);
   }
-  // const instructions =
-  // const res = await postCommand(singleCommand.getData());
-
-  // shiftRunningStatus();
 };
 
-const washingDialog = ref(null)
+const washingDialog = ref(null);
 const onQuickControlBtnClick = async (type) => {
-  if (useRunningStore.getWashStatus) {
-    $q.notify("正在清洗，请稍后");
-    return;
-  }
+  // if (useRunningStore.getWashStatus) {
+  //   $q.notify("正在清洗，请稍后");
+  //   return;
+  // }
   if (type === "wash") {
-    console.log(washingDialog.value)
-    washingDialog.value.show()
-    useRunningStore.setWashStatus(true);
+    // washingDialog.value.show();
+    useStateMachineStore.setMachineWashingState(true);
   }
   const singleCommand = new Command("single");
   const instruction = createSingleInstruction(type, 0, "on", 0, 0);

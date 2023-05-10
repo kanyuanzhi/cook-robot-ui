@@ -2,14 +2,13 @@
   <q-page>
     <div class="row q-pa-md">
       <div class="col-1"></div>
-      <div v-if="isSelected" class="col-10">
+      <div v-if="useStateMachineStore.getDishSelectedState" class="col-10">
         <div class="column q-gutter-y-none">
           <div class="col flex flex-center text-h6" style="min-height: 32px">
-            {{ dish.name }}
+            {{ useStateMachineStore.getDish.name }}
           </div>
-          <StepBar class="" :is-running="isRunning" :steps="dish.steps" :running-time="runningTime"/>
-          <ControlPanel v-model:isRunning="isRunning" :cook-time="dish.cook_time"
-                        :running-time="runningTime" :is-finished="isFinished"
+          <StepBar :is-running="isRunning" :current-step-number="currentStepNumber" :sorted-steps="sortedDishSteps"/>
+          <ControlPanel v-model:isRunning="isRunning" :running-time="runningTime" :is-finished="isFinished"
                         :temperature="temperature" :temperature-target-number="temperatureTargetNumber"/>
         </div>
       </div>
@@ -29,114 +28,54 @@
         <!--        <q-btn label="repeat" color="primary" @click="startRunning"/>-->
       </div>
     </div>
+    <q-dialog v-model="isWashing" persistent>
+      <WashingDialog :washing-time="washingTime"></WashingDialog>
+    </q-dialog>
   </q-page>
 </template>
 
 <script setup>
 import { UseAppStore } from "stores/appStore";
-import { UseRunningStore } from "stores/runningStore";
+import { UseStateMachineStore } from "stores/stateMachineStore";
 import ControlPanel from "pages/runningControl/components/ControlPanel";
-import { onUnmounted, ref, watch } from "vue";
-import { getRunningStatus } from "src/api/runningStatus";
+import { ref } from "vue";
 import StepBar from "pages/runningControl/components/StepBar";
-import { floor, ceil } from "lodash";
+import WashingDialog from "pages/runningControl/components/WashingDialog";
 
 const useAppStore = UseAppStore();
 useAppStore.setSubPageTitle("运行控制");
 
-const useRunningStore = UseRunningStore();
-const dish = useRunningStore.getDish;
+const useStateMachineStore = UseStateMachineStore();
 
-const runningTime = ref(useRunningStore.getRunningTime);
-const isRunning = ref(useRunningStore.getRunningStatus);
+const currentStepNumber = ref(useStateMachineStore.getCurrentStepNumber);
+const sortedDishSteps = ref(useStateMachineStore.getSortedDishSteps);
 
-const isFinished = ref(useRunningStore.getIsFinished);
-const isSelected = ref(useRunningStore.getIsSelected);
+const machineState = ref(useStateMachineStore.getStateData.machine_state);
+const washingState = ref(useStateMachineStore.getStateData.washing_state);
+const temperature = ref(useStateMachineStore.getStateData.temperature_infrared_number);
+const temperatureTargetNumber = ref(useStateMachineStore.getStateData.temperature_target_number);
 
-const temperature = ref(0);
-const temperatureTargetNumber = ref(0);
+const runningTime = ref(useStateMachineStore.getRunningTime);
+const washingTime = ref(useStateMachineStore.getWashingTime);
 
-let runningTimer;
+const isFinished = ref(useStateMachineStore.getCookFinishedState);
+const isRunning = ref(useStateMachineStore.getMachineRunningState);
+const isWashing = ref(useStateMachineStore.getMachineWashingState);
 
-const timerFunc = async () => {
-  const { data } = await getRunningStatus();
-  // console.log(data.data["time"]);
-  console.log(data.data["machine_state"]);
-  // console.log(data.data["temperature_target_number"]);
-  temperature.value = data.data["temperature_infrared_number"] / 10;
-  temperatureTargetNumber.value = data.data["temperature_target_number"];
-  if (data.data["machine_state"] === 2 && !useRunningStore.getWashStatus) {
-    runningTime.value = ceil(data.data["time"] / 10);
-    useRunningStore.setRunningTime(runningTime.value);
-  } else if (data.data["machine_state"] !== 2 && !useRunningStore.getWashStatus) {
-    isFinished.value = true;
-    useRunningStore.setFinishedStatus(true);
-    isRunning.value = false;
-    clearInterval(runningTimer);
-  } else if (data.data["machine_state"] !== 2 && useRunningStore.getWashStatus) {
-    useRunningStore.setWashStatus(false);
-    clearInterval(runningTimer);
-  }
-};
-
-const stateCheck = async () => {
-  const { data } = await getRunningStatus();
-  const machineState = data.data["machine_state"];
-  temperature.value = data.data["temperature_infrared_number"] / 10;
-  temperatureTargetNumber.value = data.data["temperature_target_number"];
-  console.log(machineState);
-  if (machineState === 0) {
-    runningTime.value = 0;
-    isRunning.value = false;
-    useRunningStore.setRunningTime(runningTime.value);
-    useRunningStore.setRunningStatus(isRunning.value);
-    useRunningStore.setWashStatus(false);
-  } else {
-    if (!useRunningStore.getWashStatus) {
-      runningTime.value = ceil(data.data["time"] / 10);
-      isRunning.value = true;
-      useRunningStore.setRunningTime(runningTime.value);
-      useRunningStore.setRunningStatus(isRunning.value);
-    }
-    isFinished.value = false;
-    useRunningStore.setFinishedStatus(isFinished.value);
-    runningTimer = setInterval(timerFunc, 1000);
-  }
-};
-stateCheck();
-
-watch(
-  isRunning,
-  (newValue) => {
-    useRunningStore.setRunningStatus(newValue);
-    console.log(newValue);
-    if (newValue) {
-      runningTimer = setInterval(timerFunc, 1000);
-    }
-  },
-);
-
-const emptyRunningStatus = {
-  status: "", // free running pause cleaning
-  ingredients: [{
-    no: 1,
-    status: "off" // off open
-  }],
-
-};
-
-// const t = setInterval(async () => {
-//   try {
-//     const res = await getRunningStatus();
-//     runningStatus.value = res.data;
-//     console.log(res.data);
-//   } catch (e) {
-//     console.log(e);
-//   }
-// }, 1000);
-
-onUnmounted(() => {
-  clearInterval(runningTimer);
+useStateMachineStore.$subscribe(async (mutation, state) => {
+  currentStepNumber.value = state.currentStepNumber;
+  sortedDishSteps.value = state.sortedDishSteps;
+  machineState.value = state.data.machine_state;
+  washingState.value = state.data.washing_state;
+  temperature.value = state.data.temperature_infrared_number;
+  temperatureTargetNumber.value = state.data.temperature_target_number;
+  console.log(temperatureTargetNumber.value)
+  runningTime.value = state.runningTime;
+  washingTime.value = state.washingTime;
+  isFinished.value = state.isCookFinished;
+  isRunning.value = state.isMachineRunning;
+  isWashing.value = state.isMachineWashing;
+  console.log(state.data.id, state.data.time, runningTime.value, washingTime.value, machineState.value, washingState.value, new Date().getSeconds());
 });
 </script>
 

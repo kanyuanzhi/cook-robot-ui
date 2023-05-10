@@ -5,11 +5,16 @@ export class Command {
   constructor(model) {
     this.model = model;
     this.instructions = ref([]);
+    this.id = "";
   }
 
   add(ins) {
     this.instructions.value.push(ins);
     this.instructions.value.sort(sortBy("time", 1));
+  }
+
+  setId(id) {
+    this.id = id;
   }
 
   clear() {
@@ -22,8 +27,9 @@ export class Command {
 
   getData() {
     return {
+      id: this.id,
       model: this.model,
-      instructions: this.instructions.value
+      instructions: this.instructions.value,
     };
   }
 }

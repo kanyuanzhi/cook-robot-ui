@@ -7,7 +7,7 @@
     :content-active-style="contentActiveStyle"
     style="height: 104px;">
     <q-stepper
-      v-model="stepValue"
+      v-model="stepNumber"
       ref="stepper"
       done-color="blue-8"
       done-icon="done"
@@ -21,11 +21,11 @@
       animated
     >
       <q-step
-        v-for="(step, index) in stepsLine"
+        v-for="(step, index) in sortedSteps"
         :key="index" :title="step.name"
         :caption="secondsToMMSS(step.time)"
         :name="index"
-        :done="stepValue > index"
+        :done="stepNumber > index"
       />
     </q-stepper>
   </q-scroll-area>
@@ -33,14 +33,9 @@
 
 <script setup>
 import { computed, onMounted, ref, watch } from "vue";
-import { sortBy } from "src/utils/array";
 import { secondsToMMSS } from "src/utils/timeFormat";
-import { UseRunningStore } from "stores/runningStore";
 
-const props = defineProps(["isRunning", "steps", "runningTime"]);
-
-const useRunningStore = UseRunningStore();
-const stepValue = ref(useRunningStore.getStepValue);
+const props = defineProps(["isRunning", "currentStepNumber", "sortedSteps"]);
 
 const activeColor = computed(() => {
   return props.isRunning ? "green-6" : "green-6";
@@ -49,27 +44,17 @@ const activeIcon = computed(() => {
   return props.isRunning ? "play_arrow" : "pause";
 });
 
-const stepsLine = computed(() => {
-  const line = [];
-  for (const key in props.steps) {
-    line.push(...props.steps[key]);
-  }
-  line.sort(sortBy("time", 1));
-  return line;
-});
-
+const stepNumber = ref(props.currentStepNumber);
 const scrollArea = ref(null);
 watch(
-  () => props.runningTime,
+  () => props.currentStepNumber,
   (newValue) => {
-    const n = getCurrentStepNumber(newValue);
-    stepValue.value = n;
-    useRunningStore.setStepValue(stepValue.value);
-    if (n > 2) {
-      scrollArea.value.setScrollPosition("horizontal", (n - 3) * 120);
+    stepNumber.value = newValue;
+    if (newValue > 2) {
+      scrollArea.value.setScrollPosition("horizontal", (newValue - 3) * 120);
     }
-    // for (let i = 0; i < stepsLine.value.length - 1; i++) {
-    //   if (newValue >= stepsLine.value[i].time && newValue < stepsLine.value[i + 1].time) {
+    // for (let i = 0; i < sortedSteps.value.length - 1; i++) {
+    //   if (newValue >= sortedSteps.value[i].time && newValue < sortedSteps.value[i + 1].time) {
     //     if (stepValue.value > 2) {
     //       scrollArea.value.setScrollPosition("horizontal", (i - 3) * 120);
     //     }
@@ -82,26 +67,16 @@ watch(
     // }
   });
 
-const getCurrentStepNumber = (runningTime) => {
-  for (let i = 0; i < stepsLine.value.length - 1; i++) {
-    if (runningTime >= stepsLine.value[i].time && runningTime < stepsLine.value[i + 1].time) {
-      return i;
-    }
-  }
-  return stepsLine.value.length - 1;
-};
-
 onMounted(() => {
-  const n = getCurrentStepNumber(props.runningTime);
-  // if (n > 2) {
-  //   scrollArea.value.setScrollPosition("horizontal", (n - 3) * 120);
-  // }
+  if (stepNumber.value > 2) {
+    scrollArea.value.setScrollPosition("horizontal", (stepNumber.value - 3) * 120);
+  }
 
-  setInterval(() => {
-    if (n > 2) {
-      // scrollArea.value.setScrollPosition("horizontal", (n - 3) * 120, 1000);
-    }
-  }, 3000);
+  // setInterval(() => {
+  //   if (n > 2) {
+  //     // scrollArea.value.setScrollPosition("horizontal", (n - 3) * 120, 1000);
+  //   }
+  // }, 3000);
 });
 
 const contentStyle = {

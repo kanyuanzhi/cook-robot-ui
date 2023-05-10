@@ -62,6 +62,7 @@ import { getSystemStatus } from "src/api/systemStatus";
 import QrScanDialog from "layouts/components/QrScanDialog";
 import TimeDisplay from "layouts/components/TimeDisplay";
 import { useQuasar } from "quasar";
+import { UseStateMachineStore } from "stores/stateMachineStore";
 
 const $q = useQuasar();
 
@@ -82,6 +83,11 @@ watch(
 
 const qrScanDialog = ref(null);
 const qrScanText = ref("");
+
+const useStateMachine = UseStateMachineStore();
+setInterval(() => {
+  useStateMachine.update();
+}, 1000)
 
 const useSystemStore = UseSystemStore();
 // setInterval(function () {

@@ -1,33 +1,59 @@
 <template>
-  <q-dialog v-model="shown" persistent>
-    <q-card style="width: 500px" class="q-px-sm">
-      <q-card-section>
-        <div class="text-h6 text-center">清洗中</div>
-      </q-card-section>
-      <!--      <GearSlider ref="gearSlider" label="档位" color="red-14" :gear-min="0" :gear-max="10"/>-->
+  <q-card style="width: 500px">
+    <q-card-section class="q-pb-none flex flex-center">
+      <q-circular-progress
+        show-value
+        font-size="0.12em"
+        class="q-ma-md"
+        :value="progressValue"
+        size="160px"
+        :thickness="0.4"
+        color="blue-8"
+        track-color="grey-4"
+      >
+        <div class="column q-mt-md">
+          <div class="row">
+            <span class="text-primary text-weight-bold">清洗中</span>
+          </div>
+          <div class="row flex-center">
+            <q-spinner-dots
+              color="primary"
+              size="2em"
+            />
+          </div>
+        </div>
+      </q-circular-progress>
+    </q-card-section>
 
-      <!--      <TimeSelect ref="timeSelect"/>-->
+    <q-card-section class="q-pt-none text-center">
+      <span class="text-primary" style="font-size: 17px">{{ secondsToMMSS(washingTime) }} / 01:10</span>
+    </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn v-close-popup flat color="">停止</q-btn>
-        <!--        <q-btn flat color="primary" @click="onSubmit">提交</q-btn>-->
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+    <q-card-actions align="right">
+      <q-btn flat label="返回主页" color="primary" @click="onGoHomeBtnClick"/>
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { secondsToMMSS } from "src/utils/timeFormat";
+import { useRouter } from "vue-router";
+
+const props = defineProps(["washingTime"]);
 
 const shown = ref(false);
 
-const show = () => {
-  shown.value = true;
+const progressValue = computed(() => {
+  return props.washingTime * 100 / 70;
+});
+
+const router = useRouter();
+
+const onGoHomeBtnClick = () => {
+  router.push("/");
 };
 
-defineExpose({
-  show
-});
 </script>
 
 <style lang="scss" scoped>
