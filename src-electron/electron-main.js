@@ -27,14 +27,15 @@ function createWindow() {
     icon: path.resolve(__dirname, "icons/icon.png"), // tray icon
     width: 1000,
     height: 600,
-    // fullscreen: platform === "linux",
-    fullscreen: false,
+    fullscreen: platform === "linux",
+    // fullscreen: false,
     useContentSize: true,
-    // frame: platform !== "linux",
-    frame: true,
+    frame: platform !== "linux",
+    // frame: true,
     disableAutoHideCursor: true,
     webPreferences: {
       contextIsolation: true,
+      sandbox: false,
       // More info: https://v2.quasar.dev/quasar-cli-webpack/developing-electron-apps/electron-preload-script
       preload: path.resolve(__dirname, process.env.QUASAR_ELECTRON_PRELOAD),
     },
@@ -49,9 +50,9 @@ function createWindow() {
     mainWindow.webContents.openDevTools();
   } else {
     // we're on production; no access to devtools pls
-    // mainWindow.webContents.on("devtools-opened", () => {
-    //   mainWindow.webContents.closeDevTools();
-    // });
+    mainWindow.webContents.on("devtools-opened", () => {
+      mainWindow.webContents.closeDevTools();
+    });
     // mainWindow.setIgnoreMouseEvents(true, {forward: true})
     // mainWindow.setAutoHideCursor(true)
   }

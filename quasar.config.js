@@ -88,6 +88,25 @@ module.exports = configure(function (ctx) {
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
+
+      // extendWebpack(cfg) {
+      //   cfg.resolve.fallback = {
+      //     fs: false,
+      //     crypto: false,
+      //     Buffer: false,
+      //     os: false,
+      //     path: false,
+      //     stream: false,
+      //     assert: false,
+      //     dns: false,
+      //     net: false,
+      //     tls: false,
+      //     http2: false,
+      //     https: false,
+      //     http: false,
+      //     zlib: false
+      //   };
+      // }
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer

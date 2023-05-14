@@ -69,7 +69,6 @@ useStateMachineStore.$subscribe(async (mutation, state) => {
   washingState.value = state.data.washing_state;
   temperature.value = state.data.temperature_infrared_number;
   temperatureTargetNumber.value = state.data.temperature_target_number;
-  console.log(temperatureTargetNumber.value)
   runningTime.value = state.runningTime;
   washingTime.value = state.washingTime;
   isFinished.value = state.isCookFinished;
