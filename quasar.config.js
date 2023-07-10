@@ -248,8 +248,8 @@ module.exports = configure(function (ctx) {
         // protocol: 'myapp://path',
         // Windows only
         // win32metadata: { ... }
-        platform: "linux",
-        arch: "arm64"
+        // platform: "linux",
+        // arch: "arm64"
       },
 
       builder: {

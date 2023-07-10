@@ -36,3 +36,17 @@ export function toggleWlan(flag) {
     method: "put",
   });
 }
+
+export function togglePhonePairing(flag) {
+  return api({
+    url: "/system-settings/phone-pairing-for-machine/" + flag,
+    method: "put",
+  });
+}
+
+export function getPhonePairingStatus() {
+  return api({
+    url: "/system-settings/phone-pairing-for-machine",
+    method: "get",
+  });
+}
