@@ -119,7 +119,7 @@ const qrScanText = ref("");
 
 const useStateMachine = UseStateMachineStore();
 setInterval(() => {
-  useStateMachine.update();
+  // useStateMachine.update();
 }, 1000);
 
 const useSystemStore = UseSystemStore();

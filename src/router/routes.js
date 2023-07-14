@@ -38,6 +38,16 @@ const routes = [
     ],
   },
   {
+    path: "/dishEdit2",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      {
+        path: "",
+        component: () => import("pages/dishEdit2/IndexPage.vue")
+      },
+    ],
+  },
+  {
     path: "/systemSettings",
     component: () => import("layouts/MainLayout.vue"),
     children: [

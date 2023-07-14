@@ -39,13 +39,14 @@ module.exports = configure(function (ctx) {
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
-      // 'ionicons-v4',
-      // 'mdi-v5',
-      // 'fontawesome-v6',
-      // 'eva-icons',
-      // 'themify',
-      // 'line-awesome',
+      "ionicons-v4",
+      "mdi-v5",
+      "fontawesome-v6",
+      "eva-icons",
+      "themify",
+      "line-awesome",
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
+      "bootstrap-icons",
 
       "roboto-font", // optional, you are not bound to it
       "material-icons", // optional, you are not bound to it
@@ -248,8 +249,8 @@ module.exports = configure(function (ctx) {
         // protocol: 'myapp://path',
         // Windows only
         // win32metadata: { ... }
-        // platform: "linux",
-        // arch: "arm64"
+        platform: "linux",
+        arch: "armv7l" // ia32, x64, armv7l, arm64, mips64el, universal
       },
 
       builder: {

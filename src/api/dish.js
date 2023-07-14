@@ -53,8 +53,11 @@ export function updateDish(dish) {
 
 export function createDish(dish) {
   return api({
-    url: "/dish/",
+    url: "/dish",
     method: "post",
-    data: { dish: dish },
+    data: {
+      name: dish.name,
+      steps: dish.steps
+    },
   });
 }

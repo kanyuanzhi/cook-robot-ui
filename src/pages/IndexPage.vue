@@ -20,11 +20,18 @@
         </div>
         <div class="row" style="height: 200px">
           <NavigateButton
-            col-size="col-4"
+            col-size="col-2"
             font-size-class="text-h4"
             color="primary"
             to="/dishEdit"
           >菜品制作
+          </NavigateButton>
+          <NavigateButton
+            col-size="col-2"
+            font-size-class="text-h4"
+            color="primary"
+            to="/dishEdit2"
+          >菜品制作2
           </NavigateButton>
           <NavigateButton
             col-size="col-4"
